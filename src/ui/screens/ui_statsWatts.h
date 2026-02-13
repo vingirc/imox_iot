@@ -19,9 +19,9 @@ extern lv_obj_t * ui_contentPanel1;
 extern lv_obj_t * ui_contentPanel4;
 extern lv_obj_t * ui_PotenciaLabel16;
 extern lv_obj_t * ui_contentPanel5;
-extern lv_obj_t * ui_PotenciaLabel20;
+extern lv_obj_t * ui_wattsVal;
 extern lv_obj_t * ui_PotenciaLabel21;
-extern lv_obj_t * ui_Chart;
+extern lv_obj_t * ui_wattsChart;
 extern lv_obj_t * ui_navPanel3;
 // CUSTOM VARIABLES
 

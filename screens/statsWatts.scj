@@ -194,7 +194,7 @@
                     {
                       "nid": 10,
                       "strtype": "OBJECT/Name",
-                      "strval": "PotenciaLabel20",
+                      "strval": "wattsVal",
                       "InheritedType": 10
                     },
                     {
@@ -319,7 +319,7 @@
                     {
                       "nid": 1030,
                       "strtype": "LABEL/Text",
-                      "strval": "650",
+                      "strval": "0",
                       "InheritedType": 10
                     },
                     {
@@ -910,7 +910,7 @@
             {
               "nid": 10,
               "strtype": "OBJECT/Name",
-              "strval": "Chart",
+              "strval": "wattsChart",
               "InheritedType": 10
             },
             {
@@ -948,11 +948,11 @@
             },
             {
               "nid": 60,
-              "flags": 17,
+              "flags": 34,
               "strtype": "OBJECT/Size",
               "intarray": [
-                200,
-                100
+                80,
+                60
               ],
               "InheritedType": 7
             },
@@ -964,6 +964,7 @@
             },
             {
               "nid": 90,
+              "flags": 1048576,
               "strtype": "OBJECT/Flags",
               "InheritedType": 1
             },
@@ -1023,7 +1024,7 @@
             {
               "nid": 1030,
               "strtype": "CHART/Number_of_points",
-              "integer": 10,
+              "integer": 7,
               "InheritedType": 6
             },
             {
@@ -1188,12 +1189,50 @@
             {
               "nid": 1240,
               "strtype": "CHART/ChartData",
-              "strval": "[{\"Axis\":0,\"Color\":[128,128,128,255],\"Series\":[0,10,20,40,80,80,40,20,10,0]}]",
+              "strval": "[{\"Axis\":0,\"Color\":[179,136,255,255],\"Series\":[0,10,20,40,80,80,40,20,10,0]}]",
               "InheritedType": 12
             },
             {
               "part": "lv.PART.MAIN",
-              "childs": [],
+              "childs": [
+                {
+                  "nid": 10000,
+                  "strtype": "_style/StyleState",
+                  "strval": "DEFAULT",
+                  "childs": [
+                    {
+                      "nid": 10520,
+                      "flags": 4096,
+                      "strtype": "_style/Bg_Color",
+                      "intarray": [
+                        0,
+                        0,
+                        0,
+                        255
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 10720,
+                      "strtype": "_style/Border width",
+                      "InheritedType": 6
+                    },
+                    {
+                      "nid": 10210,
+                      "flags": 4096,
+                      "strtype": "_style/Line_Color",
+                      "intarray": [
+                        10,
+                        10,
+                        10,
+                        255
+                      ],
+                      "InheritedType": 7
+                    }
+                  ],
+                  "InheritedType": 1
+                }
+              ],
               "nid": 1250,
               "strtype": "CHART/Style_bg",
               "strval": "lv.PART.MAIN, Rectangle, Line, Pad, Transform",
@@ -1393,6 +1432,12 @@
                     255
                   ],
                   "InheritedType": 7
+                },
+                {
+                  "nid": 10450,
+                  "strtype": "_style/Text_Font",
+                  "strval": "Secondary_info",
+                  "InheritedType": 3
                 }
               ],
               "InheritedType": 1
@@ -1415,15 +1460,15 @@
       "saved_objtypeKey": "PANEL"
     },
     {
-      "guid": "GUID18717766-202476S577544",
+      "guid": "GUID50012137-202543S587544",
       "cid": "GUID51982610-659557S8857543",
       "coid": 1335072450,
-      "cgid": 1420587582,
+      "cgid": -412808595,
       "children": [
         {
-          "guid": "GUID49175045-202470S573544",
+          "guid": "GUID70005196-202544S587544",
           "coid": 1724369369,
-          "cgid": 1420587582,
+          "cgid": -412808595,
           "properties": [
             {
               "compnid": 10,
@@ -1451,9 +1496,9 @@
           "saved_objtypeKey": "PANEL"
         },
         {
-          "guid": "GUID55925860-202471S573544",
+          "guid": "GUID37985811-202545S587544",
           "coid": -1262309776,
-          "cgid": 1420587582,
+          "cgid": -412808595,
           "properties": [
             {
               "compnid": 10,
@@ -1481,14 +1526,44 @@
           "saved_objtypeKey": "PANEL"
         },
         {
-          "guid": "GUID26688799-202472S573544",
+          "guid": "GUID11380985-202546S587544",
           "coid": -1160219907,
-          "cgid": 1420587582,
+          "cgid": -412808595,
           "properties": [
             {
               "compnid": 10,
               "strtype": "OBJECT/Name",
               "strval": "circle3",
+              "InheritedType": 10
+            },
+            {
+              "part": "lv.PART.MAIN",
+              "childs": [],
+              "compnid": 1010,
+              "strtype": "PANEL/Style_main",
+              "strval": "lv.PART.MAIN, Rectangle, Pad, Text, Transform",
+              "InheritedType": 11
+            },
+            {
+              "part": "lv.PART.SCROLLBAR",
+              "childs": [],
+              "compnid": 1020,
+              "strtype": "PANEL/Style_scrollbar",
+              "strval": "lv.PART.SCROLLBAR, Rectangle, Pad",
+              "InheritedType": 11
+            }
+          ],
+          "saved_objtypeKey": "PANEL"
+        },
+        {
+          "guid": "GUID50745266-202547S587544",
+          "coid": 528156325,
+          "cgid": -412808595,
+          "properties": [
+            {
+              "compnid": 10,
+              "strtype": "OBJECT/Name",
+              "strval": "circle4",
               "InheritedType": 10
             },
             {
@@ -1532,39 +1607,9 @@
           "saved_objtypeKey": "PANEL"
         },
         {
-          "guid": "GUID68825179-202473S573544",
-          "coid": 528156325,
-          "cgid": 1420587582,
-          "properties": [
-            {
-              "compnid": 10,
-              "strtype": "OBJECT/Name",
-              "strval": "circle4",
-              "InheritedType": 10
-            },
-            {
-              "part": "lv.PART.MAIN",
-              "childs": [],
-              "compnid": 1010,
-              "strtype": "PANEL/Style_main",
-              "strval": "lv.PART.MAIN, Rectangle, Pad, Text, Transform",
-              "InheritedType": 11
-            },
-            {
-              "part": "lv.PART.SCROLLBAR",
-              "childs": [],
-              "compnid": 1020,
-              "strtype": "PANEL/Style_scrollbar",
-              "strval": "lv.PART.SCROLLBAR, Rectangle, Pad",
-              "InheritedType": 11
-            }
-          ],
-          "saved_objtypeKey": "PANEL"
-        },
-        {
-          "guid": "GUID20983614-202474S573544",
+          "guid": "GUID91589565-202548S587544",
           "coid": -862045741,
-          "cgid": 1420587582,
+          "cgid": -412808595,
           "properties": [
             {
               "compnid": 10,
@@ -1592,9 +1637,9 @@
           "saved_objtypeKey": "PANEL"
         },
         {
-          "guid": "GUID43176261-202475S577544",
+          "guid": "GUID52216728-202549S591544",
           "coid": -782531870,
-          "cgid": 1420587582,
+          "cgid": -412808595,
           "properties": [
             {
               "compnid": 10,
@@ -1829,7 +1874,7 @@
       "disabled": false,
       "nid": 1000317,
       "strtype": "_event/EventHandler",
-      "strval": "GESTURE_LEFT(GESTURE)",
+      "strval": "GESTURE_RIGHT(GESTURE)",
       "childs": [
         {
           "nid": 1000318,
@@ -1875,13 +1920,13 @@
             {
               "nid": 1000325,
               "strtype": "CHANGE SCREEN/Screen_to",
-              "strval": "GUID85070890-659634S7016543",
+              "strval": "GUID17666789-659671S219543",
               "InheritedType": 9
             },
             {
               "nid": 1000326,
               "strtype": "CHANGE SCREEN/Fade_mode",
-              "strval": "MOVE_LEFT",
+              "strval": "MOVE_RIGHT",
               "InheritedType": 3
             },
             {
@@ -1892,6 +1937,82 @@
             },
             {
               "nid": 1000328,
+              "strtype": "CHANGE SCREEN/Delay",
+              "InheritedType": 6
+            }
+          ],
+          "InheritedType": 10
+        }
+      ],
+      "InheritedType": 4
+    },
+    {
+      "disabled": false,
+      "nid": 1000357,
+      "strtype": "_event/EventHandler",
+      "strval": "GESTURE_LEFT(GESTURE)",
+      "childs": [
+        {
+          "nid": 1000358,
+          "strtype": "_event/name",
+          "strval": "swipeRight",
+          "InheritedType": 10
+        },
+        {
+          "nid": 1000359,
+          "strtype": "_event/condition_C",
+          "strval": "",
+          "InheritedType": 10
+        },
+        {
+          "nid": 1000360,
+          "strtype": "_event/condition_P",
+          "strval": "",
+          "InheritedType": 10
+        },
+        {
+          "nid": 1000361,
+          "strtype": "_event/action",
+          "strval": "CHANGE SCREEN",
+          "childs": [
+            {
+              "nid": 1000362,
+              "strtype": "CHANGE SCREEN/Name",
+              "strval": "CHANGE SCREEN",
+              "InheritedType": 10
+            },
+            {
+              "nid": 1000363,
+              "strtype": "CHANGE SCREEN/Call",
+              "strval": "ChangeScreen( <{Screen_to}>, lv.SCR_LOAD_ANIM.<{Fade_mode}>, <{Speed}>, <{Delay}>)",
+              "InheritedType": 10
+            },
+            {
+              "nid": 1000364,
+              "strtype": "CHANGE SCREEN/CallC",
+              "strval": "_ui_screen_change( &<{Screen_to}>, LV_SCR_LOAD_ANIM_<{Fade_mode}>, <{Speed}>, <{Delay}>, &<{Screen_to}>_screen_init);",
+              "InheritedType": 10
+            },
+            {
+              "nid": 1000365,
+              "strtype": "CHANGE SCREEN/Screen_to",
+              "strval": "GUID82203362-202533S368544",
+              "InheritedType": 9
+            },
+            {
+              "nid": 1000366,
+              "strtype": "CHANGE SCREEN/Fade_mode",
+              "strval": "MOVE_LEFT",
+              "InheritedType": 3
+            },
+            {
+              "nid": 1000367,
+              "strtype": "CHANGE SCREEN/Speed",
+              "integer": 200,
+              "InheritedType": 6
+            },
+            {
+              "nid": 1000368,
               "strtype": "CHANGE SCREEN/Delay",
               "InheritedType": 6
             }

@@ -23,13 +23,13 @@ void ui_event_corriente(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
-    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_LEFT) {
-        lv_indev_wait_release(lv_indev_get_act());
-        _ui_screen_change(&ui_voltaje, LV_SCR_LOAD_ANIM_MOVE_LEFT, 200, 0, &ui_voltaje_screen_init);
-    }
     if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT) {
         lv_indev_wait_release(lv_indev_get_act());
-        _ui_screen_change(&ui_dashboard, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 200, 0, &ui_dashboard_screen_init);
+        _ui_screen_change(&ui_voltaje, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 200, 0, &ui_voltaje_screen_init);
+    }
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_LEFT) {
+        lv_indev_wait_release(lv_indev_get_act());
+        _ui_screen_change(&ui_dashboard, LV_SCR_LOAD_ANIM_MOVE_LEFT, 200, 0, &ui_dashboard_screen_init);
     }
 }
 
@@ -89,7 +89,7 @@ void ui_corriente_screen_init(void)
     lv_obj_set_align(ui_corrienteVal, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(ui_corrienteVal, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(ui_corrienteVal, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
-    lv_label_set_text(ui_corrienteVal, "4.21");
+    lv_label_set_text(ui_corrienteVal, "0.00");
     ui_object_set_themeable_style_property(ui_corrienteVal, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
                                            _ui_theme_color_Corriente);
     ui_object_set_themeable_style_property(ui_corrienteVal, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
@@ -155,7 +155,7 @@ void ui_corriente_screen_init(void)
     lv_obj_set_x(ui_pactivaVal, -187);
     lv_obj_set_y(ui_pactivaVal, 40);
     lv_obj_set_align(ui_pactivaVal, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_pactivaVal, "510");
+    lv_label_set_text(ui_pactivaVal, "0");
     lv_obj_set_style_text_color(ui_pactivaVal, lv_color_hex(0x808080), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_pactivaVal, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -189,7 +189,7 @@ void ui_corriente_screen_init(void)
     lv_obj_set_x(ui_preactivaVal, 102);
     lv_obj_set_y(ui_preactivaVal, 40);
     lv_obj_set_align(ui_preactivaVal, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_preactivaVal, "12");
+    lv_label_set_text(ui_preactivaVal, "0");
     lv_obj_set_style_text_color(ui_preactivaVal, lv_color_hex(0x808080), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_preactivaVal, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 

@@ -24,9 +24,13 @@ void ui_event_voltaje(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_LEFT) {
+        lv_indev_wait_release(lv_indev_get_act());
+        _ui_screen_change(&ui_corriente, LV_SCR_LOAD_ANIM_MOVE_LEFT, 200, 0, &ui_corriente_screen_init);
+    }
     if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT) {
         lv_indev_wait_release(lv_indev_get_act());
-        _ui_screen_change(&ui_corriente, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 200, 0, &ui_corriente_screen_init);
+        _ui_screen_change(&ui_diagnostic, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 200, 0, &ui_diagnostic_screen_init);
     }
 }
 
@@ -86,7 +90,7 @@ void ui_voltaje_screen_init(void)
     lv_obj_set_align(ui_voltajeVal, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(ui_voltajeVal, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(ui_voltajeVal, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
-    lv_label_set_text(ui_voltajeVal, "121.4");
+    lv_label_set_text(ui_voltajeVal, "0.00");
     ui_object_set_themeable_style_property(ui_voltajeVal, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
                                            _ui_theme_color_Voltaje);
     ui_object_set_themeable_style_property(ui_voltajeVal, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
@@ -150,7 +154,7 @@ void ui_voltaje_screen_init(void)
     lv_obj_set_x(ui_frecuencia, -187);
     lv_obj_set_y(ui_frecuencia, 40);
     lv_obj_set_align(ui_frecuencia, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_frecuencia, "124.5");
+    lv_label_set_text(ui_frecuencia, "0.0");
     lv_obj_set_style_text_color(ui_frecuencia, lv_color_hex(0x808080), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_frecuencia, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -184,7 +188,7 @@ void ui_voltaje_screen_init(void)
     lv_obj_set_x(ui_potencia, 102);
     lv_obj_set_y(ui_potencia, 40);
     lv_obj_set_align(ui_potencia, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_potencia, "0.97");
+    lv_label_set_text(ui_potencia, "0.00");
     lv_obj_set_style_text_color(ui_potencia, lv_color_hex(0x808080), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_potencia, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 

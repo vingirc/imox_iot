@@ -40,6 +40,8 @@ void ui_init(void)
     ui_dashboard_screen_init();
     ui_Modo_Diario_24hrs_screen_init();
     ui_statsWatts_screen_init();
+    ui_voltageStats_screen_init();
+    ui_diagnostic_screen_init();
     ui____initial_actions0 = lv_obj_create(NULL);
     lv_disp_load_scr(ui_voltaje);
 }
@@ -51,4 +53,6 @@ void ui_destroy(void)
     ui_dashboard_screen_destroy();
     ui_Modo_Diario_24hrs_screen_destroy();
     ui_statsWatts_screen_destroy();
+    ui_voltageStats_screen_destroy();
+    ui_diagnostic_screen_destroy();
 }

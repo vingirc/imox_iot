@@ -1,0 +1,16 @@
+{
+  "codename": "diagElem",
+  "ttf_path": "/assets/RobotoMono-Light.ttf",
+  "bin_path": "/assets\\ui_font_diagElem.bin",
+  "c_path": "/assets\\ui_font_diagElem.c",
+  "cfg_path": "/assets\\ui_font_diagElem.fcfg",
+  "size": 12,
+  "bpp": 1,
+  "letters": 0,
+  "ranges": [
+    "0x20-0x7f"
+  ],
+  "symbols": "",
+  "customparams": "--no-compress --no-prefilter",
+  "uploaded": false
+}

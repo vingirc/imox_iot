@@ -1,0 +1,16 @@
+{
+  "codename": "diagTitle",
+  "ttf_path": "/assets/RobotoMono-Medium.ttf",
+  "bin_path": "/assets\\ui_font_diagTitle.bin",
+  "c_path": "/assets\\ui_font_diagTitle.c",
+  "cfg_path": "/assets\\ui_font_diagTitle.fcfg",
+  "size": 14,
+  "bpp": 1,
+  "letters": 0,
+  "ranges": [
+    "0x20-0x7f"
+  ],
+  "symbols": "",
+  "customparams": "--no-compress --no-prefilter",
+  "uploaded": false
+}

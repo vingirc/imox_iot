@@ -66,6 +66,32 @@
           }
         ],
         "saved_objtypeKey": "SCREEN"
+      },
+      {
+        "guid": "GUID82203362-202533S368544",
+        "isPage": true,
+        "properties": [
+          {
+            "nid": 10,
+            "strtype": "OBJECT/Name",
+            "strval": "voltageStats",
+            "InheritedType": 10
+          }
+        ],
+        "saved_objtypeKey": "SCREEN"
+      },
+      {
+        "guid": "GUID19998166-202599S57755544",
+        "isPage": true,
+        "properties": [
+          {
+            "nid": 10,
+            "strtype": "OBJECT/Name",
+            "strval": "diagnostic",
+            "InheritedType": 10
+          }
+        ],
+        "saved_objtypeKey": "SCREEN"
       }
     ],
     "properties": [
@@ -80,7 +106,7 @@
   },
   "animations": [],
   "selected_theme": "Default",
-  "selected_screen": "GUID5505389-202477S577544",
+  "selected_screen": "GUID19998166-202599S57755544",
   "info": {
     "name": "SquareLine_Project.spj",
     "depth": 2,
@@ -108,7 +134,7 @@
     "custom_variable_prefix": "uic",
     "separate_screen_save": true,
     "hierarchy_state_save": false,
-    "backup_cnt": 18,
+    "backup_cnt": 22,
     "autosave_cnt": 0,
     "group_color_cnt": 1,
     "imagebytearrayprefix": "",
@@ -119,7 +145,7 @@
     "naming": "Name",
     "naming_force_lowercase": false,
     "naming_add_subcomponent": false,
-    "nidcnt": 1000329,
+    "nidcnt": 1000393,
     "BitDepth": 16,
     "Name": "SquareLine_Project"
   }

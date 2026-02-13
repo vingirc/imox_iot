@@ -141,7 +141,7 @@
                     {
                       "nid": 1030,
                       "strtype": "LABEL/Text",
-                      "strval": "121.4",
+                      "strval": "0.00",
                       "InheritedType": 10
                     },
                     {
@@ -1376,7 +1376,7 @@
                     {
                       "nid": 1030,
                       "strtype": "LABEL/Text",
-                      "strval": "4.21",
+                      "strval": "0.00",
                       "InheritedType": 10
                     },
                     {
@@ -2602,7 +2602,7 @@
                     {
                       "nid": 1030,
                       "strtype": "LABEL/Text",
-                      "strval": "0.98",
+                      "strval": "0.00",
                       "InheritedType": 10
                     },
                     {
@@ -3660,7 +3660,7 @@
                     {
                       "nid": 1030,
                       "strtype": "LABEL/Text",
-                      "strval": "2.34",
+                      "strval": "0.00",
                       "InheritedType": 10
                     },
                     {
@@ -5173,7 +5173,7 @@
       "disabled": false,
       "nid": 1000317,
       "strtype": "_event/EventHandler",
-      "strval": "GESTURE_LEFT(GESTURE)",
+      "strval": "GESTURE_RIGHT(GESTURE)",
       "childs": [
         {
           "nid": 1000318,
@@ -5225,7 +5225,7 @@
             {
               "nid": 1000326,
               "strtype": "CHANGE SCREEN/Fade_mode",
-              "strval": "MOVE_LEFT",
+              "strval": "MOVE_RIGHT",
               "InheritedType": 3
             },
             {
@@ -5236,6 +5236,82 @@
             },
             {
               "nid": 1000328,
+              "strtype": "CHANGE SCREEN/Delay",
+              "InheritedType": 6
+            }
+          ],
+          "InheritedType": 10
+        }
+      ],
+      "InheritedType": 4
+    },
+    {
+      "disabled": false,
+      "nid": 1000345,
+      "strtype": "_event/EventHandler",
+      "strval": "GESTURE_LEFT(GESTURE)",
+      "childs": [
+        {
+          "nid": 1000346,
+          "strtype": "_event/name",
+          "strval": "swipeRight",
+          "InheritedType": 10
+        },
+        {
+          "nid": 1000347,
+          "strtype": "_event/condition_C",
+          "strval": "",
+          "InheritedType": 10
+        },
+        {
+          "nid": 1000348,
+          "strtype": "_event/condition_P",
+          "strval": "",
+          "InheritedType": 10
+        },
+        {
+          "nid": 1000349,
+          "strtype": "_event/action",
+          "strval": "CHANGE SCREEN",
+          "childs": [
+            {
+              "nid": 1000350,
+              "strtype": "CHANGE SCREEN/Name",
+              "strval": "CHANGE SCREEN",
+              "InheritedType": 10
+            },
+            {
+              "nid": 1000351,
+              "strtype": "CHANGE SCREEN/Call",
+              "strval": "ChangeScreen( <{Screen_to}>, lv.SCR_LOAD_ANIM.<{Fade_mode}>, <{Speed}>, <{Delay}>)",
+              "InheritedType": 10
+            },
+            {
+              "nid": 1000352,
+              "strtype": "CHANGE SCREEN/CallC",
+              "strval": "_ui_screen_change( &<{Screen_to}>, LV_SCR_LOAD_ANIM_<{Fade_mode}>, <{Speed}>, <{Delay}>, &<{Screen_to}>_screen_init);",
+              "InheritedType": 10
+            },
+            {
+              "nid": 1000353,
+              "strtype": "CHANGE SCREEN/Screen_to",
+              "strval": "GUID5505389-202477S577544",
+              "InheritedType": 9
+            },
+            {
+              "nid": 1000354,
+              "strtype": "CHANGE SCREEN/Fade_mode",
+              "strval": "MOVE_LEFT",
+              "InheritedType": 3
+            },
+            {
+              "nid": 1000355,
+              "strtype": "CHANGE SCREEN/Speed",
+              "integer": 200,
+              "InheritedType": 6
+            },
+            {
+              "nid": 1000356,
               "strtype": "CHANGE SCREEN/Delay",
               "InheritedType": 6
             }

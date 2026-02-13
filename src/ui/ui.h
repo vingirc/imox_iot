@@ -36,6 +36,8 @@ extern "C" {
 #include "screens/ui_dashboard.h"
 #include "screens/ui_Modo_Diario_24hrs.h"
 #include "screens/ui_statsWatts.h"
+#include "screens/ui_voltageStats.h"
+#include "screens/ui_diagnostic.h"
 
 ///////////////////// VARIABLES ////////////////////
 
@@ -52,6 +54,8 @@ LV_FONT_DECLARE(ui_font_Secondary_info);
 LV_FONT_DECLARE(ui_font_Unidades);
 LV_FONT_DECLARE(ui_font_RobotoMono96);
 LV_FONT_DECLARE(ui_font_LecturaS);
+LV_FONT_DECLARE(ui_font_diagElem);
+LV_FONT_DECLARE(ui_font_diagTitle);
 
 // UI INIT
 void ui_init(void);

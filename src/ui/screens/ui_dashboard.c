@@ -40,9 +40,13 @@ void ui_event_dashboard(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT) {
+        lv_indev_wait_release(lv_indev_get_act());
+        _ui_screen_change(&ui_corriente, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 200, 0, &ui_corriente_screen_init);
+    }
     if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_LEFT) {
         lv_indev_wait_release(lv_indev_get_act());
-        _ui_screen_change(&ui_corriente, LV_SCR_LOAD_ANIM_MOVE_LEFT, 200, 0, &ui_corriente_screen_init);
+        _ui_screen_change(&ui_statsWatts, LV_SCR_LOAD_ANIM_MOVE_LEFT, 200, 0, &ui_statsWatts_screen_init);
     }
 }
 
@@ -112,7 +116,7 @@ void ui_dashboard_screen_init(void)
     lv_obj_set_x(ui_VoltajeValD, 292);
     lv_obj_set_y(ui_VoltajeValD, -52);
     lv_obj_set_align(ui_VoltajeValD, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_VoltajeValD, "121.4");
+    lv_label_set_text(ui_VoltajeValD, "0.00");
     ui_object_set_themeable_style_property(ui_VoltajeValD, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
                                            _ui_theme_color_Voltaje);
     ui_object_set_themeable_style_property(ui_VoltajeValD, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
@@ -201,7 +205,7 @@ void ui_dashboard_screen_init(void)
     lv_obj_set_x(ui_CorrienteValD, 292);
     lv_obj_set_y(ui_CorrienteValD, -52);
     lv_obj_set_align(ui_CorrienteValD, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_CorrienteValD, "4.21");
+    lv_label_set_text(ui_CorrienteValD, "0.00");
     ui_object_set_themeable_style_property(ui_CorrienteValD, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
                                            _ui_theme_color_Corriente);
     ui_object_set_themeable_style_property(ui_CorrienteValD, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
@@ -291,7 +295,7 @@ void ui_dashboard_screen_init(void)
     lv_obj_set_x(ui_PotenciaValD, 292);
     lv_obj_set_y(ui_PotenciaValD, -52);
     lv_obj_set_align(ui_PotenciaValD, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_PotenciaValD, "0.98");
+    lv_label_set_text(ui_PotenciaValD, "0.00");
     lv_obj_set_style_text_color(ui_PotenciaValD, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaValD, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_PotenciaValD, &ui_font_LecturaS48, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -368,7 +372,7 @@ void ui_dashboard_screen_init(void)
     lv_obj_set_x(ui_energiaValD, 292);
     lv_obj_set_y(ui_energiaValD, -52);
     lv_obj_set_align(ui_energiaValD, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_energiaValD, "2.34");
+    lv_label_set_text(ui_energiaValD, "0.00");
     ui_object_set_themeable_style_property(ui_energiaValD, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
                                            _ui_theme_color_Potencia);
     ui_object_set_themeable_style_property(ui_energiaValD, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,

@@ -93,12 +93,75 @@ void setup() {
         PZEM_TASK_CORE);  /* Núcleo pinned (0) */
 }
 
+void updateUI() {
+    // ----------------------------------------------------
+    // VISTA 1: VOLTAJE (ui_voltaje)
+    // ----------------------------------------------------
+    if (ui_voltajeVal) {
+        lv_label_set_text_fmt(ui_voltajeVal, "%.1f", v_voltage);
+    }
+    if (ui_frecuencia) {
+        lv_label_set_text_fmt(ui_frecuencia, "%.1f", v_frequency);
+    }
+    if (ui_potencia) {
+        lv_label_set_text_fmt(ui_potencia, "%.1f", v_power);
+    }
+
+    // ----------------------------------------------------
+    // VISTA 2: CORRIENTE (ui_corriente)
+    // ----------------------------------------------------
+    if (ui_corrienteVal) {
+        lv_label_set_text_fmt(ui_corrienteVal, "%.3f", v_current);
+    }
+    if (ui_pactivaVal) {
+        lv_label_set_text_fmt(ui_pactivaVal, "%.1f", v_power);
+    }
+    if (ui_preactivaVal) {
+        // Cálculo aproximado de Reactiva: Q = sqrt(S^2 - P^2)
+        // S = V * I
+        float apparent = v_voltage * v_current;
+        float reactive = 0.0;
+        if (apparent > v_power) {
+            reactive = sqrt((apparent * apparent) - (v_power * v_power));
+        }
+        lv_label_set_text_fmt(ui_preactivaVal, "%.1f", reactive);
+    }
+
+    // ----------------------------------------------------
+    // VISTA 3: DASHBOARD (ui_dashboard)
+    // ----------------------------------------------------
+    if (ui_VoltajeValD) {
+        lv_label_set_text_fmt(ui_VoltajeValD, "%.1f", v_voltage);
+    }
+    if (ui_CorrienteValD) {
+        lv_label_set_text_fmt(ui_CorrienteValD, "%.2f", v_current);
+    }
+    if (ui_pactivaValD) {
+        lv_label_set_text_fmt(ui_pactivaValD, "%.0f", v_power);
+    }
+    if (ui_energiaValD) {
+        // Energía en kWh
+        lv_label_set_text_fmt(ui_energiaValD, "%.3f", v_energy);
+    }
+    if (ui_frecuenciaValD) {
+        lv_label_set_text_fmt(ui_frecuenciaValD, "%.1f", v_frequency);
+    }
+    if (ui_PotenciaValD) { // Factor de Potencia según análisis
+        lv_label_set_text_fmt(ui_PotenciaValD, "%.2f", v_pf);
+    }
+}
+
 void loop() {
     // 5. Manejador LVGL (Corre en el Núcleo 1, el default de loop())
     lv_task_handler();
     
-    // [OPCIONAL] Aquí actualizarías la UI con los valores de las variables globales
-    // Ejemplo: ui_set_voltage_text(v_voltage);
+    // Actualizar UI periódicamente (ej. cada 500ms)
+    // No es necesario hacerlo en cada ciclo de loop
+    static unsigned long lastUIUpdate = 0;
+    if (millis() - lastUIUpdate > 500) {
+        updateUI();
+        lastUIUpdate = millis();
+    }
     
     delay(LVGL_TICK_PERIOD_MS);
 }
