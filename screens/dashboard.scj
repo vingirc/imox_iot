@@ -1,0 +1,5250 @@
+{
+  "guid": "GUID17666789-659671S219543",
+  "children": [
+    {
+      "guid": "GUID20061627-995686S15366543",
+      "children": [
+        {
+          "guid": "GUID93155093-995678S15360543",
+          "children": [
+            {
+              "guid": "GUID45496735-995730S652543",
+              "children": [
+                {
+                  "guid": "GUID24881289-995676S15359543",
+                  "properties": [
+                    {
+                      "nid": 10,
+                      "strtype": "OBJECT/Name",
+                      "strval": "VoltajeValD",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 20,
+                      "strtype": "OBJECT/Layout",
+                      "InheritedType": 1
+                    },
+                    {
+                      "Flow": 0,
+                      "Wrap": false,
+                      "Reversed": false,
+                      "MainAlignment": 0,
+                      "CrossAlignment": 0,
+                      "TrackAlignment": 0,
+                      "LayoutType": 0,
+                      "nid": 30,
+                      "strtype": "OBJECT/Layout_type",
+                      "strval": "No_layout",
+                      "InheritedType": 13
+                    },
+                    {
+                      "nid": 40,
+                      "strtype": "OBJECT/Transform",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 50,
+                      "flags": 17,
+                      "strtype": "OBJECT/Position",
+                      "intarray": [
+                        292,
+                        -52
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 60,
+                      "flags": 19,
+                      "strtype": "OBJECT/Size",
+                      "intarray": [
+                        150,
+                        43
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 70,
+                      "strtype": "OBJECT/Align",
+                      "strval": "CENTER",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 75,
+                      "strtype": "OBJECT/Extend_click_area",
+                      "InheritedType": 6
+                    },
+                    {
+                      "nid": 90,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Flags",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 100,
+                      "strtype": "LABEL/Hidden",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 110,
+                      "strtype": "OBJECT/Clickable",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 225,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Scrolling",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 300,
+                      "strtype": "OBJECT/Scrollbar_mode",
+                      "strval": "AUTO",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 310,
+                      "strtype": "OBJECT/Scroll_direction",
+                      "strval": "ALL",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 314,
+                      "strtype": "OBJECT/Scroll_snap_x",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 315,
+                      "strtype": "OBJECT/Scroll_snap_y",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 320,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/States",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1010,
+                      "strtype": "LABEL/Label",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1020,
+                      "strtype": "LABEL/Long_mode",
+                      "strval": "WRAP",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 1030,
+                      "strtype": "LABEL/Text",
+                      "strval": "121.4",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 1040,
+                      "strtype": "LABEL/Recolor",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "part": "lv.PART.MAIN",
+                      "childs": [
+                        {
+                          "nid": 10000,
+                          "strtype": "_style/StyleState",
+                          "strval": "DEFAULT",
+                          "childs": [
+                            {
+                              "nid": 10410,
+                              "flags": 4096,
+                              "strtype": "_style/Text_Color",
+                              "strval": "Voltaje",
+                              "integer": 1000252,
+                              "intarray": [
+                                0,
+                                229,
+                                255,
+                                255
+                              ],
+                              "InheritedType": 7
+                            },
+                            {
+                              "nid": 10450,
+                              "strtype": "_style/Text_Font",
+                              "strval": "LecturaS48",
+                              "InheritedType": 3
+                            }
+                          ],
+                          "InheritedType": 1
+                        }
+                      ],
+                      "nid": 1050,
+                      "strtype": "LABEL/Style_main",
+                      "strval": "lv.PART.MAIN, Text, Rectangle, Pad, Transform",
+                      "InheritedType": 11
+                    }
+                  ],
+                  "saved_objtypeKey": "LABEL"
+                },
+                {
+                  "guid": "GUID33942256-995677S15360543",
+                  "properties": [
+                    {
+                      "nid": 10,
+                      "strtype": "OBJECT/Name",
+                      "strval": "PotenciaLabel3",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 20,
+                      "strtype": "OBJECT/Layout",
+                      "InheritedType": 1
+                    },
+                    {
+                      "Flow": 1,
+                      "Wrap": false,
+                      "Reversed": false,
+                      "MainAlignment": 0,
+                      "CrossAlignment": 1,
+                      "TrackAlignment": 0,
+                      "LayoutType": 1,
+                      "nid": 30,
+                      "strtype": "OBJECT/Layout_type",
+                      "strval": "No_layout",
+                      "InheritedType": 13
+                    },
+                    {
+                      "nid": 40,
+                      "strtype": "OBJECT/Transform",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 50,
+                      "flags": 17,
+                      "strtype": "OBJECT/Position",
+                      "intarray": [
+                        427,
+                        -95
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 60,
+                      "flags": 51,
+                      "strtype": "OBJECT/Size",
+                      "intarray": [
+                        1,
+                        1
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 70,
+                      "strtype": "OBJECT/Align",
+                      "strval": "CENTER",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 75,
+                      "strtype": "OBJECT/Extend_click_area",
+                      "InheritedType": 6
+                    },
+                    {
+                      "nid": 90,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Flags",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 100,
+                      "strtype": "LABEL/Hidden",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 110,
+                      "strtype": "OBJECT/Clickable",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 225,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Scrolling",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 300,
+                      "strtype": "OBJECT/Scrollbar_mode",
+                      "strval": "AUTO",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 310,
+                      "strtype": "OBJECT/Scroll_direction",
+                      "strval": "ALL",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 314,
+                      "strtype": "OBJECT/Scroll_snap_x",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 315,
+                      "strtype": "OBJECT/Scroll_snap_y",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 320,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/States",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1010,
+                      "strtype": "LABEL/Label",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1020,
+                      "strtype": "LABEL/Long_mode",
+                      "strval": "WRAP",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 1030,
+                      "strtype": "LABEL/Text",
+                      "strval": "V",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 1040,
+                      "strtype": "LABEL/Recolor",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "part": "lv.PART.MAIN",
+                      "childs": [
+                        {
+                          "nid": 10000,
+                          "strtype": "_style/StyleState",
+                          "strval": "DEFAULT",
+                          "childs": [
+                            {
+                              "nid": 10410,
+                              "flags": 4096,
+                              "strtype": "_style/Text_Color",
+                              "intarray": [
+                                176,
+                                176,
+                                176,
+                                255
+                              ],
+                              "InheritedType": 7
+                            },
+                            {
+                              "nid": 10450,
+                              "strtype": "_style/Text_Font",
+                              "strval": "Unidades",
+                              "InheritedType": 3
+                            }
+                          ],
+                          "InheritedType": 1
+                        }
+                      ],
+                      "nid": 1050,
+                      "strtype": "LABEL/Style_main",
+                      "strval": "lv.PART.MAIN, Text, Rectangle, Pad, Transform",
+                      "InheritedType": 11
+                    }
+                  ],
+                  "saved_objtypeKey": "LABEL"
+                }
+              ],
+              "properties": [
+                {
+                  "nid": 10,
+                  "strtype": "OBJECT/Name",
+                  "strval": "secundario1Panel6",
+                  "childs": [
+                    {
+                      "nid": 15,
+                      "flags": 1048576,
+                      "strtype": "_codename/Codename",
+                      "strval": "secundario1Panel6",
+                      "InheritedType": 10
+                    }
+                  ],
+                  "InheritedType": 10
+                },
+                {
+                  "nid": 20,
+                  "strtype": "OBJECT/Layout",
+                  "InheritedType": 1
+                },
+                {
+                  "Flow": 0,
+                  "Wrap": true,
+                  "Reversed": false,
+                  "MainAlignment": 4,
+                  "CrossAlignment": 1,
+                  "TrackAlignment": 1,
+                  "LayoutType": 1,
+                  "nid": 30,
+                  "strtype": "OBJECT/Layout_type",
+                  "strval": "No_layout",
+                  "InheritedType": 13
+                },
+                {
+                  "nid": 40,
+                  "strtype": "OBJECT/Transform",
+                  "InheritedType": 1
+                },
+                {
+                  "nid": 50,
+                  "flags": 17,
+                  "strtype": "OBJECT/Position",
+                  "intarray": [
+                    76,
+                    37
+                  ],
+                  "InheritedType": 7
+                },
+                {
+                  "nid": 60,
+                  "flags": 17,
+                  "strtype": "OBJECT/Size",
+                  "intarray": [
+                    220,
+                    47
+                  ],
+                  "InheritedType": 7
+                },
+                {
+                  "nid": 70,
+                  "strtype": "OBJECT/Align",
+                  "strval": "TOP_LEFT",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 75,
+                  "strtype": "OBJECT/Extend_click_area",
+                  "InheritedType": 6
+                },
+                {
+                  "nid": 90,
+                  "flags": 1048576,
+                  "strtype": "OBJECT/Flags",
+                  "InheritedType": 1
+                },
+                {
+                  "nid": 100,
+                  "strtype": "PANEL/Hidden",
+                  "strval": "False",
+                  "InheritedType": 2
+                },
+                {
+                  "nid": 225,
+                  "flags": 1048576,
+                  "strtype": "OBJECT/Scrolling",
+                  "InheritedType": 1
+                },
+                {
+                  "nid": 230,
+                  "strtype": "OBJECT/Scrollable",
+                  "strval": "False",
+                  "InheritedType": 2
+                },
+                {
+                  "nid": 300,
+                  "strtype": "OBJECT/Scrollbar_mode",
+                  "strval": "AUTO",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 310,
+                  "strtype": "OBJECT/Scroll_direction",
+                  "strval": "ALL",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 314,
+                  "strtype": "OBJECT/Scroll_snap_x",
+                  "strval": "NONE",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 315,
+                  "strtype": "OBJECT/Scroll_snap_y",
+                  "strval": "NONE",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 320,
+                  "flags": 1048576,
+                  "strtype": "OBJECT/States",
+                  "InheritedType": 1
+                },
+                {
+                  "part": "lv.PART.MAIN",
+                  "childs": [
+                    {
+                      "nid": 10000,
+                      "strtype": "_style/StyleState",
+                      "strval": "DEFAULT",
+                      "childs": [
+                        {
+                          "nid": 10520,
+                          "flags": 4096,
+                          "strtype": "_style/Bg_Color",
+                          "intarray": [
+                            0,
+                            0,
+                            0,
+                            255
+                          ],
+                          "InheritedType": 7
+                        },
+                        {
+                          "nid": 10710,
+                          "flags": 4096,
+                          "strtype": "_style/Border_Color",
+                          "intarray": [
+                            0,
+                            0,
+                            0,
+                            255
+                          ],
+                          "InheritedType": 7
+                        }
+                      ],
+                      "InheritedType": 1
+                    }
+                  ],
+                  "nid": 1010,
+                  "strtype": "PANEL/Style_main",
+                  "strval": "lv.PART.MAIN, Rectangle, Pad, Text, Transform",
+                  "InheritedType": 11
+                },
+                {
+                  "part": "lv.PART.SCROLLBAR",
+                  "childs": [],
+                  "nid": 1020,
+                  "strtype": "PANEL/Style_scrollbar",
+                  "strval": "lv.PART.SCROLLBAR, Rectangle, Pad",
+                  "InheritedType": 11
+                }
+              ],
+              "saved_objtypeKey": "PANEL"
+            },
+            {
+              "guid": "GUID41642065-995681S15363543",
+              "children": [
+                {
+                  "guid": "GUID80998050-995680S15363543",
+                  "properties": [
+                    {
+                      "nid": 10,
+                      "strtype": "OBJECT/Name",
+                      "strval": "frecuenciaValD",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 20,
+                      "strtype": "OBJECT/Layout",
+                      "InheritedType": 1
+                    },
+                    {
+                      "Flow": 0,
+                      "Wrap": false,
+                      "Reversed": false,
+                      "MainAlignment": 0,
+                      "CrossAlignment": 0,
+                      "TrackAlignment": 0,
+                      "LayoutType": 0,
+                      "nid": 30,
+                      "strtype": "OBJECT/Layout_type",
+                      "strval": "No_layout",
+                      "InheritedType": 13
+                    },
+                    {
+                      "nid": 40,
+                      "strtype": "OBJECT/Transform",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 50,
+                      "flags": 17,
+                      "strtype": "OBJECT/Position",
+                      "intarray": [
+                        -187,
+                        40
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 60,
+                      "flags": 51,
+                      "strtype": "OBJECT/Size",
+                      "intarray": [
+                        1,
+                        1
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 70,
+                      "strtype": "OBJECT/Align",
+                      "strval": "CENTER",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 75,
+                      "strtype": "OBJECT/Extend_click_area",
+                      "InheritedType": 6
+                    },
+                    {
+                      "nid": 90,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Flags",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 100,
+                      "strtype": "LABEL/Hidden",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 110,
+                      "strtype": "OBJECT/Clickable",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 225,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Scrolling",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 300,
+                      "strtype": "OBJECT/Scrollbar_mode",
+                      "strval": "AUTO",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 310,
+                      "strtype": "OBJECT/Scroll_direction",
+                      "strval": "ALL",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 314,
+                      "strtype": "OBJECT/Scroll_snap_x",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 315,
+                      "strtype": "OBJECT/Scroll_snap_y",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 320,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/States",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1010,
+                      "strtype": "LABEL/Label",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1020,
+                      "strtype": "LABEL/Long_mode",
+                      "strval": "WRAP",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 1030,
+                      "strtype": "LABEL/Text",
+                      "strval": "121.4",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 1040,
+                      "strtype": "LABEL/Recolor",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "part": "lv.PART.MAIN",
+                      "childs": [
+                        {
+                          "nid": 10000,
+                          "strtype": "_style/StyleState",
+                          "strval": "DEFAULT",
+                          "childs": [
+                            {
+                              "nid": 10410,
+                              "flags": 4096,
+                              "strtype": "_style/Text_Color",
+                              "intarray": [
+                                128,
+                                128,
+                                128,
+                                255
+                              ],
+                              "InheritedType": 7
+                            }
+                          ],
+                          "InheritedType": 1
+                        }
+                      ],
+                      "nid": 1050,
+                      "strtype": "LABEL/Style_main",
+                      "strval": "lv.PART.MAIN, Text, Rectangle, Pad, Transform",
+                      "InheritedType": 11
+                    }
+                  ],
+                  "saved_objtypeKey": "LABEL"
+                },
+                {
+                  "guid": "GUID20809924-202408S115544",
+                  "properties": [
+                    {
+                      "nid": 10,
+                      "strtype": "OBJECT/Name",
+                      "strval": "DateVal5",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 20,
+                      "strtype": "OBJECT/Layout",
+                      "InheritedType": 1
+                    },
+                    {
+                      "Flow": 0,
+                      "Wrap": false,
+                      "Reversed": false,
+                      "MainAlignment": 0,
+                      "CrossAlignment": 0,
+                      "TrackAlignment": 0,
+                      "LayoutType": 0,
+                      "nid": 30,
+                      "strtype": "OBJECT/Layout_type",
+                      "strval": "No_layout",
+                      "InheritedType": 13
+                    },
+                    {
+                      "nid": 40,
+                      "strtype": "OBJECT/Transform",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 50,
+                      "flags": 17,
+                      "strtype": "OBJECT/Position",
+                      "intarray": [
+                        -187,
+                        40
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 60,
+                      "flags": 51,
+                      "strtype": "OBJECT/Size",
+                      "intarray": [
+                        1,
+                        1
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 70,
+                      "strtype": "OBJECT/Align",
+                      "strval": "CENTER",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 75,
+                      "strtype": "OBJECT/Extend_click_area",
+                      "InheritedType": 6
+                    },
+                    {
+                      "nid": 90,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Flags",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 100,
+                      "strtype": "LABEL/Hidden",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 110,
+                      "strtype": "OBJECT/Clickable",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 225,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Scrolling",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 300,
+                      "strtype": "OBJECT/Scrollbar_mode",
+                      "strval": "AUTO",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 310,
+                      "strtype": "OBJECT/Scroll_direction",
+                      "strval": "ALL",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 314,
+                      "strtype": "OBJECT/Scroll_snap_x",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 315,
+                      "strtype": "OBJECT/Scroll_snap_y",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 320,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/States",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1010,
+                      "strtype": "LABEL/Label",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1020,
+                      "strtype": "LABEL/Long_mode",
+                      "strval": "WRAP",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 1030,
+                      "strtype": "LABEL/Text",
+                      "strval": "Hz",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 1040,
+                      "strtype": "LABEL/Recolor",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "part": "lv.PART.MAIN",
+                      "childs": [
+                        {
+                          "nid": 10000,
+                          "strtype": "_style/StyleState",
+                          "strval": "DEFAULT",
+                          "childs": [
+                            {
+                              "nid": 10410,
+                              "flags": 4096,
+                              "strtype": "_style/Text_Color",
+                              "intarray": [
+                                128,
+                                128,
+                                128,
+                                255
+                              ],
+                              "InheritedType": 7
+                            }
+                          ],
+                          "InheritedType": 1
+                        }
+                      ],
+                      "nid": 1050,
+                      "strtype": "LABEL/Style_main",
+                      "strval": "lv.PART.MAIN, Text, Rectangle, Pad, Transform",
+                      "InheritedType": 11
+                    }
+                  ],
+                  "saved_objtypeKey": "LABEL"
+                }
+              ],
+              "properties": [
+                {
+                  "nid": 10,
+                  "strtype": "OBJECT/Name",
+                  "strval": "secundario1Panel3",
+                  "InheritedType": 10
+                },
+                {
+                  "nid": 20,
+                  "strtype": "OBJECT/Layout",
+                  "InheritedType": 1
+                },
+                {
+                  "Flow": 0,
+                  "Wrap": false,
+                  "Reversed": false,
+                  "MainAlignment": 1,
+                  "CrossAlignment": 1,
+                  "TrackAlignment": 1,
+                  "LayoutType": 1,
+                  "nid": 30,
+                  "strtype": "OBJECT/Layout_type",
+                  "strval": "No_layout",
+                  "InheritedType": 13
+                },
+                {
+                  "nid": 40,
+                  "strtype": "OBJECT/Transform",
+                  "InheritedType": 1
+                },
+                {
+                  "nid": 50,
+                  "flags": 17,
+                  "strtype": "OBJECT/Position",
+                  "intarray": [
+                    76,
+                    37
+                  ],
+                  "InheritedType": 7
+                },
+                {
+                  "nid": 60,
+                  "flags": 17,
+                  "strtype": "OBJECT/Size",
+                  "intarray": [
+                    151,
+                    30
+                  ],
+                  "InheritedType": 7
+                },
+                {
+                  "nid": 70,
+                  "strtype": "OBJECT/Align",
+                  "strval": "TOP_LEFT",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 75,
+                  "strtype": "OBJECT/Extend_click_area",
+                  "InheritedType": 6
+                },
+                {
+                  "nid": 90,
+                  "strtype": "OBJECT/Flags",
+                  "InheritedType": 1
+                },
+                {
+                  "nid": 100,
+                  "strtype": "PANEL/Hidden",
+                  "strval": "False",
+                  "InheritedType": 2
+                },
+                {
+                  "nid": 225,
+                  "flags": 1048576,
+                  "strtype": "OBJECT/Scrolling",
+                  "InheritedType": 1
+                },
+                {
+                  "nid": 230,
+                  "strtype": "OBJECT/Scrollable",
+                  "strval": "False",
+                  "InheritedType": 2
+                },
+                {
+                  "nid": 300,
+                  "strtype": "OBJECT/Scrollbar_mode",
+                  "strval": "AUTO",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 310,
+                  "strtype": "OBJECT/Scroll_direction",
+                  "strval": "ALL",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 314,
+                  "strtype": "OBJECT/Scroll_snap_x",
+                  "strval": "NONE",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 315,
+                  "strtype": "OBJECT/Scroll_snap_y",
+                  "strval": "NONE",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 320,
+                  "flags": 1048576,
+                  "strtype": "OBJECT/States",
+                  "InheritedType": 1
+                },
+                {
+                  "part": "lv.PART.MAIN",
+                  "childs": [
+                    {
+                      "nid": 10000,
+                      "strtype": "_style/StyleState",
+                      "strval": "DEFAULT",
+                      "childs": [
+                        {
+                          "nid": 10520,
+                          "flags": 4096,
+                          "strtype": "_style/Bg_Color",
+                          "intarray": [
+                            0,
+                            0,
+                            0,
+                            255
+                          ],
+                          "InheritedType": 7
+                        },
+                        {
+                          "nid": 10710,
+                          "flags": 4096,
+                          "strtype": "_style/Border_Color",
+                          "intarray": [
+                            0,
+                            0,
+                            0,
+                            255
+                          ],
+                          "InheritedType": 7
+                        }
+                      ],
+                      "InheritedType": 1
+                    }
+                  ],
+                  "nid": 1010,
+                  "strtype": "PANEL/Style_main",
+                  "strval": "lv.PART.MAIN, Rectangle, Pad, Text, Transform",
+                  "InheritedType": 11
+                },
+                {
+                  "part": "lv.PART.SCROLLBAR",
+                  "childs": [],
+                  "nid": 1020,
+                  "strtype": "PANEL/Style_scrollbar",
+                  "strval": "lv.PART.SCROLLBAR, Rectangle, Pad",
+                  "InheritedType": 11
+                }
+              ],
+              "saved_objtypeKey": "PANEL"
+            }
+          ],
+          "properties": [
+            {
+              "nid": 10,
+              "strtype": "OBJECT/Name",
+              "strval": "valoresPanelVoltaje3",
+              "InheritedType": 10
+            },
+            {
+              "nid": 20,
+              "strtype": "OBJECT/Layout",
+              "InheritedType": 1
+            },
+            {
+              "Flow": 1,
+              "Wrap": false,
+              "Reversed": false,
+              "MainAlignment": 1,
+              "CrossAlignment": 1,
+              "TrackAlignment": 1,
+              "LayoutType": 1,
+              "nid": 30,
+              "strtype": "OBJECT/Layout_type",
+              "strval": "No_layout",
+              "InheritedType": 13
+            },
+            {
+              "nid": 40,
+              "strtype": "OBJECT/Transform",
+              "InheritedType": 1
+            },
+            {
+              "nid": 50,
+              "flags": 17,
+              "strtype": "OBJECT/Position",
+              "intarray": [
+                244,
+                40
+              ],
+              "InheritedType": 7
+            },
+            {
+              "nid": 60,
+              "flags": 22,
+              "strtype": "OBJECT/Size",
+              "intarray": [
+                1,
+                148
+              ],
+              "InheritedType": 7
+            },
+            {
+              "nid": 70,
+              "strtype": "OBJECT/Align",
+              "strval": "CENTER",
+              "InheritedType": 3
+            },
+            {
+              "nid": 75,
+              "strtype": "OBJECT/Extend_click_area",
+              "InheritedType": 6
+            },
+            {
+              "nid": 90,
+              "flags": 1048576,
+              "strtype": "OBJECT/Flags",
+              "InheritedType": 1
+            },
+            {
+              "nid": 100,
+              "strtype": "PANEL/Hidden",
+              "strval": "False",
+              "InheritedType": 2
+            },
+            {
+              "nid": 225,
+              "flags": 1048576,
+              "strtype": "OBJECT/Scrolling",
+              "InheritedType": 1
+            },
+            {
+              "nid": 230,
+              "strtype": "OBJECT/Scrollable",
+              "strval": "False",
+              "InheritedType": 2
+            },
+            {
+              "nid": 300,
+              "strtype": "OBJECT/Scrollbar_mode",
+              "strval": "AUTO",
+              "InheritedType": 3
+            },
+            {
+              "nid": 310,
+              "strtype": "OBJECT/Scroll_direction",
+              "strval": "ALL",
+              "InheritedType": 3
+            },
+            {
+              "nid": 314,
+              "strtype": "OBJECT/Scroll_snap_x",
+              "strval": "NONE",
+              "InheritedType": 3
+            },
+            {
+              "nid": 315,
+              "strtype": "OBJECT/Scroll_snap_y",
+              "strval": "NONE",
+              "InheritedType": 3
+            },
+            {
+              "nid": 320,
+              "flags": 1048576,
+              "strtype": "OBJECT/States",
+              "InheritedType": 1
+            },
+            {
+              "part": "lv.PART.MAIN",
+              "childs": [
+                {
+                  "nid": 10000,
+                  "strtype": "_style/StyleState",
+                  "strval": "DEFAULT",
+                  "childs": [
+                    {
+                      "nid": 10520,
+                      "flags": 4096,
+                      "strtype": "_style/Bg_Color",
+                      "intarray": [
+                        0,
+                        0,
+                        0,
+                        255
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 10710,
+                      "flags": 4096,
+                      "strtype": "_style/Border_Color",
+                      "intarray": [
+                        0,
+                        0,
+                        0,
+                        255
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 10810,
+                      "flags": 4096,
+                      "strtype": "_style/Outline_Color",
+                      "intarray": [
+                        0,
+                        0,
+                        0,
+                        255
+                      ],
+                      "InheritedType": 7
+                    }
+                  ],
+                  "InheritedType": 1
+                }
+              ],
+              "nid": 1010,
+              "strtype": "PANEL/Style_main",
+              "strval": "lv.PART.MAIN, Rectangle, Pad, Text, Transform",
+              "InheritedType": 11
+            },
+            {
+              "part": "lv.PART.SCROLLBAR",
+              "childs": [],
+              "nid": 1020,
+              "strtype": "PANEL/Style_scrollbar",
+              "strval": "lv.PART.SCROLLBAR, Rectangle, Pad",
+              "InheritedType": 11
+            }
+          ],
+          "saved_objtypeKey": "PANEL"
+        },
+        {
+          "guid": "GUID20927552-202344S782543",
+          "children": [
+            {
+              "guid": "GUID35253640-202341S779543",
+              "children": [
+                {
+                  "guid": "GUID29568475-202339S779543",
+                  "properties": [
+                    {
+                      "nid": 10,
+                      "strtype": "OBJECT/Name",
+                      "strval": "CorrienteValD",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 20,
+                      "strtype": "OBJECT/Layout",
+                      "InheritedType": 1
+                    },
+                    {
+                      "Flow": 0,
+                      "Wrap": false,
+                      "Reversed": false,
+                      "MainAlignment": 0,
+                      "CrossAlignment": 0,
+                      "TrackAlignment": 0,
+                      "LayoutType": 0,
+                      "nid": 30,
+                      "strtype": "OBJECT/Layout_type",
+                      "strval": "No_layout",
+                      "InheritedType": 13
+                    },
+                    {
+                      "nid": 40,
+                      "strtype": "OBJECT/Transform",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 50,
+                      "flags": 17,
+                      "strtype": "OBJECT/Position",
+                      "intarray": [
+                        292,
+                        -52
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 60,
+                      "flags": 17,
+                      "strtype": "OBJECT/Size",
+                      "intarray": [
+                        118,
+                        43
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 70,
+                      "strtype": "OBJECT/Align",
+                      "strval": "CENTER",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 75,
+                      "strtype": "OBJECT/Extend_click_area",
+                      "InheritedType": 6
+                    },
+                    {
+                      "nid": 90,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Flags",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 100,
+                      "strtype": "LABEL/Hidden",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 110,
+                      "strtype": "OBJECT/Clickable",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 225,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Scrolling",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 300,
+                      "strtype": "OBJECT/Scrollbar_mode",
+                      "strval": "AUTO",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 310,
+                      "strtype": "OBJECT/Scroll_direction",
+                      "strval": "ALL",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 314,
+                      "strtype": "OBJECT/Scroll_snap_x",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 315,
+                      "strtype": "OBJECT/Scroll_snap_y",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 320,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/States",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1010,
+                      "strtype": "LABEL/Label",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1020,
+                      "strtype": "LABEL/Long_mode",
+                      "strval": "WRAP",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 1030,
+                      "strtype": "LABEL/Text",
+                      "strval": "4.21",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 1040,
+                      "strtype": "LABEL/Recolor",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "part": "lv.PART.MAIN",
+                      "childs": [
+                        {
+                          "nid": 10000,
+                          "strtype": "_style/StyleState",
+                          "strval": "DEFAULT",
+                          "childs": [
+                            {
+                              "nid": 10410,
+                              "flags": 4096,
+                              "strtype": "_style/Text_Color",
+                              "strval": "Corriente",
+                              "integer": 1000253,
+                              "intarray": [
+                                118,
+                                255,
+                                3,
+                                255
+                              ],
+                              "InheritedType": 7
+                            },
+                            {
+                              "nid": 10450,
+                              "strtype": "_style/Text_Font",
+                              "strval": "LecturaS48",
+                              "InheritedType": 3
+                            }
+                          ],
+                          "InheritedType": 1
+                        }
+                      ],
+                      "nid": 1050,
+                      "strtype": "LABEL/Style_main",
+                      "strval": "lv.PART.MAIN, Text, Rectangle, Pad, Transform",
+                      "InheritedType": 11
+                    }
+                  ],
+                  "saved_objtypeKey": "LABEL"
+                },
+                {
+                  "guid": "GUID41128108-202340S779543",
+                  "properties": [
+                    {
+                      "nid": 10,
+                      "strtype": "OBJECT/Name",
+                      "strval": "PotenciaLabel1",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 20,
+                      "strtype": "OBJECT/Layout",
+                      "InheritedType": 1
+                    },
+                    {
+                      "Flow": 1,
+                      "Wrap": false,
+                      "Reversed": false,
+                      "MainAlignment": 0,
+                      "CrossAlignment": 1,
+                      "TrackAlignment": 0,
+                      "LayoutType": 1,
+                      "nid": 30,
+                      "strtype": "OBJECT/Layout_type",
+                      "strval": "No_layout",
+                      "InheritedType": 13
+                    },
+                    {
+                      "nid": 40,
+                      "strtype": "OBJECT/Transform",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 50,
+                      "flags": 17,
+                      "strtype": "OBJECT/Position",
+                      "intarray": [
+                        427,
+                        -95
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 60,
+                      "flags": 51,
+                      "strtype": "OBJECT/Size",
+                      "intarray": [
+                        1,
+                        1
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 70,
+                      "strtype": "OBJECT/Align",
+                      "strval": "CENTER",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 75,
+                      "strtype": "OBJECT/Extend_click_area",
+                      "InheritedType": 6
+                    },
+                    {
+                      "nid": 90,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Flags",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 100,
+                      "strtype": "LABEL/Hidden",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 110,
+                      "strtype": "OBJECT/Clickable",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 225,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Scrolling",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 300,
+                      "strtype": "OBJECT/Scrollbar_mode",
+                      "strval": "AUTO",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 310,
+                      "strtype": "OBJECT/Scroll_direction",
+                      "strval": "ALL",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 314,
+                      "strtype": "OBJECT/Scroll_snap_x",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 315,
+                      "strtype": "OBJECT/Scroll_snap_y",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 320,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/States",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1010,
+                      "strtype": "LABEL/Label",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1020,
+                      "strtype": "LABEL/Long_mode",
+                      "strval": "WRAP",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 1030,
+                      "strtype": "LABEL/Text",
+                      "strval": "A",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 1040,
+                      "strtype": "LABEL/Recolor",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "part": "lv.PART.MAIN",
+                      "childs": [
+                        {
+                          "nid": 10000,
+                          "strtype": "_style/StyleState",
+                          "strval": "DEFAULT",
+                          "childs": [
+                            {
+                              "nid": 10410,
+                              "flags": 4096,
+                              "strtype": "_style/Text_Color",
+                              "intarray": [
+                                176,
+                                176,
+                                176,
+                                255
+                              ],
+                              "InheritedType": 7
+                            },
+                            {
+                              "nid": 10450,
+                              "strtype": "_style/Text_Font",
+                              "strval": "Unidades",
+                              "InheritedType": 3
+                            }
+                          ],
+                          "InheritedType": 1
+                        }
+                      ],
+                      "nid": 1050,
+                      "strtype": "LABEL/Style_main",
+                      "strval": "lv.PART.MAIN, Text, Rectangle, Pad, Transform",
+                      "InheritedType": 11
+                    }
+                  ],
+                  "saved_objtypeKey": "LABEL"
+                }
+              ],
+              "properties": [
+                {
+                  "nid": 10,
+                  "strtype": "OBJECT/Name",
+                  "strval": "secundario1Panel2",
+                  "InheritedType": 10
+                },
+                {
+                  "nid": 20,
+                  "strtype": "OBJECT/Layout",
+                  "InheritedType": 1
+                },
+                {
+                  "Flow": 0,
+                  "Wrap": true,
+                  "Reversed": false,
+                  "MainAlignment": 4,
+                  "CrossAlignment": 1,
+                  "TrackAlignment": 1,
+                  "LayoutType": 1,
+                  "nid": 30,
+                  "strtype": "OBJECT/Layout_type",
+                  "strval": "No_layout",
+                  "InheritedType": 13
+                },
+                {
+                  "nid": 40,
+                  "strtype": "OBJECT/Transform",
+                  "InheritedType": 1
+                },
+                {
+                  "nid": 50,
+                  "flags": 17,
+                  "strtype": "OBJECT/Position",
+                  "intarray": [
+                    76,
+                    37
+                  ],
+                  "InheritedType": 7
+                },
+                {
+                  "nid": 60,
+                  "flags": 17,
+                  "strtype": "OBJECT/Size",
+                  "intarray": [
+                    220,
+                    47
+                  ],
+                  "InheritedType": 7
+                },
+                {
+                  "nid": 70,
+                  "strtype": "OBJECT/Align",
+                  "strval": "CENTER",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 75,
+                  "strtype": "OBJECT/Extend_click_area",
+                  "InheritedType": 6
+                },
+                {
+                  "nid": 90,
+                  "strtype": "OBJECT/Flags",
+                  "InheritedType": 1
+                },
+                {
+                  "nid": 100,
+                  "strtype": "PANEL/Hidden",
+                  "strval": "False",
+                  "InheritedType": 2
+                },
+                {
+                  "nid": 225,
+                  "flags": 1048576,
+                  "strtype": "OBJECT/Scrolling",
+                  "InheritedType": 1
+                },
+                {
+                  "nid": 230,
+                  "strtype": "OBJECT/Scrollable",
+                  "strval": "False",
+                  "InheritedType": 2
+                },
+                {
+                  "nid": 300,
+                  "strtype": "OBJECT/Scrollbar_mode",
+                  "strval": "AUTO",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 310,
+                  "strtype": "OBJECT/Scroll_direction",
+                  "strval": "ALL",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 314,
+                  "strtype": "OBJECT/Scroll_snap_x",
+                  "strval": "NONE",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 315,
+                  "strtype": "OBJECT/Scroll_snap_y",
+                  "strval": "NONE",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 320,
+                  "flags": 1048576,
+                  "strtype": "OBJECT/States",
+                  "InheritedType": 1
+                },
+                {
+                  "part": "lv.PART.MAIN",
+                  "childs": [
+                    {
+                      "nid": 10000,
+                      "strtype": "_style/StyleState",
+                      "strval": "DEFAULT",
+                      "childs": [
+                        {
+                          "nid": 10520,
+                          "flags": 4096,
+                          "strtype": "_style/Bg_Color",
+                          "intarray": [
+                            0,
+                            0,
+                            0,
+                            255
+                          ],
+                          "InheritedType": 7
+                        },
+                        {
+                          "nid": 10710,
+                          "flags": 4096,
+                          "strtype": "_style/Border_Color",
+                          "intarray": [
+                            0,
+                            0,
+                            0,
+                            255
+                          ],
+                          "InheritedType": 7
+                        }
+                      ],
+                      "InheritedType": 1
+                    }
+                  ],
+                  "nid": 1010,
+                  "strtype": "PANEL/Style_main",
+                  "strval": "lv.PART.MAIN, Rectangle, Pad, Text, Transform",
+                  "InheritedType": 11
+                },
+                {
+                  "part": "lv.PART.SCROLLBAR",
+                  "childs": [],
+                  "nid": 1020,
+                  "strtype": "PANEL/Style_scrollbar",
+                  "strval": "lv.PART.SCROLLBAR, Rectangle, Pad",
+                  "InheritedType": 11
+                }
+              ],
+              "saved_objtypeKey": "PANEL"
+            },
+            {
+              "guid": "GUID92428632-202343S782543",
+              "children": [
+                {
+                  "guid": "GUID78446441-202342S781543",
+                  "properties": [
+                    {
+                      "nid": 10,
+                      "strtype": "OBJECT/Name",
+                      "strval": "pactivaValD",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 20,
+                      "strtype": "OBJECT/Layout",
+                      "InheritedType": 1
+                    },
+                    {
+                      "Flow": 0,
+                      "Wrap": false,
+                      "Reversed": false,
+                      "MainAlignment": 0,
+                      "CrossAlignment": 0,
+                      "TrackAlignment": 0,
+                      "LayoutType": 0,
+                      "nid": 30,
+                      "strtype": "OBJECT/Layout_type",
+                      "strval": "No_layout",
+                      "InheritedType": 13
+                    },
+                    {
+                      "nid": 40,
+                      "strtype": "OBJECT/Transform",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 50,
+                      "flags": 17,
+                      "strtype": "OBJECT/Position",
+                      "intarray": [
+                        -187,
+                        40
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 60,
+                      "flags": 51,
+                      "strtype": "OBJECT/Size",
+                      "intarray": [
+                        1,
+                        1
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 70,
+                      "strtype": "OBJECT/Align",
+                      "strval": "CENTER",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 75,
+                      "strtype": "OBJECT/Extend_click_area",
+                      "InheritedType": 6
+                    },
+                    {
+                      "nid": 90,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Flags",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 100,
+                      "strtype": "LABEL/Hidden",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 110,
+                      "strtype": "OBJECT/Clickable",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 225,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Scrolling",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 300,
+                      "strtype": "OBJECT/Scrollbar_mode",
+                      "strval": "AUTO",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 310,
+                      "strtype": "OBJECT/Scroll_direction",
+                      "strval": "ALL",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 314,
+                      "strtype": "OBJECT/Scroll_snap_x",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 315,
+                      "strtype": "OBJECT/Scroll_snap_y",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 320,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/States",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1010,
+                      "strtype": "LABEL/Label",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1020,
+                      "strtype": "LABEL/Long_mode",
+                      "strval": "WRAP",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 1030,
+                      "strtype": "LABEL/Text",
+                      "strval": "510",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 1040,
+                      "strtype": "LABEL/Recolor",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "part": "lv.PART.MAIN",
+                      "childs": [
+                        {
+                          "nid": 10000,
+                          "strtype": "_style/StyleState",
+                          "strval": "DEFAULT",
+                          "childs": [
+                            {
+                              "nid": 10410,
+                              "flags": 4096,
+                              "strtype": "_style/Text_Color",
+                              "intarray": [
+                                128,
+                                128,
+                                128,
+                                255
+                              ],
+                              "InheritedType": 7
+                            }
+                          ],
+                          "InheritedType": 1
+                        }
+                      ],
+                      "nid": 1050,
+                      "strtype": "LABEL/Style_main",
+                      "strval": "lv.PART.MAIN, Text, Rectangle, Pad, Transform",
+                      "InheritedType": 11
+                    }
+                  ],
+                  "saved_objtypeKey": "LABEL"
+                },
+                {
+                  "guid": "GUID3616080-202409S14802544",
+                  "properties": [
+                    {
+                      "nid": 10,
+                      "strtype": "OBJECT/Name",
+                      "strval": "DateVal6",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 20,
+                      "strtype": "OBJECT/Layout",
+                      "InheritedType": 1
+                    },
+                    {
+                      "Flow": 0,
+                      "Wrap": false,
+                      "Reversed": false,
+                      "MainAlignment": 0,
+                      "CrossAlignment": 0,
+                      "TrackAlignment": 0,
+                      "LayoutType": 0,
+                      "nid": 30,
+                      "strtype": "OBJECT/Layout_type",
+                      "strval": "No_layout",
+                      "InheritedType": 13
+                    },
+                    {
+                      "nid": 40,
+                      "strtype": "OBJECT/Transform",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 50,
+                      "flags": 17,
+                      "strtype": "OBJECT/Position",
+                      "intarray": [
+                        -187,
+                        40
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 60,
+                      "flags": 51,
+                      "strtype": "OBJECT/Size",
+                      "intarray": [
+                        1,
+                        1
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 70,
+                      "strtype": "OBJECT/Align",
+                      "strval": "CENTER",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 75,
+                      "strtype": "OBJECT/Extend_click_area",
+                      "InheritedType": 6
+                    },
+                    {
+                      "nid": 90,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Flags",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 100,
+                      "strtype": "LABEL/Hidden",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 110,
+                      "strtype": "OBJECT/Clickable",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 225,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Scrolling",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 300,
+                      "strtype": "OBJECT/Scrollbar_mode",
+                      "strval": "AUTO",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 310,
+                      "strtype": "OBJECT/Scroll_direction",
+                      "strval": "ALL",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 314,
+                      "strtype": "OBJECT/Scroll_snap_x",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 315,
+                      "strtype": "OBJECT/Scroll_snap_y",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 320,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/States",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1010,
+                      "strtype": "LABEL/Label",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1020,
+                      "strtype": "LABEL/Long_mode",
+                      "strval": "WRAP",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 1030,
+                      "strtype": "LABEL/Text",
+                      "strval": "W",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 1040,
+                      "strtype": "LABEL/Recolor",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "part": "lv.PART.MAIN",
+                      "childs": [
+                        {
+                          "nid": 10000,
+                          "strtype": "_style/StyleState",
+                          "strval": "DEFAULT",
+                          "childs": [
+                            {
+                              "nid": 10410,
+                              "flags": 4096,
+                              "strtype": "_style/Text_Color",
+                              "intarray": [
+                                128,
+                                128,
+                                128,
+                                255
+                              ],
+                              "InheritedType": 7
+                            }
+                          ],
+                          "InheritedType": 1
+                        }
+                      ],
+                      "nid": 1050,
+                      "strtype": "LABEL/Style_main",
+                      "strval": "lv.PART.MAIN, Text, Rectangle, Pad, Transform",
+                      "InheritedType": 11
+                    }
+                  ],
+                  "saved_objtypeKey": "LABEL"
+                }
+              ],
+              "properties": [
+                {
+                  "nid": 10,
+                  "strtype": "OBJECT/Name",
+                  "strval": "secundario1Panel4",
+                  "InheritedType": 10
+                },
+                {
+                  "nid": 20,
+                  "strtype": "OBJECT/Layout",
+                  "InheritedType": 1
+                },
+                {
+                  "Flow": 0,
+                  "Wrap": false,
+                  "Reversed": false,
+                  "MainAlignment": 1,
+                  "CrossAlignment": 1,
+                  "TrackAlignment": 1,
+                  "LayoutType": 1,
+                  "nid": 30,
+                  "strtype": "OBJECT/Layout_type",
+                  "strval": "No_layout",
+                  "InheritedType": 13
+                },
+                {
+                  "nid": 40,
+                  "strtype": "OBJECT/Transform",
+                  "InheritedType": 1
+                },
+                {
+                  "nid": 50,
+                  "flags": 17,
+                  "strtype": "OBJECT/Position",
+                  "intarray": [
+                    76,
+                    37
+                  ],
+                  "InheritedType": 7
+                },
+                {
+                  "nid": 60,
+                  "flags": 17,
+                  "strtype": "OBJECT/Size",
+                  "intarray": [
+                    151,
+                    30
+                  ],
+                  "InheritedType": 7
+                },
+                {
+                  "nid": 70,
+                  "strtype": "OBJECT/Align",
+                  "strval": "TOP_LEFT",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 75,
+                  "strtype": "OBJECT/Extend_click_area",
+                  "InheritedType": 6
+                },
+                {
+                  "nid": 90,
+                  "flags": 1048576,
+                  "strtype": "OBJECT/Flags",
+                  "InheritedType": 1
+                },
+                {
+                  "nid": 100,
+                  "strtype": "PANEL/Hidden",
+                  "strval": "False",
+                  "InheritedType": 2
+                },
+                {
+                  "nid": 225,
+                  "flags": 1048576,
+                  "strtype": "OBJECT/Scrolling",
+                  "InheritedType": 1
+                },
+                {
+                  "nid": 230,
+                  "strtype": "OBJECT/Scrollable",
+                  "strval": "False",
+                  "InheritedType": 2
+                },
+                {
+                  "nid": 300,
+                  "strtype": "OBJECT/Scrollbar_mode",
+                  "strval": "AUTO",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 310,
+                  "strtype": "OBJECT/Scroll_direction",
+                  "strval": "ALL",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 314,
+                  "strtype": "OBJECT/Scroll_snap_x",
+                  "strval": "NONE",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 315,
+                  "strtype": "OBJECT/Scroll_snap_y",
+                  "strval": "NONE",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 320,
+                  "flags": 1048576,
+                  "strtype": "OBJECT/States",
+                  "InheritedType": 1
+                },
+                {
+                  "part": "lv.PART.MAIN",
+                  "childs": [
+                    {
+                      "nid": 10000,
+                      "strtype": "_style/StyleState",
+                      "strval": "DEFAULT",
+                      "childs": [
+                        {
+                          "nid": 10520,
+                          "flags": 4096,
+                          "strtype": "_style/Bg_Color",
+                          "intarray": [
+                            0,
+                            0,
+                            0,
+                            255
+                          ],
+                          "InheritedType": 7
+                        },
+                        {
+                          "nid": 10710,
+                          "flags": 4096,
+                          "strtype": "_style/Border_Color",
+                          "intarray": [
+                            0,
+                            0,
+                            0,
+                            255
+                          ],
+                          "InheritedType": 7
+                        }
+                      ],
+                      "InheritedType": 1
+                    }
+                  ],
+                  "nid": 1010,
+                  "strtype": "PANEL/Style_main",
+                  "strval": "lv.PART.MAIN, Rectangle, Pad, Text, Transform",
+                  "InheritedType": 11
+                },
+                {
+                  "part": "lv.PART.SCROLLBAR",
+                  "childs": [],
+                  "nid": 1020,
+                  "strtype": "PANEL/Style_scrollbar",
+                  "strval": "lv.PART.SCROLLBAR, Rectangle, Pad",
+                  "InheritedType": 11
+                }
+              ],
+              "saved_objtypeKey": "PANEL"
+            }
+          ],
+          "properties": [
+            {
+              "nid": 10,
+              "strtype": "OBJECT/Name",
+              "strval": "valoresPanelVoltaje1",
+              "InheritedType": 10
+            },
+            {
+              "nid": 20,
+              "strtype": "OBJECT/Layout",
+              "InheritedType": 1
+            },
+            {
+              "Flow": 1,
+              "Wrap": false,
+              "Reversed": false,
+              "MainAlignment": 1,
+              "CrossAlignment": 1,
+              "TrackAlignment": 1,
+              "LayoutType": 1,
+              "nid": 30,
+              "strtype": "OBJECT/Layout_type",
+              "strval": "No_layout",
+              "InheritedType": 13
+            },
+            {
+              "nid": 40,
+              "strtype": "OBJECT/Transform",
+              "InheritedType": 1
+            },
+            {
+              "nid": 50,
+              "flags": 17,
+              "strtype": "OBJECT/Position",
+              "intarray": [
+                244,
+                40
+              ],
+              "InheritedType": 7
+            },
+            {
+              "nid": 60,
+              "flags": 22,
+              "strtype": "OBJECT/Size",
+              "intarray": [
+                1,
+                148
+              ],
+              "InheritedType": 7
+            },
+            {
+              "nid": 70,
+              "strtype": "OBJECT/Align",
+              "strval": "CENTER",
+              "InheritedType": 3
+            },
+            {
+              "nid": 75,
+              "strtype": "OBJECT/Extend_click_area",
+              "InheritedType": 6
+            },
+            {
+              "nid": 90,
+              "flags": 1048576,
+              "strtype": "OBJECT/Flags",
+              "InheritedType": 1
+            },
+            {
+              "nid": 100,
+              "strtype": "PANEL/Hidden",
+              "strval": "False",
+              "InheritedType": 2
+            },
+            {
+              "nid": 225,
+              "flags": 1048576,
+              "strtype": "OBJECT/Scrolling",
+              "InheritedType": 1
+            },
+            {
+              "nid": 230,
+              "strtype": "OBJECT/Scrollable",
+              "strval": "False",
+              "InheritedType": 2
+            },
+            {
+              "nid": 300,
+              "strtype": "OBJECT/Scrollbar_mode",
+              "strval": "AUTO",
+              "InheritedType": 3
+            },
+            {
+              "nid": 310,
+              "strtype": "OBJECT/Scroll_direction",
+              "strval": "ALL",
+              "InheritedType": 3
+            },
+            {
+              "nid": 314,
+              "strtype": "OBJECT/Scroll_snap_x",
+              "strval": "NONE",
+              "InheritedType": 3
+            },
+            {
+              "nid": 315,
+              "strtype": "OBJECT/Scroll_snap_y",
+              "strval": "NONE",
+              "InheritedType": 3
+            },
+            {
+              "nid": 320,
+              "flags": 1048576,
+              "strtype": "OBJECT/States",
+              "InheritedType": 1
+            },
+            {
+              "part": "lv.PART.MAIN",
+              "childs": [
+                {
+                  "nid": 10000,
+                  "strtype": "_style/StyleState",
+                  "strval": "DEFAULT",
+                  "childs": [
+                    {
+                      "nid": 10520,
+                      "flags": 4096,
+                      "strtype": "_style/Bg_Color",
+                      "intarray": [
+                        0,
+                        0,
+                        0,
+                        255
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 10710,
+                      "flags": 4096,
+                      "strtype": "_style/Border_Color",
+                      "intarray": [
+                        0,
+                        0,
+                        0,
+                        255
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 10810,
+                      "flags": 4096,
+                      "strtype": "_style/Outline_Color",
+                      "intarray": [
+                        0,
+                        0,
+                        0,
+                        255
+                      ],
+                      "InheritedType": 7
+                    }
+                  ],
+                  "InheritedType": 1
+                }
+              ],
+              "nid": 1010,
+              "strtype": "PANEL/Style_main",
+              "strval": "lv.PART.MAIN, Rectangle, Pad, Text, Transform",
+              "InheritedType": 11
+            },
+            {
+              "part": "lv.PART.SCROLLBAR",
+              "childs": [],
+              "nid": 1020,
+              "strtype": "PANEL/Style_scrollbar",
+              "strval": "lv.PART.SCROLLBAR, Rectangle, Pad",
+              "InheritedType": 11
+            }
+          ],
+          "saved_objtypeKey": "PANEL"
+        },
+        {
+          "guid": "GUID81463370-202350S3673543",
+          "children": [
+            {
+              "guid": "GUID7188682-202347S3672543",
+              "children": [
+                {
+                  "guid": "GUID91006294-202345S3671543",
+                  "properties": [
+                    {
+                      "nid": 10,
+                      "strtype": "OBJECT/Name",
+                      "strval": "PotenciaValD",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 20,
+                      "strtype": "OBJECT/Layout",
+                      "InheritedType": 1
+                    },
+                    {
+                      "Flow": 0,
+                      "Wrap": false,
+                      "Reversed": false,
+                      "MainAlignment": 0,
+                      "CrossAlignment": 0,
+                      "TrackAlignment": 0,
+                      "LayoutType": 0,
+                      "nid": 30,
+                      "strtype": "OBJECT/Layout_type",
+                      "strval": "No_layout",
+                      "InheritedType": 13
+                    },
+                    {
+                      "nid": 40,
+                      "strtype": "OBJECT/Transform",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 50,
+                      "flags": 17,
+                      "strtype": "OBJECT/Position",
+                      "intarray": [
+                        292,
+                        -52
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 60,
+                      "flags": 17,
+                      "strtype": "OBJECT/Size",
+                      "intarray": [
+                        123,
+                        43
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 70,
+                      "strtype": "OBJECT/Align",
+                      "strval": "CENTER",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 75,
+                      "strtype": "OBJECT/Extend_click_area",
+                      "InheritedType": 6
+                    },
+                    {
+                      "nid": 90,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Flags",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 100,
+                      "strtype": "LABEL/Hidden",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 110,
+                      "strtype": "OBJECT/Clickable",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 225,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Scrolling",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 300,
+                      "strtype": "OBJECT/Scrollbar_mode",
+                      "strval": "AUTO",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 310,
+                      "strtype": "OBJECT/Scroll_direction",
+                      "strval": "ALL",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 314,
+                      "strtype": "OBJECT/Scroll_snap_x",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 315,
+                      "strtype": "OBJECT/Scroll_snap_y",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 320,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/States",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1010,
+                      "strtype": "LABEL/Label",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1020,
+                      "strtype": "LABEL/Long_mode",
+                      "strval": "WRAP",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 1030,
+                      "strtype": "LABEL/Text",
+                      "strval": "0.98",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 1040,
+                      "strtype": "LABEL/Recolor",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "part": "lv.PART.MAIN",
+                      "childs": [
+                        {
+                          "nid": 10000,
+                          "strtype": "_style/StyleState",
+                          "strval": "DEFAULT",
+                          "childs": [
+                            {
+                              "nid": 10410,
+                              "flags": 4096,
+                              "strtype": "_style/Text_Color",
+                              "intarray": [
+                                176,
+                                176,
+                                176,
+                                255
+                              ],
+                              "InheritedType": 7
+                            },
+                            {
+                              "nid": 10450,
+                              "strtype": "_style/Text_Font",
+                              "strval": "LecturaS48",
+                              "InheritedType": 3
+                            }
+                          ],
+                          "InheritedType": 1
+                        }
+                      ],
+                      "nid": 1050,
+                      "strtype": "LABEL/Style_main",
+                      "strval": "lv.PART.MAIN, Text, Rectangle, Pad, Transform",
+                      "InheritedType": 11
+                    }
+                  ],
+                  "saved_objtypeKey": "LABEL"
+                },
+                {
+                  "guid": "GUID6401028-202346S3672543",
+                  "properties": [
+                    {
+                      "nid": 10,
+                      "strtype": "OBJECT/Name",
+                      "strval": "PotenciaLabel2",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 20,
+                      "strtype": "OBJECT/Layout",
+                      "InheritedType": 1
+                    },
+                    {
+                      "Flow": 1,
+                      "Wrap": false,
+                      "Reversed": false,
+                      "MainAlignment": 0,
+                      "CrossAlignment": 1,
+                      "TrackAlignment": 0,
+                      "LayoutType": 1,
+                      "nid": 30,
+                      "strtype": "OBJECT/Layout_type",
+                      "strval": "No_layout",
+                      "InheritedType": 13
+                    },
+                    {
+                      "nid": 40,
+                      "strtype": "OBJECT/Transform",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 50,
+                      "flags": 17,
+                      "strtype": "OBJECT/Position",
+                      "intarray": [
+                        427,
+                        -95
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 60,
+                      "flags": 51,
+                      "strtype": "OBJECT/Size",
+                      "intarray": [
+                        1,
+                        1
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 70,
+                      "strtype": "OBJECT/Align",
+                      "strval": "CENTER",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 75,
+                      "strtype": "OBJECT/Extend_click_area",
+                      "InheritedType": 6
+                    },
+                    {
+                      "nid": 90,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Flags",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 100,
+                      "strtype": "LABEL/Hidden",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 110,
+                      "strtype": "OBJECT/Clickable",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 225,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Scrolling",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 300,
+                      "strtype": "OBJECT/Scrollbar_mode",
+                      "strval": "AUTO",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 310,
+                      "strtype": "OBJECT/Scroll_direction",
+                      "strval": "ALL",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 314,
+                      "strtype": "OBJECT/Scroll_snap_x",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 315,
+                      "strtype": "OBJECT/Scroll_snap_y",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 320,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/States",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1010,
+                      "strtype": "LABEL/Label",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1020,
+                      "strtype": "LABEL/Long_mode",
+                      "strval": "WRAP",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 1030,
+                      "strtype": "LABEL/Text",
+                      "strval": "PF",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 1040,
+                      "strtype": "LABEL/Recolor",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "part": "lv.PART.MAIN",
+                      "childs": [
+                        {
+                          "nid": 10000,
+                          "strtype": "_style/StyleState",
+                          "strval": "DEFAULT",
+                          "childs": [
+                            {
+                              "nid": 10410,
+                              "flags": 4096,
+                              "strtype": "_style/Text_Color",
+                              "intarray": [
+                                176,
+                                176,
+                                176,
+                                255
+                              ],
+                              "InheritedType": 7
+                            },
+                            {
+                              "nid": 10450,
+                              "strtype": "_style/Text_Font",
+                              "strval": "Unidades",
+                              "InheritedType": 3
+                            }
+                          ],
+                          "InheritedType": 1
+                        }
+                      ],
+                      "nid": 1050,
+                      "strtype": "LABEL/Style_main",
+                      "strval": "lv.PART.MAIN, Text, Rectangle, Pad, Transform",
+                      "InheritedType": 11
+                    }
+                  ],
+                  "saved_objtypeKey": "LABEL"
+                }
+              ],
+              "properties": [
+                {
+                  "nid": 10,
+                  "strtype": "OBJECT/Name",
+                  "strval": "secundario1Panel5",
+                  "InheritedType": 10
+                },
+                {
+                  "nid": 20,
+                  "strtype": "OBJECT/Layout",
+                  "InheritedType": 1
+                },
+                {
+                  "Flow": 0,
+                  "Wrap": true,
+                  "Reversed": false,
+                  "MainAlignment": 4,
+                  "CrossAlignment": 1,
+                  "TrackAlignment": 1,
+                  "LayoutType": 1,
+                  "nid": 30,
+                  "strtype": "OBJECT/Layout_type",
+                  "strval": "No_layout",
+                  "InheritedType": 13
+                },
+                {
+                  "nid": 40,
+                  "strtype": "OBJECT/Transform",
+                  "InheritedType": 1
+                },
+                {
+                  "nid": 50,
+                  "flags": 17,
+                  "strtype": "OBJECT/Position",
+                  "intarray": [
+                    76,
+                    37
+                  ],
+                  "InheritedType": 7
+                },
+                {
+                  "nid": 60,
+                  "flags": 17,
+                  "strtype": "OBJECT/Size",
+                  "intarray": [
+                    220,
+                    47
+                  ],
+                  "InheritedType": 7
+                },
+                {
+                  "nid": 70,
+                  "strtype": "OBJECT/Align",
+                  "strval": "CENTER",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 75,
+                  "strtype": "OBJECT/Extend_click_area",
+                  "InheritedType": 6
+                },
+                {
+                  "nid": 90,
+                  "flags": 1048576,
+                  "strtype": "OBJECT/Flags",
+                  "InheritedType": 1
+                },
+                {
+                  "nid": 100,
+                  "strtype": "PANEL/Hidden",
+                  "strval": "False",
+                  "InheritedType": 2
+                },
+                {
+                  "nid": 225,
+                  "flags": 1048576,
+                  "strtype": "OBJECT/Scrolling",
+                  "InheritedType": 1
+                },
+                {
+                  "nid": 230,
+                  "strtype": "OBJECT/Scrollable",
+                  "strval": "False",
+                  "InheritedType": 2
+                },
+                {
+                  "nid": 300,
+                  "strtype": "OBJECT/Scrollbar_mode",
+                  "strval": "AUTO",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 310,
+                  "strtype": "OBJECT/Scroll_direction",
+                  "strval": "ALL",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 314,
+                  "strtype": "OBJECT/Scroll_snap_x",
+                  "strval": "NONE",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 315,
+                  "strtype": "OBJECT/Scroll_snap_y",
+                  "strval": "NONE",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 320,
+                  "flags": 1048576,
+                  "strtype": "OBJECT/States",
+                  "InheritedType": 1
+                },
+                {
+                  "part": "lv.PART.MAIN",
+                  "childs": [
+                    {
+                      "nid": 10000,
+                      "strtype": "_style/StyleState",
+                      "strval": "DEFAULT",
+                      "childs": [
+                        {
+                          "nid": 10520,
+                          "flags": 4096,
+                          "strtype": "_style/Bg_Color",
+                          "intarray": [
+                            0,
+                            0,
+                            0,
+                            255
+                          ],
+                          "InheritedType": 7
+                        },
+                        {
+                          "nid": 10710,
+                          "flags": 4096,
+                          "strtype": "_style/Border_Color",
+                          "intarray": [
+                            0,
+                            0,
+                            0,
+                            255
+                          ],
+                          "InheritedType": 7
+                        }
+                      ],
+                      "InheritedType": 1
+                    }
+                  ],
+                  "nid": 1010,
+                  "strtype": "PANEL/Style_main",
+                  "strval": "lv.PART.MAIN, Rectangle, Pad, Text, Transform",
+                  "InheritedType": 11
+                },
+                {
+                  "part": "lv.PART.SCROLLBAR",
+                  "childs": [],
+                  "nid": 1020,
+                  "strtype": "PANEL/Style_scrollbar",
+                  "strval": "lv.PART.SCROLLBAR, Rectangle, Pad",
+                  "InheritedType": 11
+                }
+              ],
+              "saved_objtypeKey": "PANEL"
+            },
+            {
+              "guid": "GUID32776299-202349S3673543",
+              "children": [
+                {
+                  "guid": "GUID4798175-202348S3673543",
+                  "properties": [
+                    {
+                      "nid": 10,
+                      "strtype": "OBJECT/Name",
+                      "strval": "DateVal3",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 20,
+                      "strtype": "OBJECT/Layout",
+                      "InheritedType": 1
+                    },
+                    {
+                      "Flow": 0,
+                      "Wrap": false,
+                      "Reversed": false,
+                      "MainAlignment": 0,
+                      "CrossAlignment": 0,
+                      "TrackAlignment": 0,
+                      "LayoutType": 0,
+                      "nid": 30,
+                      "strtype": "OBJECT/Layout_type",
+                      "strval": "No_layout",
+                      "InheritedType": 13
+                    },
+                    {
+                      "nid": 40,
+                      "strtype": "OBJECT/Transform",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 50,
+                      "flags": 17,
+                      "strtype": "OBJECT/Position",
+                      "intarray": [
+                        -187,
+                        40
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 60,
+                      "flags": 51,
+                      "strtype": "OBJECT/Size",
+                      "intarray": [
+                        1,
+                        1
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 70,
+                      "strtype": "OBJECT/Align",
+                      "strval": "CENTER",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 75,
+                      "strtype": "OBJECT/Extend_click_area",
+                      "InheritedType": 6
+                    },
+                    {
+                      "nid": 90,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Flags",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 100,
+                      "strtype": "LABEL/Hidden",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 110,
+                      "strtype": "OBJECT/Clickable",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 225,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Scrolling",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 300,
+                      "strtype": "OBJECT/Scrollbar_mode",
+                      "strval": "AUTO",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 310,
+                      "strtype": "OBJECT/Scroll_direction",
+                      "strval": "ALL",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 314,
+                      "strtype": "OBJECT/Scroll_snap_x",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 315,
+                      "strtype": "OBJECT/Scroll_snap_y",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 320,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/States",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1010,
+                      "strtype": "LABEL/Label",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1020,
+                      "strtype": "LABEL/Long_mode",
+                      "strval": "WRAP",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 1030,
+                      "strtype": "LABEL/Text",
+                      "strval": "(Coseno Φ)",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 1040,
+                      "strtype": "LABEL/Recolor",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "part": "lv.PART.MAIN",
+                      "childs": [
+                        {
+                          "nid": 10000,
+                          "strtype": "_style/StyleState",
+                          "strval": "DEFAULT",
+                          "childs": [
+                            {
+                              "nid": 10410,
+                              "flags": 4096,
+                              "strtype": "_style/Text_Color",
+                              "intarray": [
+                                128,
+                                128,
+                                128,
+                                255
+                              ],
+                              "InheritedType": 7
+                            }
+                          ],
+                          "InheritedType": 1
+                        }
+                      ],
+                      "nid": 1050,
+                      "strtype": "LABEL/Style_main",
+                      "strval": "lv.PART.MAIN, Text, Rectangle, Pad, Transform",
+                      "InheritedType": 11
+                    }
+                  ],
+                  "saved_objtypeKey": "LABEL"
+                }
+              ],
+              "properties": [
+                {
+                  "nid": 10,
+                  "strtype": "OBJECT/Name",
+                  "strval": "secundario1Panel7",
+                  "InheritedType": 10
+                },
+                {
+                  "nid": 20,
+                  "strtype": "OBJECT/Layout",
+                  "InheritedType": 1
+                },
+                {
+                  "Flow": 0,
+                  "Wrap": false,
+                  "Reversed": false,
+                  "MainAlignment": 1,
+                  "CrossAlignment": 1,
+                  "TrackAlignment": 1,
+                  "LayoutType": 1,
+                  "nid": 30,
+                  "strtype": "OBJECT/Layout_type",
+                  "strval": "No_layout",
+                  "InheritedType": 13
+                },
+                {
+                  "nid": 40,
+                  "strtype": "OBJECT/Transform",
+                  "InheritedType": 1
+                },
+                {
+                  "nid": 50,
+                  "flags": 17,
+                  "strtype": "OBJECT/Position",
+                  "intarray": [
+                    76,
+                    37
+                  ],
+                  "InheritedType": 7
+                },
+                {
+                  "nid": 60,
+                  "flags": 17,
+                  "strtype": "OBJECT/Size",
+                  "intarray": [
+                    151,
+                    30
+                  ],
+                  "InheritedType": 7
+                },
+                {
+                  "nid": 70,
+                  "strtype": "OBJECT/Align",
+                  "strval": "TOP_LEFT",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 75,
+                  "strtype": "OBJECT/Extend_click_area",
+                  "InheritedType": 6
+                },
+                {
+                  "nid": 90,
+                  "flags": 1048576,
+                  "strtype": "OBJECT/Flags",
+                  "InheritedType": 1
+                },
+                {
+                  "nid": 100,
+                  "strtype": "PANEL/Hidden",
+                  "strval": "False",
+                  "InheritedType": 2
+                },
+                {
+                  "nid": 225,
+                  "flags": 1048576,
+                  "strtype": "OBJECT/Scrolling",
+                  "InheritedType": 1
+                },
+                {
+                  "nid": 230,
+                  "strtype": "OBJECT/Scrollable",
+                  "strval": "False",
+                  "InheritedType": 2
+                },
+                {
+                  "nid": 300,
+                  "strtype": "OBJECT/Scrollbar_mode",
+                  "strval": "AUTO",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 310,
+                  "strtype": "OBJECT/Scroll_direction",
+                  "strval": "ALL",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 314,
+                  "strtype": "OBJECT/Scroll_snap_x",
+                  "strval": "NONE",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 315,
+                  "strtype": "OBJECT/Scroll_snap_y",
+                  "strval": "NONE",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 320,
+                  "flags": 1048576,
+                  "strtype": "OBJECT/States",
+                  "InheritedType": 1
+                },
+                {
+                  "part": "lv.PART.MAIN",
+                  "childs": [
+                    {
+                      "nid": 10000,
+                      "strtype": "_style/StyleState",
+                      "strval": "DEFAULT",
+                      "childs": [
+                        {
+                          "nid": 10520,
+                          "flags": 4096,
+                          "strtype": "_style/Bg_Color",
+                          "intarray": [
+                            0,
+                            0,
+                            0,
+                            255
+                          ],
+                          "InheritedType": 7
+                        },
+                        {
+                          "nid": 10710,
+                          "flags": 4096,
+                          "strtype": "_style/Border_Color",
+                          "intarray": [
+                            0,
+                            0,
+                            0,
+                            255
+                          ],
+                          "InheritedType": 7
+                        }
+                      ],
+                      "InheritedType": 1
+                    }
+                  ],
+                  "nid": 1010,
+                  "strtype": "PANEL/Style_main",
+                  "strval": "lv.PART.MAIN, Rectangle, Pad, Text, Transform",
+                  "InheritedType": 11
+                },
+                {
+                  "part": "lv.PART.SCROLLBAR",
+                  "childs": [],
+                  "nid": 1020,
+                  "strtype": "PANEL/Style_scrollbar",
+                  "strval": "lv.PART.SCROLLBAR, Rectangle, Pad",
+                  "InheritedType": 11
+                }
+              ],
+              "saved_objtypeKey": "PANEL"
+            }
+          ],
+          "properties": [
+            {
+              "nid": 10,
+              "strtype": "OBJECT/Name",
+              "strval": "valoresPanelVoltaje2",
+              "InheritedType": 10
+            },
+            {
+              "nid": 20,
+              "strtype": "OBJECT/Layout",
+              "InheritedType": 1
+            },
+            {
+              "Flow": 1,
+              "Wrap": false,
+              "Reversed": false,
+              "MainAlignment": 1,
+              "CrossAlignment": 1,
+              "TrackAlignment": 1,
+              "LayoutType": 1,
+              "nid": 30,
+              "strtype": "OBJECT/Layout_type",
+              "strval": "No_layout",
+              "InheritedType": 13
+            },
+            {
+              "nid": 40,
+              "strtype": "OBJECT/Transform",
+              "InheritedType": 1
+            },
+            {
+              "nid": 50,
+              "flags": 17,
+              "strtype": "OBJECT/Position",
+              "intarray": [
+                244,
+                40
+              ],
+              "InheritedType": 7
+            },
+            {
+              "nid": 60,
+              "flags": 22,
+              "strtype": "OBJECT/Size",
+              "intarray": [
+                1,
+                148
+              ],
+              "InheritedType": 7
+            },
+            {
+              "nid": 70,
+              "strtype": "OBJECT/Align",
+              "strval": "CENTER",
+              "InheritedType": 3
+            },
+            {
+              "nid": 75,
+              "strtype": "OBJECT/Extend_click_area",
+              "InheritedType": 6
+            },
+            {
+              "nid": 90,
+              "strtype": "OBJECT/Flags",
+              "InheritedType": 1
+            },
+            {
+              "nid": 100,
+              "strtype": "PANEL/Hidden",
+              "strval": "False",
+              "InheritedType": 2
+            },
+            {
+              "nid": 190,
+              "strtype": "OBJECT/Flex_in_new_track",
+              "strval": "True",
+              "InheritedType": 2
+            },
+            {
+              "nid": 225,
+              "flags": 1048576,
+              "strtype": "OBJECT/Scrolling",
+              "InheritedType": 1
+            },
+            {
+              "nid": 230,
+              "strtype": "OBJECT/Scrollable",
+              "strval": "False",
+              "InheritedType": 2
+            },
+            {
+              "nid": 300,
+              "strtype": "OBJECT/Scrollbar_mode",
+              "strval": "AUTO",
+              "InheritedType": 3
+            },
+            {
+              "nid": 310,
+              "strtype": "OBJECT/Scroll_direction",
+              "strval": "ALL",
+              "InheritedType": 3
+            },
+            {
+              "nid": 314,
+              "strtype": "OBJECT/Scroll_snap_x",
+              "strval": "NONE",
+              "InheritedType": 3
+            },
+            {
+              "nid": 315,
+              "strtype": "OBJECT/Scroll_snap_y",
+              "strval": "NONE",
+              "InheritedType": 3
+            },
+            {
+              "nid": 320,
+              "flags": 1048576,
+              "strtype": "OBJECT/States",
+              "InheritedType": 1
+            },
+            {
+              "part": "lv.PART.MAIN",
+              "childs": [
+                {
+                  "nid": 10000,
+                  "strtype": "_style/StyleState",
+                  "strval": "DEFAULT",
+                  "childs": [
+                    {
+                      "nid": 10520,
+                      "flags": 4096,
+                      "strtype": "_style/Bg_Color",
+                      "intarray": [
+                        0,
+                        0,
+                        0,
+                        255
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 10710,
+                      "flags": 4096,
+                      "strtype": "_style/Border_Color",
+                      "intarray": [
+                        0,
+                        0,
+                        0,
+                        255
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 10810,
+                      "flags": 4096,
+                      "strtype": "_style/Outline_Color",
+                      "intarray": [
+                        0,
+                        0,
+                        0,
+                        255
+                      ],
+                      "InheritedType": 7
+                    }
+                  ],
+                  "InheritedType": 1
+                }
+              ],
+              "nid": 1010,
+              "strtype": "PANEL/Style_main",
+              "strval": "lv.PART.MAIN, Rectangle, Pad, Text, Transform",
+              "InheritedType": 11
+            },
+            {
+              "part": "lv.PART.SCROLLBAR",
+              "childs": [],
+              "nid": 1020,
+              "strtype": "PANEL/Style_scrollbar",
+              "strval": "lv.PART.SCROLLBAR, Rectangle, Pad",
+              "InheritedType": 11
+            }
+          ],
+          "saved_objtypeKey": "PANEL"
+        },
+        {
+          "guid": "GUID4224714-202356S6007543",
+          "children": [
+            {
+              "guid": "GUID13091090-202353S6005543",
+              "children": [
+                {
+                  "guid": "GUID67798823-202351S6004543",
+                  "properties": [
+                    {
+                      "nid": 10,
+                      "strtype": "OBJECT/Name",
+                      "strval": "energiaValD",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 20,
+                      "strtype": "OBJECT/Layout",
+                      "InheritedType": 1
+                    },
+                    {
+                      "Flow": 0,
+                      "Wrap": false,
+                      "Reversed": false,
+                      "MainAlignment": 0,
+                      "CrossAlignment": 0,
+                      "TrackAlignment": 0,
+                      "LayoutType": 0,
+                      "nid": 30,
+                      "strtype": "OBJECT/Layout_type",
+                      "strval": "No_layout",
+                      "InheritedType": 13
+                    },
+                    {
+                      "nid": 40,
+                      "strtype": "OBJECT/Transform",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 50,
+                      "flags": 17,
+                      "strtype": "OBJECT/Position",
+                      "intarray": [
+                        292,
+                        -52
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 60,
+                      "flags": 17,
+                      "strtype": "OBJECT/Size",
+                      "intarray": [
+                        119,
+                        43
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 70,
+                      "strtype": "OBJECT/Align",
+                      "strval": "CENTER",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 75,
+                      "strtype": "OBJECT/Extend_click_area",
+                      "InheritedType": 6
+                    },
+                    {
+                      "nid": 90,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Flags",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 100,
+                      "strtype": "LABEL/Hidden",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 110,
+                      "strtype": "OBJECT/Clickable",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 225,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Scrolling",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 300,
+                      "strtype": "OBJECT/Scrollbar_mode",
+                      "strval": "AUTO",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 310,
+                      "strtype": "OBJECT/Scroll_direction",
+                      "strval": "ALL",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 314,
+                      "strtype": "OBJECT/Scroll_snap_x",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 315,
+                      "strtype": "OBJECT/Scroll_snap_y",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 320,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/States",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1010,
+                      "strtype": "LABEL/Label",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1020,
+                      "strtype": "LABEL/Long_mode",
+                      "strval": "WRAP",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 1030,
+                      "strtype": "LABEL/Text",
+                      "strval": "2.34",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 1040,
+                      "strtype": "LABEL/Recolor",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "part": "lv.PART.MAIN",
+                      "childs": [
+                        {
+                          "nid": 10000,
+                          "strtype": "_style/StyleState",
+                          "strval": "DEFAULT",
+                          "childs": [
+                            {
+                              "nid": 10410,
+                              "flags": 4096,
+                              "strtype": "_style/Text_Color",
+                              "strval": "Potencia",
+                              "integer": 1000254,
+                              "intarray": [
+                                255,
+                                234,
+                                0,
+                                255
+                              ],
+                              "InheritedType": 7
+                            },
+                            {
+                              "nid": 10450,
+                              "strtype": "_style/Text_Font",
+                              "strval": "LecturaS48",
+                              "InheritedType": 3
+                            }
+                          ],
+                          "InheritedType": 1
+                        }
+                      ],
+                      "nid": 1050,
+                      "strtype": "LABEL/Style_main",
+                      "strval": "lv.PART.MAIN, Text, Rectangle, Pad, Transform",
+                      "InheritedType": 11
+                    }
+                  ],
+                  "saved_objtypeKey": "LABEL"
+                },
+                {
+                  "guid": "GUID29950593-202352S6005543",
+                  "properties": [
+                    {
+                      "nid": 10,
+                      "strtype": "OBJECT/Name",
+                      "strval": "PotenciaLabel4",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 20,
+                      "strtype": "OBJECT/Layout",
+                      "InheritedType": 1
+                    },
+                    {
+                      "Flow": 1,
+                      "Wrap": false,
+                      "Reversed": false,
+                      "MainAlignment": 0,
+                      "CrossAlignment": 1,
+                      "TrackAlignment": 0,
+                      "LayoutType": 1,
+                      "nid": 30,
+                      "strtype": "OBJECT/Layout_type",
+                      "strval": "No_layout",
+                      "InheritedType": 13
+                    },
+                    {
+                      "nid": 40,
+                      "strtype": "OBJECT/Transform",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 50,
+                      "flags": 17,
+                      "strtype": "OBJECT/Position",
+                      "intarray": [
+                        427,
+                        -95
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 60,
+                      "flags": 51,
+                      "strtype": "OBJECT/Size",
+                      "intarray": [
+                        1,
+                        1
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 70,
+                      "strtype": "OBJECT/Align",
+                      "strval": "CENTER",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 75,
+                      "strtype": "OBJECT/Extend_click_area",
+                      "InheritedType": 6
+                    },
+                    {
+                      "nid": 90,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Flags",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 100,
+                      "strtype": "LABEL/Hidden",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 110,
+                      "strtype": "OBJECT/Clickable",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 225,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Scrolling",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 300,
+                      "strtype": "OBJECT/Scrollbar_mode",
+                      "strval": "AUTO",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 310,
+                      "strtype": "OBJECT/Scroll_direction",
+                      "strval": "ALL",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 314,
+                      "strtype": "OBJECT/Scroll_snap_x",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 315,
+                      "strtype": "OBJECT/Scroll_snap_y",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 320,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/States",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1010,
+                      "strtype": "LABEL/Label",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1020,
+                      "strtype": "LABEL/Long_mode",
+                      "strval": "WRAP",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 1030,
+                      "strtype": "LABEL/Text",
+                      "strval": "kWh",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 1040,
+                      "strtype": "LABEL/Recolor",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "part": "lv.PART.MAIN",
+                      "childs": [
+                        {
+                          "nid": 10000,
+                          "strtype": "_style/StyleState",
+                          "strval": "DEFAULT",
+                          "childs": [
+                            {
+                              "nid": 10410,
+                              "flags": 4096,
+                              "strtype": "_style/Text_Color",
+                              "intarray": [
+                                176,
+                                176,
+                                176,
+                                255
+                              ],
+                              "InheritedType": 7
+                            },
+                            {
+                              "nid": 10450,
+                              "strtype": "_style/Text_Font",
+                              "strval": "Unidades",
+                              "InheritedType": 3
+                            }
+                          ],
+                          "InheritedType": 1
+                        }
+                      ],
+                      "nid": 1050,
+                      "strtype": "LABEL/Style_main",
+                      "strval": "lv.PART.MAIN, Text, Rectangle, Pad, Transform",
+                      "InheritedType": 11
+                    }
+                  ],
+                  "saved_objtypeKey": "LABEL"
+                }
+              ],
+              "properties": [
+                {
+                  "nid": 10,
+                  "strtype": "OBJECT/Name",
+                  "strval": "secundario1Panel8",
+                  "InheritedType": 10
+                },
+                {
+                  "nid": 20,
+                  "strtype": "OBJECT/Layout",
+                  "InheritedType": 1
+                },
+                {
+                  "Flow": 0,
+                  "Wrap": true,
+                  "Reversed": false,
+                  "MainAlignment": 3,
+                  "CrossAlignment": 1,
+                  "TrackAlignment": 1,
+                  "LayoutType": 1,
+                  "nid": 30,
+                  "strtype": "OBJECT/Layout_type",
+                  "strval": "No_layout",
+                  "InheritedType": 13
+                },
+                {
+                  "nid": 40,
+                  "strtype": "OBJECT/Transform",
+                  "InheritedType": 1
+                },
+                {
+                  "nid": 50,
+                  "flags": 17,
+                  "strtype": "OBJECT/Position",
+                  "intarray": [
+                    76,
+                    37
+                  ],
+                  "InheritedType": 7
+                },
+                {
+                  "nid": 60,
+                  "flags": 17,
+                  "strtype": "OBJECT/Size",
+                  "intarray": [
+                    220,
+                    47
+                  ],
+                  "InheritedType": 7
+                },
+                {
+                  "nid": 70,
+                  "strtype": "OBJECT/Align",
+                  "strval": "CENTER",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 75,
+                  "strtype": "OBJECT/Extend_click_area",
+                  "InheritedType": 6
+                },
+                {
+                  "nid": 90,
+                  "flags": 1048576,
+                  "strtype": "OBJECT/Flags",
+                  "InheritedType": 1
+                },
+                {
+                  "nid": 100,
+                  "strtype": "PANEL/Hidden",
+                  "strval": "False",
+                  "InheritedType": 2
+                },
+                {
+                  "nid": 225,
+                  "flags": 1048576,
+                  "strtype": "OBJECT/Scrolling",
+                  "InheritedType": 1
+                },
+                {
+                  "nid": 230,
+                  "strtype": "OBJECT/Scrollable",
+                  "strval": "False",
+                  "InheritedType": 2
+                },
+                {
+                  "nid": 300,
+                  "strtype": "OBJECT/Scrollbar_mode",
+                  "strval": "AUTO",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 310,
+                  "strtype": "OBJECT/Scroll_direction",
+                  "strval": "ALL",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 314,
+                  "strtype": "OBJECT/Scroll_snap_x",
+                  "strval": "NONE",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 315,
+                  "strtype": "OBJECT/Scroll_snap_y",
+                  "strval": "NONE",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 320,
+                  "flags": 1048576,
+                  "strtype": "OBJECT/States",
+                  "InheritedType": 1
+                },
+                {
+                  "part": "lv.PART.MAIN",
+                  "childs": [
+                    {
+                      "nid": 10000,
+                      "strtype": "_style/StyleState",
+                      "strval": "DEFAULT",
+                      "childs": [
+                        {
+                          "nid": 10520,
+                          "flags": 4096,
+                          "strtype": "_style/Bg_Color",
+                          "intarray": [
+                            0,
+                            0,
+                            0,
+                            255
+                          ],
+                          "InheritedType": 7
+                        },
+                        {
+                          "nid": 10710,
+                          "flags": 4096,
+                          "strtype": "_style/Border_Color",
+                          "intarray": [
+                            0,
+                            0,
+                            0,
+                            255
+                          ],
+                          "InheritedType": 7
+                        }
+                      ],
+                      "InheritedType": 1
+                    }
+                  ],
+                  "nid": 1010,
+                  "strtype": "PANEL/Style_main",
+                  "strval": "lv.PART.MAIN, Rectangle, Pad, Text, Transform",
+                  "InheritedType": 11
+                },
+                {
+                  "part": "lv.PART.SCROLLBAR",
+                  "childs": [],
+                  "nid": 1020,
+                  "strtype": "PANEL/Style_scrollbar",
+                  "strval": "lv.PART.SCROLLBAR, Rectangle, Pad",
+                  "InheritedType": 11
+                }
+              ],
+              "saved_objtypeKey": "PANEL"
+            },
+            {
+              "guid": "GUID2859486-202355S6007543",
+              "children": [
+                {
+                  "guid": "GUID19005710-202354S6007543",
+                  "properties": [
+                    {
+                      "nid": 10,
+                      "strtype": "OBJECT/Name",
+                      "strval": "tiempoLabel",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 20,
+                      "strtype": "OBJECT/Layout",
+                      "InheritedType": 1
+                    },
+                    {
+                      "Flow": 0,
+                      "Wrap": false,
+                      "Reversed": false,
+                      "MainAlignment": 0,
+                      "CrossAlignment": 0,
+                      "TrackAlignment": 0,
+                      "LayoutType": 0,
+                      "nid": 30,
+                      "strtype": "OBJECT/Layout_type",
+                      "strval": "No_layout",
+                      "InheritedType": 13
+                    },
+                    {
+                      "nid": 40,
+                      "strtype": "OBJECT/Transform",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 50,
+                      "flags": 17,
+                      "strtype": "OBJECT/Position",
+                      "intarray": [
+                        -187,
+                        40
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 60,
+                      "flags": 51,
+                      "strtype": "OBJECT/Size",
+                      "intarray": [
+                        1,
+                        1
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 70,
+                      "strtype": "OBJECT/Align",
+                      "strval": "CENTER",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 75,
+                      "strtype": "OBJECT/Extend_click_area",
+                      "InheritedType": 6
+                    },
+                    {
+                      "nid": 90,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Flags",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 100,
+                      "strtype": "LABEL/Hidden",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 110,
+                      "strtype": "OBJECT/Clickable",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "nid": 225,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/Scrolling",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 300,
+                      "strtype": "OBJECT/Scrollbar_mode",
+                      "strval": "AUTO",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 310,
+                      "strtype": "OBJECT/Scroll_direction",
+                      "strval": "ALL",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 314,
+                      "strtype": "OBJECT/Scroll_snap_x",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 315,
+                      "strtype": "OBJECT/Scroll_snap_y",
+                      "strval": "NONE",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 320,
+                      "flags": 1048576,
+                      "strtype": "OBJECT/States",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1010,
+                      "strtype": "LABEL/Label",
+                      "InheritedType": 1
+                    },
+                    {
+                      "nid": 1020,
+                      "strtype": "LABEL/Long_mode",
+                      "strval": "WRAP",
+                      "InheritedType": 3
+                    },
+                    {
+                      "nid": 1030,
+                      "strtype": "LABEL/Text",
+                      "strval": "(Hoy)",
+                      "InheritedType": 10
+                    },
+                    {
+                      "nid": 1040,
+                      "strtype": "LABEL/Recolor",
+                      "strval": "False",
+                      "InheritedType": 2
+                    },
+                    {
+                      "part": "lv.PART.MAIN",
+                      "childs": [
+                        {
+                          "nid": 10000,
+                          "strtype": "_style/StyleState",
+                          "strval": "DEFAULT",
+                          "childs": [
+                            {
+                              "nid": 10410,
+                              "flags": 4096,
+                              "strtype": "_style/Text_Color",
+                              "intarray": [
+                                128,
+                                128,
+                                128,
+                                255
+                              ],
+                              "InheritedType": 7
+                            }
+                          ],
+                          "InheritedType": 1
+                        }
+                      ],
+                      "nid": 1050,
+                      "strtype": "LABEL/Style_main",
+                      "strval": "lv.PART.MAIN, Text, Rectangle, Pad, Transform",
+                      "InheritedType": 11
+                    }
+                  ],
+                  "saved_objtypeKey": "LABEL"
+                }
+              ],
+              "properties": [
+                {
+                  "nid": 10,
+                  "strtype": "OBJECT/Name",
+                  "strval": "secundario1Panel9",
+                  "InheritedType": 10
+                },
+                {
+                  "nid": 20,
+                  "strtype": "OBJECT/Layout",
+                  "InheritedType": 1
+                },
+                {
+                  "Flow": 0,
+                  "Wrap": false,
+                  "Reversed": false,
+                  "MainAlignment": 1,
+                  "CrossAlignment": 1,
+                  "TrackAlignment": 1,
+                  "LayoutType": 1,
+                  "nid": 30,
+                  "strtype": "OBJECT/Layout_type",
+                  "strval": "No_layout",
+                  "InheritedType": 13
+                },
+                {
+                  "nid": 40,
+                  "strtype": "OBJECT/Transform",
+                  "InheritedType": 1
+                },
+                {
+                  "nid": 50,
+                  "flags": 17,
+                  "strtype": "OBJECT/Position",
+                  "intarray": [
+                    76,
+                    37
+                  ],
+                  "InheritedType": 7
+                },
+                {
+                  "nid": 60,
+                  "flags": 17,
+                  "strtype": "OBJECT/Size",
+                  "intarray": [
+                    151,
+                    30
+                  ],
+                  "InheritedType": 7
+                },
+                {
+                  "nid": 70,
+                  "strtype": "OBJECT/Align",
+                  "strval": "TOP_LEFT",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 75,
+                  "strtype": "OBJECT/Extend_click_area",
+                  "InheritedType": 6
+                },
+                {
+                  "nid": 90,
+                  "flags": 1048576,
+                  "strtype": "OBJECT/Flags",
+                  "InheritedType": 1
+                },
+                {
+                  "nid": 100,
+                  "strtype": "PANEL/Hidden",
+                  "strval": "False",
+                  "InheritedType": 2
+                },
+                {
+                  "nid": 225,
+                  "flags": 1048576,
+                  "strtype": "OBJECT/Scrolling",
+                  "InheritedType": 1
+                },
+                {
+                  "nid": 230,
+                  "strtype": "OBJECT/Scrollable",
+                  "strval": "False",
+                  "InheritedType": 2
+                },
+                {
+                  "nid": 300,
+                  "strtype": "OBJECT/Scrollbar_mode",
+                  "strval": "AUTO",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 310,
+                  "strtype": "OBJECT/Scroll_direction",
+                  "strval": "ALL",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 314,
+                  "strtype": "OBJECT/Scroll_snap_x",
+                  "strval": "NONE",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 315,
+                  "strtype": "OBJECT/Scroll_snap_y",
+                  "strval": "NONE",
+                  "InheritedType": 3
+                },
+                {
+                  "nid": 320,
+                  "flags": 1048576,
+                  "strtype": "OBJECT/States",
+                  "InheritedType": 1
+                },
+                {
+                  "part": "lv.PART.MAIN",
+                  "childs": [
+                    {
+                      "nid": 10000,
+                      "strtype": "_style/StyleState",
+                      "strval": "DEFAULT",
+                      "childs": [
+                        {
+                          "nid": 10520,
+                          "flags": 4096,
+                          "strtype": "_style/Bg_Color",
+                          "intarray": [
+                            0,
+                            0,
+                            0,
+                            255
+                          ],
+                          "InheritedType": 7
+                        },
+                        {
+                          "nid": 10710,
+                          "flags": 4096,
+                          "strtype": "_style/Border_Color",
+                          "intarray": [
+                            0,
+                            0,
+                            0,
+                            255
+                          ],
+                          "InheritedType": 7
+                        }
+                      ],
+                      "InheritedType": 1
+                    }
+                  ],
+                  "nid": 1010,
+                  "strtype": "PANEL/Style_main",
+                  "strval": "lv.PART.MAIN, Rectangle, Pad, Text, Transform",
+                  "InheritedType": 11
+                },
+                {
+                  "part": "lv.PART.SCROLLBAR",
+                  "childs": [],
+                  "nid": 1020,
+                  "strtype": "PANEL/Style_scrollbar",
+                  "strval": "lv.PART.SCROLLBAR, Rectangle, Pad",
+                  "InheritedType": 11
+                }
+              ],
+              "saved_objtypeKey": "PANEL"
+            }
+          ],
+          "properties": [
+            {
+              "nid": 10,
+              "strtype": "OBJECT/Name",
+              "strval": "valoresPanelVoltaje4",
+              "InheritedType": 10
+            },
+            {
+              "nid": 20,
+              "strtype": "OBJECT/Layout",
+              "InheritedType": 1
+            },
+            {
+              "Flow": 1,
+              "Wrap": false,
+              "Reversed": false,
+              "MainAlignment": 1,
+              "CrossAlignment": 1,
+              "TrackAlignment": 1,
+              "LayoutType": 1,
+              "nid": 30,
+              "strtype": "OBJECT/Layout_type",
+              "strval": "No_layout",
+              "InheritedType": 13
+            },
+            {
+              "nid": 40,
+              "strtype": "OBJECT/Transform",
+              "InheritedType": 1
+            },
+            {
+              "nid": 50,
+              "flags": 17,
+              "strtype": "OBJECT/Position",
+              "intarray": [
+                244,
+                40
+              ],
+              "InheritedType": 7
+            },
+            {
+              "nid": 60,
+              "flags": 22,
+              "strtype": "OBJECT/Size",
+              "intarray": [
+                1,
+                148
+              ],
+              "InheritedType": 7
+            },
+            {
+              "nid": 70,
+              "strtype": "OBJECT/Align",
+              "strval": "CENTER",
+              "InheritedType": 3
+            },
+            {
+              "nid": 75,
+              "strtype": "OBJECT/Extend_click_area",
+              "InheritedType": 6
+            },
+            {
+              "nid": 90,
+              "flags": 1048576,
+              "strtype": "OBJECT/Flags",
+              "InheritedType": 1
+            },
+            {
+              "nid": 100,
+              "strtype": "PANEL/Hidden",
+              "strval": "False",
+              "InheritedType": 2
+            },
+            {
+              "nid": 225,
+              "flags": 1048576,
+              "strtype": "OBJECT/Scrolling",
+              "InheritedType": 1
+            },
+            {
+              "nid": 230,
+              "strtype": "OBJECT/Scrollable",
+              "strval": "False",
+              "InheritedType": 2
+            },
+            {
+              "nid": 300,
+              "strtype": "OBJECT/Scrollbar_mode",
+              "strval": "AUTO",
+              "InheritedType": 3
+            },
+            {
+              "nid": 310,
+              "strtype": "OBJECT/Scroll_direction",
+              "strval": "ALL",
+              "InheritedType": 3
+            },
+            {
+              "nid": 314,
+              "strtype": "OBJECT/Scroll_snap_x",
+              "strval": "NONE",
+              "InheritedType": 3
+            },
+            {
+              "nid": 315,
+              "strtype": "OBJECT/Scroll_snap_y",
+              "strval": "NONE",
+              "InheritedType": 3
+            },
+            {
+              "nid": 320,
+              "flags": 1048576,
+              "strtype": "OBJECT/States",
+              "InheritedType": 1
+            },
+            {
+              "part": "lv.PART.MAIN",
+              "childs": [
+                {
+                  "nid": 10000,
+                  "strtype": "_style/StyleState",
+                  "strval": "DEFAULT",
+                  "childs": [
+                    {
+                      "nid": 10520,
+                      "flags": 4096,
+                      "strtype": "_style/Bg_Color",
+                      "intarray": [
+                        0,
+                        0,
+                        0,
+                        255
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 10710,
+                      "flags": 4096,
+                      "strtype": "_style/Border_Color",
+                      "intarray": [
+                        0,
+                        0,
+                        0,
+                        255
+                      ],
+                      "InheritedType": 7
+                    },
+                    {
+                      "nid": 10810,
+                      "flags": 4096,
+                      "strtype": "_style/Outline_Color",
+                      "intarray": [
+                        0,
+                        0,
+                        0,
+                        255
+                      ],
+                      "InheritedType": 7
+                    }
+                  ],
+                  "InheritedType": 1
+                }
+              ],
+              "nid": 1010,
+              "strtype": "PANEL/Style_main",
+              "strval": "lv.PART.MAIN, Rectangle, Pad, Text, Transform",
+              "InheritedType": 11
+            },
+            {
+              "part": "lv.PART.SCROLLBAR",
+              "childs": [],
+              "nid": 1020,
+              "strtype": "PANEL/Style_scrollbar",
+              "strval": "lv.PART.SCROLLBAR, Rectangle, Pad",
+              "InheritedType": 11
+            }
+          ],
+          "saved_objtypeKey": "PANEL"
+        }
+      ],
+      "properties": [
+        {
+          "nid": 10,
+          "strtype": "OBJECT/Name",
+          "strval": "contentPanel3",
+          "InheritedType": 10
+        },
+        {
+          "nid": 20,
+          "strtype": "OBJECT/Layout",
+          "InheritedType": 1
+        },
+        {
+          "Flow": 0,
+          "Wrap": true,
+          "Reversed": false,
+          "MainAlignment": 3,
+          "CrossAlignment": 1,
+          "TrackAlignment": 5,
+          "LayoutType": 1,
+          "nid": 30,
+          "strtype": "OBJECT/Layout_type",
+          "strval": "No_layout",
+          "InheritedType": 13
+        },
+        {
+          "nid": 40,
+          "strtype": "OBJECT/Transform",
+          "InheritedType": 1
+        },
+        {
+          "nid": 50,
+          "flags": 17,
+          "strtype": "OBJECT/Position",
+          "intarray": [
+            703,
+            -188
+          ],
+          "InheritedType": 7
+        },
+        {
+          "nid": 60,
+          "flags": 18,
+          "strtype": "OBJECT/Size",
+          "intarray": [
+            100,
+            192
+          ],
+          "InheritedType": 7
+        },
+        {
+          "nid": 70,
+          "strtype": "OBJECT/Align",
+          "strval": "TOP_LEFT",
+          "InheritedType": 3
+        },
+        {
+          "nid": 75,
+          "strtype": "OBJECT/Extend_click_area",
+          "InheritedType": 6
+        },
+        {
+          "nid": 90,
+          "flags": 1048576,
+          "strtype": "OBJECT/Flags",
+          "InheritedType": 1
+        },
+        {
+          "nid": 100,
+          "strtype": "PANEL/Hidden",
+          "strval": "False",
+          "InheritedType": 2
+        },
+        {
+          "nid": 225,
+          "flags": 1048576,
+          "strtype": "OBJECT/Scrolling",
+          "InheritedType": 1
+        },
+        {
+          "nid": 230,
+          "strtype": "OBJECT/Scrollable",
+          "strval": "False",
+          "InheritedType": 2
+        },
+        {
+          "nid": 300,
+          "strtype": "OBJECT/Scrollbar_mode",
+          "strval": "AUTO",
+          "InheritedType": 3
+        },
+        {
+          "nid": 310,
+          "strtype": "OBJECT/Scroll_direction",
+          "strval": "ALL",
+          "InheritedType": 3
+        },
+        {
+          "nid": 314,
+          "strtype": "OBJECT/Scroll_snap_x",
+          "strval": "NONE",
+          "InheritedType": 3
+        },
+        {
+          "nid": 315,
+          "strtype": "OBJECT/Scroll_snap_y",
+          "strval": "NONE",
+          "InheritedType": 3
+        },
+        {
+          "nid": 320,
+          "flags": 1048576,
+          "strtype": "OBJECT/States",
+          "InheritedType": 1
+        },
+        {
+          "part": "lv.PART.MAIN",
+          "childs": [
+            {
+              "nid": 10000,
+              "strtype": "_style/StyleState",
+              "strval": "DEFAULT",
+              "childs": [
+                {
+                  "nid": 10520,
+                  "flags": 4096,
+                  "strtype": "_style/Bg_Color",
+                  "intarray": [
+                    0,
+                    0,
+                    0,
+                    255
+                  ],
+                  "InheritedType": 7
+                },
+                {
+                  "nid": 10710,
+                  "flags": 4096,
+                  "strtype": "_style/Border_Color",
+                  "intarray": [
+                    0,
+                    0,
+                    0,
+                    255
+                  ],
+                  "InheritedType": 7
+                },
+                {
+                  "nid": 10810,
+                  "flags": 4096,
+                  "strtype": "_style/Outline_Color",
+                  "intarray": [
+                    0,
+                    0,
+                    0,
+                    255
+                  ],
+                  "InheritedType": 7
+                }
+              ],
+              "InheritedType": 1
+            }
+          ],
+          "nid": 1010,
+          "strtype": "PANEL/Style_main",
+          "strval": "lv.PART.MAIN, Rectangle, Pad, Text, Transform",
+          "InheritedType": 11
+        },
+        {
+          "part": "lv.PART.SCROLLBAR",
+          "childs": [],
+          "nid": 1020,
+          "strtype": "PANEL/Style_scrollbar",
+          "strval": "lv.PART.SCROLLBAR, Rectangle, Pad",
+          "InheritedType": 11
+        }
+      ],
+      "saved_objtypeKey": "PANEL"
+    },
+    {
+      "guid": "GUID45558353-995658S936543",
+      "cid": "GUID51982610-659557S8857543",
+      "coid": 1335072450,
+      "cgid": 768740934,
+      "children": [
+        {
+          "guid": "GUID75526732-995659S937543",
+          "coid": 1724369369,
+          "cgid": 768740934,
+          "properties": [
+            {
+              "compnid": 10,
+              "strtype": "OBJECT/Name",
+              "strval": "circle1",
+              "InheritedType": 10
+            },
+            {
+              "part": "lv.PART.MAIN",
+              "childs": [],
+              "compnid": 1010,
+              "strtype": "PANEL/Style_main",
+              "strval": "lv.PART.MAIN, Rectangle, Pad, Text, Transform",
+              "InheritedType": 11
+            },
+            {
+              "part": "lv.PART.SCROLLBAR",
+              "childs": [],
+              "compnid": 1020,
+              "strtype": "PANEL/Style_scrollbar",
+              "strval": "lv.PART.SCROLLBAR, Rectangle, Pad",
+              "InheritedType": 11
+            }
+          ],
+          "saved_objtypeKey": "PANEL"
+        },
+        {
+          "guid": "GUID32397419-995660S937543",
+          "coid": -1262309776,
+          "cgid": 768740934,
+          "properties": [
+            {
+              "compnid": 10,
+              "strtype": "OBJECT/Name",
+              "strval": "circle2",
+              "InheritedType": 10
+            },
+            {
+              "part": "lv.PART.MAIN",
+              "childs": [],
+              "compnid": 1010,
+              "strtype": "PANEL/Style_main",
+              "strval": "lv.PART.MAIN, Rectangle, Pad, Text, Transform",
+              "InheritedType": 11
+            },
+            {
+              "part": "lv.PART.SCROLLBAR",
+              "childs": [],
+              "compnid": 1020,
+              "strtype": "PANEL/Style_scrollbar",
+              "strval": "lv.PART.SCROLLBAR, Rectangle, Pad",
+              "InheritedType": 11
+            }
+          ],
+          "saved_objtypeKey": "PANEL"
+        },
+        {
+          "guid": "GUID77051409-995661S937543",
+          "coid": -1160219907,
+          "cgid": 768740934,
+          "properties": [
+            {
+              "compnid": 10,
+              "strtype": "OBJECT/Name",
+              "strval": "circle3",
+              "InheritedType": 10
+            },
+            {
+              "part": "lv.PART.MAIN",
+              "childs": [
+                {
+                  "compnid": 10000,
+                  "strtype": "_style/StyleState",
+                  "strval": "DEFAULT",
+                  "childs": [
+                    {
+                      "compnid": 10520,
+                      "flags": 69632,
+                      "strtype": "_style/Bg_Color",
+                      "intarray": [
+                        255,
+                        255,
+                        255,
+                        255
+                      ],
+                      "InheritedType": 7
+                    }
+                  ],
+                  "InheritedType": 1
+                }
+              ],
+              "compnid": 1010,
+              "strtype": "PANEL/Style_main",
+              "strval": "lv.PART.MAIN, Rectangle, Pad, Text, Transform",
+              "InheritedType": 11
+            },
+            {
+              "part": "lv.PART.SCROLLBAR",
+              "childs": [],
+              "compnid": 1020,
+              "strtype": "PANEL/Style_scrollbar",
+              "strval": "lv.PART.SCROLLBAR, Rectangle, Pad",
+              "InheritedType": 11
+            }
+          ],
+          "saved_objtypeKey": "PANEL"
+        },
+        {
+          "guid": "GUID81671084-995662S938543",
+          "coid": 528156325,
+          "cgid": 768740934,
+          "properties": [
+            {
+              "compnid": 10,
+              "strtype": "OBJECT/Name",
+              "strval": "circle4",
+              "InheritedType": 10
+            },
+            {
+              "part": "lv.PART.MAIN",
+              "childs": [],
+              "compnid": 1010,
+              "strtype": "PANEL/Style_main",
+              "strval": "lv.PART.MAIN, Rectangle, Pad, Text, Transform",
+              "InheritedType": 11
+            },
+            {
+              "part": "lv.PART.SCROLLBAR",
+              "childs": [],
+              "compnid": 1020,
+              "strtype": "PANEL/Style_scrollbar",
+              "strval": "lv.PART.SCROLLBAR, Rectangle, Pad",
+              "InheritedType": 11
+            }
+          ],
+          "saved_objtypeKey": "PANEL"
+        },
+        {
+          "guid": "GUID7639955-995663S938543",
+          "coid": -862045741,
+          "cgid": 768740934,
+          "properties": [
+            {
+              "compnid": 10,
+              "strtype": "OBJECT/Name",
+              "strval": "circle5",
+              "InheritedType": 10
+            },
+            {
+              "part": "lv.PART.MAIN",
+              "childs": [],
+              "compnid": 1010,
+              "strtype": "PANEL/Style_main",
+              "strval": "lv.PART.MAIN, Rectangle, Pad, Text, Transform",
+              "InheritedType": 11
+            },
+            {
+              "part": "lv.PART.SCROLLBAR",
+              "childs": [],
+              "compnid": 1020,
+              "strtype": "PANEL/Style_scrollbar",
+              "strval": "lv.PART.SCROLLBAR, Rectangle, Pad",
+              "InheritedType": 11
+            }
+          ],
+          "saved_objtypeKey": "PANEL"
+        },
+        {
+          "guid": "GUID82142207-995664S938543",
+          "coid": -782531870,
+          "cgid": 768740934,
+          "properties": [
+            {
+              "compnid": 10,
+              "strtype": "OBJECT/Name",
+              "strval": "circle6",
+              "InheritedType": 10
+            },
+            {
+              "part": "lv.PART.MAIN",
+              "childs": [],
+              "compnid": 1010,
+              "strtype": "PANEL/Style_main",
+              "strval": "lv.PART.MAIN, Rectangle, Pad, Text, Transform",
+              "InheritedType": 11
+            },
+            {
+              "part": "lv.PART.SCROLLBAR",
+              "childs": [],
+              "compnid": 1020,
+              "strtype": "PANEL/Style_scrollbar",
+              "strval": "lv.PART.SCROLLBAR, Rectangle, Pad",
+              "InheritedType": 11
+            }
+          ],
+          "saved_objtypeKey": "PANEL"
+        }
+      ],
+      "properties": [
+        {
+          "compnid": 10,
+          "flags": 131072,
+          "strtype": "OBJECT/Name",
+          "strval": "navPanel2",
+          "InheritedType": 10
+        },
+        {
+          "compnid": 50,
+          "flags": 131089,
+          "strtype": "OBJECT/Position",
+          "intarray": [
+            0,
+            101
+          ],
+          "InheritedType": 7
+        },
+        {
+          "part": "lv.PART.MAIN",
+          "childs": [],
+          "compnid": 1010,
+          "strtype": "PANEL/Style_main",
+          "strval": "lv.PART.MAIN, Rectangle, Pad, Text, Transform",
+          "InheritedType": 11
+        },
+        {
+          "part": "lv.PART.SCROLLBAR",
+          "childs": [],
+          "compnid": 1020,
+          "strtype": "PANEL/Style_scrollbar",
+          "strval": "lv.PART.SCROLLBAR, Rectangle, Pad",
+          "InheritedType": 11
+        }
+      ],
+      "saved_objtypeKey": "PANEL"
+    }
+  ],
+  "isPage": true,
+  "editor_posx": 1980,
+  "editor_posy": -990,
+  "properties": [
+    {
+      "nid": 10,
+      "strtype": "OBJECT/Name",
+      "strval": "dashboard",
+      "InheritedType": 10
+    },
+    {
+      "nid": 20,
+      "strtype": "OBJECT/Layout",
+      "InheritedType": 1
+    },
+    {
+      "Flow": 0,
+      "Wrap": true,
+      "Reversed": false,
+      "MainAlignment": 1,
+      "CrossAlignment": 1,
+      "TrackAlignment": 1,
+      "LayoutType": 1,
+      "nid": 30,
+      "strtype": "OBJECT/Layout_type",
+      "strval": "No_layout",
+      "InheritedType": 13
+    },
+    {
+      "nid": 40,
+      "strtype": "OBJECT/Transform",
+      "InheritedType": 1
+    },
+    {
+      "nid": 90,
+      "flags": 1048576,
+      "strtype": "OBJECT/Flags",
+      "InheritedType": 1
+    },
+    {
+      "nid": 100,
+      "strtype": "SCREEN/Hidden",
+      "strval": "False",
+      "InheritedType": 2
+    },
+    {
+      "nid": 225,
+      "flags": 1048576,
+      "strtype": "OBJECT/Scrolling",
+      "InheritedType": 1
+    },
+    {
+      "nid": 230,
+      "strtype": "OBJECT/Scrollable",
+      "strval": "False",
+      "InheritedType": 2
+    },
+    {
+      "nid": 300,
+      "strtype": "OBJECT/Scrollbar_mode",
+      "strval": "AUTO",
+      "InheritedType": 3
+    },
+    {
+      "nid": 310,
+      "strtype": "OBJECT/Scroll_direction",
+      "strval": "ALL",
+      "InheritedType": 3
+    },
+    {
+      "nid": 314,
+      "strtype": "OBJECT/Scroll_snap_x",
+      "strval": "NONE",
+      "InheritedType": 3
+    },
+    {
+      "nid": 315,
+      "strtype": "OBJECT/Scroll_snap_y",
+      "strval": "NONE",
+      "InheritedType": 3
+    },
+    {
+      "nid": 320,
+      "flags": 1048576,
+      "strtype": "OBJECT/States",
+      "InheritedType": 1
+    },
+    {
+      "nid": 1010,
+      "strtype": "SCREEN/Screen",
+      "InheritedType": 1
+    },
+    {
+      "nid": 1020,
+      "strtype": "SCREEN/Temporary",
+      "strval": "False",
+      "InheritedType": 2
+    },
+    {
+      "part": "lv.PART.MAIN",
+      "childs": [
+        {
+          "nid": 10000,
+          "strtype": "_style/StyleState",
+          "strval": "DEFAULT",
+          "childs": [
+            {
+              "nid": 10520,
+              "flags": 4096,
+              "strtype": "_style/Bg_Color",
+              "intarray": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "InheritedType": 7
+            },
+            {
+              "nid": 10710,
+              "flags": 4096,
+              "strtype": "_style/Border_Color",
+              "intarray": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "InheritedType": 7
+            },
+            {
+              "nid": 10410,
+              "flags": 4096,
+              "strtype": "_style/Text_Color",
+              "intarray": [
+                96,
+                96,
+                96,
+                255
+              ],
+              "InheritedType": 7
+            },
+            {
+              "nid": 10450,
+              "strtype": "_style/Text_Font",
+              "strval": "Secondary_info",
+              "InheritedType": 3
+            }
+          ],
+          "InheritedType": 1
+        }
+      ],
+      "nid": 1040,
+      "strtype": "SCREEN/Style_main",
+      "strval": "lv.PART.MAIN, Rectangle, Pad, Text",
+      "InheritedType": 11
+    },
+    {
+      "part": "lv.PART.SCROLLBAR",
+      "childs": [],
+      "nid": 1050,
+      "strtype": "SCREEN/Style_scrollbar",
+      "strval": "lv.PART.SCROLLBAR, Rectangle, Pad",
+      "InheritedType": 11
+    },
+    {
+      "disabled": false,
+      "nid": 1000317,
+      "strtype": "_event/EventHandler",
+      "strval": "GESTURE_LEFT(GESTURE)",
+      "childs": [
+        {
+          "nid": 1000318,
+          "strtype": "_event/name",
+          "strval": "SwipeLeft",
+          "InheritedType": 10
+        },
+        {
+          "nid": 1000319,
+          "strtype": "_event/condition_C",
+          "strval": "",
+          "InheritedType": 10
+        },
+        {
+          "nid": 1000320,
+          "strtype": "_event/condition_P",
+          "strval": "",
+          "InheritedType": 10
+        },
+        {
+          "nid": 1000321,
+          "strtype": "_event/action",
+          "strval": "CHANGE SCREEN",
+          "childs": [
+            {
+              "nid": 1000322,
+              "strtype": "CHANGE SCREEN/Name",
+              "strval": "CHANGE SCREEN",
+              "InheritedType": 10
+            },
+            {
+              "nid": 1000323,
+              "strtype": "CHANGE SCREEN/Call",
+              "strval": "ChangeScreen( <{Screen_to}>, lv.SCR_LOAD_ANIM.<{Fade_mode}>, <{Speed}>, <{Delay}>)",
+              "InheritedType": 10
+            },
+            {
+              "nid": 1000324,
+              "strtype": "CHANGE SCREEN/CallC",
+              "strval": "_ui_screen_change( &<{Screen_to}>, LV_SCR_LOAD_ANIM_<{Fade_mode}>, <{Speed}>, <{Delay}>, &<{Screen_to}>_screen_init);",
+              "InheritedType": 10
+            },
+            {
+              "nid": 1000325,
+              "strtype": "CHANGE SCREEN/Screen_to",
+              "strval": "GUID85070890-659634S7016543",
+              "InheritedType": 9
+            },
+            {
+              "nid": 1000326,
+              "strtype": "CHANGE SCREEN/Fade_mode",
+              "strval": "MOVE_LEFT",
+              "InheritedType": 3
+            },
+            {
+              "nid": 1000327,
+              "strtype": "CHANGE SCREEN/Speed",
+              "integer": 200,
+              "InheritedType": 6
+            },
+            {
+              "nid": 1000328,
+              "strtype": "CHANGE SCREEN/Delay",
+              "InheritedType": 6
+            }
+          ],
+          "InheritedType": 10
+        }
+      ],
+      "InheritedType": 4
+    }
+  ],
+  "saved_objtypeKey": "SCREEN"
+}

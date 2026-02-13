@@ -1,0 +1,23 @@
+# PlatformIO
+.pio
+.pio/
+.pioenvs
+.piolibdeps
+
+# VSCode
+.vscode
+.vscode/
+
+# SquareLine Studio (Optional: exclude exports if you only want source)
+# export/
+# SquareLine_Project_events.py (if you consider it generated)
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Compilation
+*.hex
+*.bin
+*.elf
+*.map

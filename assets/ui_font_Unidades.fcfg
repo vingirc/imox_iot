@@ -1,0 +1,16 @@
+{
+  "codename": "Unidades",
+  "ttf_path": "/assets/RobotoMono-Medium.ttf",
+  "bin_path": "/assets\\ui_font_Unidades.bin",
+  "c_path": "/assets\\ui_font_Unidades.c",
+  "cfg_path": "/assets\\ui_font_Unidades.fcfg",
+  "size": 24,
+  "bpp": 4,
+  "letters": 0,
+  "ranges": [
+    "0x20-0x7f"
+  ],
+  "symbols": "",
+  "customparams": "--no-compress --no-prefilter",
+  "uploaded": false
+}

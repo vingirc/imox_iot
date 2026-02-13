@@ -1,0 +1,200 @@
+{
+  "deftheme": {
+    "name": "Default",
+    "properties": [
+      {
+        "nid": 1000252,
+        "strtype": "THEME_COLOR",
+        "strval": "Voltaje",
+        "intarray": [
+          0,
+          229,
+          255,
+          255
+        ],
+        "InheritedType": 0
+      },
+      {
+        "nid": 1000253,
+        "strtype": "THEME_COLOR",
+        "strval": "Corriente",
+        "intarray": [
+          118,
+          255,
+          3,
+          255
+        ],
+        "InheritedType": 0
+      },
+      {
+        "nid": 1000254,
+        "strtype": "THEME_COLOR",
+        "strval": "Potencia",
+        "intarray": [
+          255,
+          234,
+          0,
+          255
+        ],
+        "InheritedType": 0
+      },
+      {
+        "nid": 1000255,
+        "strtype": "THEME_COLOR",
+        "strval": "Stats",
+        "intarray": [
+          179,
+          136,
+          255,
+          255
+        ],
+        "InheritedType": 0
+      },
+      {
+        "nid": 1000256,
+        "strtype": "THEME_COLOR",
+        "strval": "Voltage Red",
+        "intarray": [
+          255,
+          61,
+          0,
+          255
+        ],
+        "InheritedType": 0
+      }
+    ]
+  },
+  "themes": [
+    {
+      "name": "Texto",
+      "properties": [
+        {
+          "nid": 1000252,
+          "strtype": "THEME_COLOR",
+          "strval": "Voltaje",
+          "intarray": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "InheritedType": 0
+        },
+        {
+          "nid": 1000253,
+          "strtype": "THEME_COLOR",
+          "strval": "Corriente",
+          "intarray": [
+            176,
+            176,
+            176,
+            255
+          ],
+          "InheritedType": 0
+        },
+        {
+          "nid": 1000254,
+          "strtype": "THEME_COLOR",
+          "strval": "Potencia",
+          "intarray": [
+            96,
+            96,
+            96,
+            255
+          ],
+          "InheritedType": 0
+        },
+        {
+          "nid": 1000255,
+          "strtype": "THEME_COLOR",
+          "strval": "Stats",
+          "intarray": [
+            64,
+            64,
+            64,
+            255
+          ],
+          "InheritedType": 0
+        },
+        {
+          "nid": 1000256,
+          "strtype": "THEME_COLOR",
+          "strval": "Voltage Red",
+          "intarray": [
+            10,
+            10,
+            10,
+            255
+          ],
+          "InheritedType": 0
+        }
+      ]
+    },
+    {
+      "name": "Funcionales",
+      "properties": [
+        {
+          "nid": 1000252,
+          "strtype": "THEME_COLOR",
+          "strval": "Voltaje",
+          "intarray": [
+            0,
+            229,
+            255,
+            255
+          ],
+          "InheritedType": 0
+        },
+        {
+          "nid": 1000253,
+          "strtype": "THEME_COLOR",
+          "strval": "Corriente",
+          "intarray": [
+            118,
+            255,
+            3,
+            255
+          ],
+          "InheritedType": 0
+        },
+        {
+          "nid": 1000254,
+          "strtype": "THEME_COLOR",
+          "strval": "Potencia",
+          "intarray": [
+            255,
+            234,
+            0,
+            255
+          ],
+          "InheritedType": 0
+        },
+        {
+          "nid": 1000255,
+          "strtype": "THEME_COLOR",
+          "strval": "Stats",
+          "intarray": [
+            179,
+            136,
+            255,
+            255
+          ],
+          "InheritedType": 0
+        },
+        {
+          "nid": 1000256,
+          "strtype": "THEME_COLOR",
+          "strval": "Voltage Red",
+          "intarray": [
+            255,
+            61,
+            0,
+            255
+          ],
+          "InheritedType": 0
+        }
+      ]
+    }
+  ],
+  "selected_theme": "Default"
+}

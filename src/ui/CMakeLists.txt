@@ -1,0 +1,21 @@
+SET(SOURCES components/ui_comp_navpanel.c
+    components/ui_comp.c
+    screens/ui_voltaje.c
+    screens/ui_corriente.c
+    screens/ui_dashboard.c
+    screens/ui_Modo_Diario_24hrs.c
+    screens/ui_statsWatts.c
+    ui_theme_manager.c
+    ui_themes.c
+    ui.c
+    components/ui_comp_hook.c
+    ui_helpers.c
+    fonts/ui_font_LecturaS.c
+    fonts/ui_font_LecturaS48.c
+    fonts/ui_font_Micro_text.c
+    fonts/ui_font_Secondary_info.c
+    fonts/ui_font_Unidades.c
+    fonts/ui_font_RobotoMono96.c
+    fonts/ui_font_LecturaS.c)
+
+add_library(ui ${SOURCES})

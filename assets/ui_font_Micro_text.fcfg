@@ -1,0 +1,16 @@
+{
+  "codename": "Micro_text",
+  "ttf_path": "/assets/RobotoMono-Light.ttf",
+  "bin_path": "/assets\\ui_font_Micro_text.bin",
+  "c_path": "/assets\\ui_font_Micro_text.c",
+  "cfg_path": "/assets\\ui_font_Micro_text.fcfg",
+  "size": 14,
+  "bpp": 4,
+  "letters": 0,
+  "ranges": [
+    "0x20-0x7f"
+  ],
+  "symbols": "",
+  "customparams": "--no-compress --no-prefilter",
+  "uploaded": false
+}

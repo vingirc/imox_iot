@@ -1,0 +1,17 @@
+{
+  "codename": "LecturaS",
+  "ttf_path": "/assets/RobotoMono-Bold.ttf",
+  "bin_path": "/assets\\ui_font_LecturaS.bin",
+  "c_path": "/assets\\ui_font_LecturaS.c",
+  "cfg_path": "/assets\\ui_font_LecturaS.fcfg",
+  "size": 16,
+  "bpp": 1,
+  "letters": 0,
+  "ranges": [
+    "0x20-0x7f",
+    "0x3a6"
+  ],
+  "symbols": "",
+  "customparams": "--no-compress --no-prefilter",
+  "uploaded": false
+}
