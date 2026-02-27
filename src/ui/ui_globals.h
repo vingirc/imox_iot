@@ -13,7 +13,7 @@
 /* Incluido desde ui.h — no incluir ui.h aquí para evitar dependencia circular */
 
 /* ============================================================
- *  ANIMACIONES
+ * ANIMACIONES
  * ============================================================ */
 
 /** Duración en ms de la transición al hacer swipe entre pantallas */
@@ -34,7 +34,7 @@
 #define UI_ANIM_FADE                LV_SCR_LOAD_ANIM_FADE_ON
 
 /* ============================================================
- *  FUENTES – agrupadas por tipo de vista
+ * FUENTES – agrupadas por tipo de vista
  * ============================================================ */
 
 /*--- Vistas 1 y 2: Voltaje / Corriente (lectura principal) ---*/
@@ -73,10 +73,10 @@
 /*--- Vista 6: Diagnóstico ---*/
 
 /** Título de sección (ej. "RED", "CLOUD", "HARDWARE") */
-#define UI_FONT_DIAG_SECTION        (&ui_font_Qualy24)
+#define UI_FONT_DIAG_SECTION        (&ui_font_Qualy28)
 
 /** Etiquetas y valores de elementos de diagnóstico */
-#define UI_FONT_DIAG_ELEMENT        (&ui_font_Qualy14)
+#define UI_FONT_DIAG_ELEMENT        (&ui_font_Qualy24)
 
 /*--- Vista Modo Diario 24hrs ---*/
 
@@ -87,7 +87,7 @@
 #define UI_FONT_DAILY_MICRO         (&ui_font_Qualy14)
 
 /* ============================================================
- *  PALETA DE COLORES – Tonos grises / blancos del cliente
+ * PALETA DE COLORES – Tonos grises / blancos del cliente
  * ============================================================ */
 
 /** Fondo principal de todas las pantallas */
@@ -112,14 +112,14 @@
 #define UI_COLOR_BORDER             lv_color_hex(0x000000)
 
 /* ============================================================
- *  OPACIDADES (por si se quieren ajustar globalmente)
+ * OPACIDADES (por si se quieren ajustar globalmente)
  * ============================================================ */
 
 #define UI_OPA_FULL                 255
 #define UI_OPA_NONE                 0
 
 /* ============================================================
- *  CHART (configuración de gráficas compartida)
+ * CHART (configuración de gráficas compartida)
  * ============================================================ */
 
 /** Número de puntos en las gráficas de barras */
