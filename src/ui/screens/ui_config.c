@@ -13,7 +13,7 @@ void ui_event_config(lv_event_t * e)
 
     if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_BOTTOM) {
         lv_indev_wait_release(lv_indev_get_act());
-        _ui_screen_change(&ui_corriente, LV_SCR_LOAD_ANIM_MOVE_BOTTOM, 200, 0, &ui_corriente_screen_init);
+        _ui_screen_change(&ui_corriente, UI_ANIM_SWIPE_DOWN, UI_ANIM_SWIPE_DURATION, UI_ANIM_SWIPE_DELAY, &ui_corriente_screen_init);
     }
 }
 
@@ -23,7 +23,7 @@ void ui_config_screen_init(void)
 {
     ui_config = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_config, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_config, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_config, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_config, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_add_event_cb(ui_config, ui_event_config, LV_EVENT_ALL, NULL);

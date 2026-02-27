@@ -42,20 +42,6 @@ extern "C" {
 
 ///////////////////// VARIABLES ////////////////////
 
-///////////////////// SCREENS ////////////////////
-
-#include "screens/ui_corriente.h"
-#include "screens/ui_diagnostic.h"
-#include "screens/ui_voltageStats.h"
-#include "screens/ui_dashboard.h"
-#include "screens/ui_Modo_Diario_24hrs.h"
-#include "screens/ui_statsWatts.h"
-#include "screens/ui_config.h"
-#include "screens/ui_voltaje.h"
-
-///////////////////// VARIABLES ////////////////////
-
-
 // EVENTS
 
 extern lv_obj_t * ui____initial_actions0;
@@ -73,6 +59,9 @@ LV_FONT_DECLARE(ui_font_Qualy200);
 LV_FONT_DECLARE(ui_font_Qualy114);
 LV_FONT_DECLARE(ui_font_Qualy180);
 
+// GLOBALS (configuración centralizada)
+#include "ui_globals.h"
+
 // UI INIT
 void ui_init(void);
 void ui_destroy(void);
@@ -82,3 +71,4 @@ void ui_destroy(void);
 #endif
 
 #endif
+

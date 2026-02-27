@@ -44,7 +44,7 @@ void ui_init(void)
     ui_config_screen_init();
     ui_voltaje_screen_init();
     ui____initial_actions0 = lv_obj_create(NULL);
-    lv_disp_load_scr(ui_corriente);
+    lv_disp_load_scr(ui_voltaje);
 }
 
 void ui_destroy(void)

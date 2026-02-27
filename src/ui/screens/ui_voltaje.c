@@ -26,15 +26,15 @@ void ui_event_voltaje(lv_event_t * e)
 
     if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_LEFT) {
         lv_indev_wait_release(lv_indev_get_act());
-        _ui_screen_change(&ui_corriente, LV_SCR_LOAD_ANIM_MOVE_LEFT, 200, 0, &ui_corriente_screen_init);
+        _ui_screen_change(&ui_corriente, UI_ANIM_SWIPE_LEFT, UI_ANIM_SWIPE_DURATION, UI_ANIM_SWIPE_DELAY, &ui_corriente_screen_init);
     }
     if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT) {
         lv_indev_wait_release(lv_indev_get_act());
-        _ui_screen_change(&ui_diagnostic, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 200, 0, &ui_diagnostic_screen_init);
+        _ui_screen_change(&ui_diagnostic, UI_ANIM_SWIPE_RIGHT, UI_ANIM_SWIPE_DURATION, UI_ANIM_SWIPE_DELAY, &ui_diagnostic_screen_init);
     }
     if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_TOP) {
         lv_indev_wait_release(lv_indev_get_act());
-        _ui_screen_change(&ui_config, LV_SCR_LOAD_ANIM_MOVE_TOP, 200, 0, &ui_config_screen_init);
+        _ui_screen_change(&ui_config, UI_ANIM_SWIPE_UP, UI_ANIM_SWIPE_DURATION, UI_ANIM_SWIPE_DELAY, &ui_config_screen_init);
     }
 }
 
@@ -46,11 +46,11 @@ void ui_voltaje_screen_init(void)
     lv_obj_clear_flag(ui_voltaje, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_flex_flow(ui_voltaje, LV_FLEX_FLOW_ROW_WRAP);
     lv_obj_set_flex_align(ui_voltaje, LV_FLEX_ALIGN_SPACE_BETWEEN, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
-    lv_obj_set_style_bg_color(ui_voltaje, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_voltaje, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_voltaje, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_voltaje, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_voltaje, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_voltaje, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui_voltaje, lv_color_hex(0x606060), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui_voltaje, UI_COLOR_TEXT_SECONDARY, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_voltaje, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_voltaje, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -63,11 +63,11 @@ void ui_voltaje_screen_init(void)
     lv_obj_set_flex_flow(ui_contentPanel, LV_FLEX_FLOW_ROW_WRAP);
     lv_obj_set_flex_align(ui_contentPanel, LV_FLEX_ALIGN_SPACE_AROUND, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
     lv_obj_clear_flag(ui_contentPanel, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_contentPanel, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_contentPanel, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_contentPanel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_contentPanel, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_contentPanel, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_contentPanel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_outline_color(ui_contentPanel, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_outline_color(ui_contentPanel, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_outline_opa(ui_contentPanel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_valoresPanel = lv_obj_create(ui_contentPanel);
@@ -79,11 +79,11 @@ void ui_voltaje_screen_init(void)
     lv_obj_set_flex_flow(ui_valoresPanel, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_valoresPanel, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_clear_flag(ui_valoresPanel, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_valoresPanel, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_valoresPanel, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_valoresPanel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_valoresPanel, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_valoresPanel, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_valoresPanel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_outline_color(ui_valoresPanel, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_outline_color(ui_valoresPanel, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_outline_opa(ui_valoresPanel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_voltajeVal = lv_label_create(ui_valoresPanel);
@@ -108,7 +108,7 @@ void ui_voltaje_screen_init(void)
     lv_obj_set_y(ui_voltageLabel, -14);
     lv_obj_set_align(ui_voltageLabel, LV_ALIGN_CENTER);
     lv_label_set_text(ui_voltageLabel, "V");
-    lv_obj_set_style_text_color(ui_voltageLabel, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui_voltageLabel, UI_COLOR_TEXT_LABEL, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_voltageLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_voltageLabel, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -121,11 +121,11 @@ void ui_voltaje_screen_init(void)
     lv_obj_set_flex_flow(ui_extrasPanel, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(ui_extrasPanel, LV_FLEX_ALIGN_SPACE_BETWEEN, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_clear_flag(ui_extrasPanel, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_extrasPanel, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_extrasPanel, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_extrasPanel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_extrasPanel, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_extrasPanel, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_extrasPanel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui_extrasPanel, lv_color_hex(0x808080), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui_extrasPanel, UI_COLOR_TEXT_INFO, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_extrasPanel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_secundario1Panel = lv_obj_create(ui_extrasPanel);
@@ -137,9 +137,9 @@ void ui_voltaje_screen_init(void)
     lv_obj_set_flex_flow(ui_secundario1Panel, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(ui_secundario1Panel, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_clear_flag(ui_secundario1Panel, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_secundario1Panel, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_secundario1Panel, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_secundario1Panel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_secundario1Panel, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_secundario1Panel, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_secundario1Panel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_frecuenciaLabel = lv_label_create(ui_secundario1Panel);
@@ -149,7 +149,7 @@ void ui_voltaje_screen_init(void)
     lv_obj_set_y(ui_frecuenciaLabel, 40);
     lv_obj_set_align(ui_frecuenciaLabel, LV_ALIGN_CENTER);
     lv_label_set_text(ui_frecuenciaLabel, "Hz");
-    lv_obj_set_style_text_color(ui_frecuenciaLabel, lv_color_hex(0x808080), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui_frecuenciaLabel, UI_COLOR_TEXT_INFO, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_frecuenciaLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_frecuencia = lv_label_create(ui_secundario1Panel);
@@ -159,7 +159,7 @@ void ui_voltaje_screen_init(void)
     lv_obj_set_y(ui_frecuencia, 40);
     lv_obj_set_align(ui_frecuencia, LV_ALIGN_CENTER);
     lv_label_set_text(ui_frecuencia, "0.0");
-    lv_obj_set_style_text_color(ui_frecuencia, lv_color_hex(0x808080), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui_frecuencia, UI_COLOR_TEXT_INFO, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_frecuencia, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_secundario2Panel = lv_obj_create(ui_extrasPanel);
@@ -171,9 +171,9 @@ void ui_voltaje_screen_init(void)
     lv_obj_set_flex_flow(ui_secundario2Panel, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(ui_secundario2Panel, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_clear_flag(ui_secundario2Panel, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_secundario2Panel, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_secundario2Panel, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_secundario2Panel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_secundario2Panel, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_secundario2Panel, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_secundario2Panel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_potenciaLabel = lv_label_create(ui_secundario2Panel);
@@ -183,7 +183,7 @@ void ui_voltaje_screen_init(void)
     lv_obj_set_y(ui_potenciaLabel, 40);
     lv_obj_set_align(ui_potenciaLabel, LV_ALIGN_CENTER);
     lv_label_set_text(ui_potenciaLabel, "PF");
-    lv_obj_set_style_text_color(ui_potenciaLabel, lv_color_hex(0x808080), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui_potenciaLabel, UI_COLOR_TEXT_INFO, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_potenciaLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_potencia = lv_label_create(ui_secundario2Panel);
@@ -193,14 +193,14 @@ void ui_voltaje_screen_init(void)
     lv_obj_set_y(ui_potencia, 40);
     lv_obj_set_align(ui_potencia, LV_ALIGN_CENTER);
     lv_label_set_text(ui_potencia, "0.00");
-    lv_obj_set_style_text_color(ui_potencia, lv_color_hex(0x808080), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui_potencia, UI_COLOR_TEXT_INFO, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_potencia, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_navPanel4 = ui_navPanel_create(ui_voltaje);
     lv_obj_set_x(ui_navPanel4, 0);
     lv_obj_set_y(ui_navPanel4, 100);
 
-    lv_obj_set_style_bg_color(ui_comp_get_child(ui_navPanel4, UI_COMP_NAVPANEL_CIRCLE1), lv_color_hex(0xFFFFFF),
+    lv_obj_set_style_bg_color(ui_comp_get_child(ui_navPanel4, UI_COMP_NAVPANEL_CIRCLE1), UI_COLOR_TEXT_ACTIVE,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_comp_get_child(ui_navPanel4, UI_COMP_NAVPANEL_CIRCLE1), 255,
                             LV_PART_MAIN | LV_STATE_DEFAULT);

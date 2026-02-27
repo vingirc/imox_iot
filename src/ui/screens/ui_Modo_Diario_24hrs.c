@@ -39,7 +39,7 @@ void ui_Modo_Diario_24hrs_screen_init(void)
 {
     ui_Modo_Diario_24hrs = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_Modo_Diario_24hrs, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_Modo_Diario_24hrs, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_Modo_Diario_24hrs, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_Modo_Diario_24hrs, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_PotenciaLabel6 = lv_label_create(ui_Modo_Diario_24hrs);
@@ -51,7 +51,7 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_obj_set_flex_flow(ui_PotenciaLabel6, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_PotenciaLabel6, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
     lv_label_set_text(ui_PotenciaLabel6, "Consumo diario (24) horas");
-    lv_obj_set_style_text_color(ui_PotenciaLabel6, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui_PotenciaLabel6, UI_COLOR_TEXT_LABEL, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel6, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_PotenciaLabel6, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -64,7 +64,7 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_obj_set_flex_flow(ui_PotenciaLabel7, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_PotenciaLabel7, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
     lv_label_set_text(ui_PotenciaLabel7, "▲ 650W");
-    lv_obj_set_style_text_color(ui_PotenciaLabel7, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui_PotenciaLabel7, UI_COLOR_TEXT_LABEL, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel7, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_PotenciaLabel7, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -78,14 +78,14 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_obj_set_flex_align(ui_valoresPanel2, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_clear_flag(ui_valoresPanel2, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_radius(ui_valoresPanel2, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_valoresPanel2, lv_color_hex(0xB388FF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_valoresPanel2, UI_COLOR_ACCENT, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_valoresPanel2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(ui_valoresPanel2, lv_color_hex(0xB388FF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_color(ui_valoresPanel2, UI_COLOR_ACCENT, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_main_stop(ui_valoresPanel2, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_stop(ui_valoresPanel2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_valoresPanel2, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_valoresPanel2, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_valoresPanel2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_outline_color(ui_valoresPanel2, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_outline_color(ui_valoresPanel2, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_outline_opa(ui_valoresPanel2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_valoresPanel3 = lv_obj_create(ui_Modo_Diario_24hrs);
@@ -98,9 +98,9 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_obj_set_flex_align(ui_valoresPanel3, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_clear_flag(ui_valoresPanel3, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_radius(ui_valoresPanel3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_valoresPanel3, lv_color_hex(0xB388FF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_valoresPanel3, UI_COLOR_ACCENT, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_valoresPanel3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(ui_valoresPanel3, lv_color_hex(0xB388FF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_color(ui_valoresPanel3, UI_COLOR_ACCENT, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_main_stop(ui_valoresPanel3, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_stop(ui_valoresPanel3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -108,7 +108,7 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_obj_set_x(ui_navPanel5, 0);
     lv_obj_set_y(ui_navPanel5, 101);
 
-    lv_obj_set_style_bg_color(ui_comp_get_child(ui_navPanel5, UI_COMP_NAVPANEL_CIRCLE4), lv_color_hex(0xFFFFFF),
+    lv_obj_set_style_bg_color(ui_comp_get_child(ui_navPanel5, UI_COMP_NAVPANEL_CIRCLE4), UI_COLOR_TEXT_ACTIVE,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_comp_get_child(ui_navPanel5, UI_COMP_NAVPANEL_CIRCLE4), 255,
                             LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -122,7 +122,7 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_obj_set_flex_flow(ui_PotenciaLabel5, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_PotenciaLabel5, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
     lv_label_set_text(ui_PotenciaLabel5, "0");
-    lv_obj_set_style_text_color(ui_PotenciaLabel5, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui_PotenciaLabel5, UI_COLOR_TEXT_LABEL, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel5, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_PotenciaLabel5, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -135,7 +135,7 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_obj_set_flex_flow(ui_PotenciaLabel8, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_PotenciaLabel8, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
     lv_label_set_text(ui_PotenciaLabel8, "4");
-    lv_obj_set_style_text_color(ui_PotenciaLabel8, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui_PotenciaLabel8, UI_COLOR_TEXT_LABEL, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel8, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_PotenciaLabel8, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -148,7 +148,7 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_obj_set_flex_flow(ui_PotenciaLabel9, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_PotenciaLabel9, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
     lv_label_set_text(ui_PotenciaLabel9, "8");
-    lv_obj_set_style_text_color(ui_PotenciaLabel9, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui_PotenciaLabel9, UI_COLOR_TEXT_LABEL, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel9, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_PotenciaLabel9, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -161,7 +161,7 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_obj_set_flex_flow(ui_PotenciaLabel10, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_PotenciaLabel10, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
     lv_label_set_text(ui_PotenciaLabel10, "12");
-    lv_obj_set_style_text_color(ui_PotenciaLabel10, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui_PotenciaLabel10, UI_COLOR_TEXT_LABEL, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel10, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_PotenciaLabel10, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -174,7 +174,7 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_obj_set_flex_flow(ui_PotenciaLabel11, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_PotenciaLabel11, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
     lv_label_set_text(ui_PotenciaLabel11, "24");
-    lv_obj_set_style_text_color(ui_PotenciaLabel11, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui_PotenciaLabel11, UI_COLOR_TEXT_LABEL, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel11, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_PotenciaLabel11, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -187,7 +187,7 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_obj_set_flex_flow(ui_PotenciaLabel12, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_PotenciaLabel12, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
     lv_label_set_text(ui_PotenciaLabel12, "16");
-    lv_obj_set_style_text_color(ui_PotenciaLabel12, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui_PotenciaLabel12, UI_COLOR_TEXT_LABEL, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel12, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_PotenciaLabel12, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -200,7 +200,7 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_obj_set_flex_flow(ui_PotenciaLabel13, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_PotenciaLabel13, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
     lv_label_set_text(ui_PotenciaLabel13, "20");
-    lv_obj_set_style_text_color(ui_PotenciaLabel13, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui_PotenciaLabel13, UI_COLOR_TEXT_LABEL, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel13, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_PotenciaLabel13, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -213,7 +213,7 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_obj_set_flex_flow(ui_PotenciaLabel14, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_PotenciaLabel14, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
     lv_label_set_text(ui_PotenciaLabel14, "Desliza");
-    lv_obj_set_style_text_color(ui_PotenciaLabel14, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui_PotenciaLabel14, UI_COLOR_TEXT_LABEL, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel14, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_PotenciaLabel14, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -227,11 +227,11 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_obj_set_flex_align(ui_valoresPanel4, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_clear_flag(ui_valoresPanel4, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_radius(ui_valoresPanel4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_valoresPanel4, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_valoresPanel4, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_valoresPanel4, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(ui_valoresPanel4, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_color(ui_valoresPanel4, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_clip_corner(ui_valoresPanel4, false, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_recolor(ui_valoresPanel4, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_recolor(ui_valoresPanel4, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_img_recolor_opa(ui_valoresPanel4, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_valoresPanel5 = lv_obj_create(ui_Modo_Diario_24hrs);
@@ -244,11 +244,11 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_obj_set_flex_align(ui_valoresPanel5, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_clear_flag(ui_valoresPanel5, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_radius(ui_valoresPanel5, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_valoresPanel5, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_valoresPanel5, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_valoresPanel5, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(ui_valoresPanel5, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_color(ui_valoresPanel5, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_clip_corner(ui_valoresPanel5, false, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_recolor(ui_valoresPanel5, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_recolor(ui_valoresPanel5, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_img_recolor_opa(ui_valoresPanel5, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_valoresPanel6 = lv_obj_create(ui_Modo_Diario_24hrs);
@@ -261,11 +261,11 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_obj_set_flex_align(ui_valoresPanel6, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_clear_flag(ui_valoresPanel6, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_radius(ui_valoresPanel6, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_valoresPanel6, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_valoresPanel6, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_valoresPanel6, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(ui_valoresPanel6, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_color(ui_valoresPanel6, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_clip_corner(ui_valoresPanel6, false, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_recolor(ui_valoresPanel6, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_recolor(ui_valoresPanel6, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_img_recolor_opa(ui_valoresPanel6, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_valoresPanel7 = lv_obj_create(ui_Modo_Diario_24hrs);
@@ -278,11 +278,11 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_obj_set_flex_align(ui_valoresPanel7, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_clear_flag(ui_valoresPanel7, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_radius(ui_valoresPanel7, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_valoresPanel7, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_valoresPanel7, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_valoresPanel7, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(ui_valoresPanel7, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_color(ui_valoresPanel7, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_clip_corner(ui_valoresPanel7, false, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_recolor(ui_valoresPanel7, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_recolor(ui_valoresPanel7, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_img_recolor_opa(ui_valoresPanel7, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_valoresPanel8 = lv_obj_create(ui_Modo_Diario_24hrs);
@@ -298,7 +298,7 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_obj_set_style_bg_color(ui_valoresPanel8, lv_color_hex(0xFF3D00), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_valoresPanel8, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_clip_corner(ui_valoresPanel8, false, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_recolor(ui_valoresPanel8, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_recolor(ui_valoresPanel8, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_img_recolor_opa(ui_valoresPanel8, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_valoresPanel9 = lv_obj_create(ui_Modo_Diario_24hrs);
@@ -314,7 +314,7 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_obj_set_style_bg_color(ui_valoresPanel9, lv_color_hex(0xFEEA00), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_valoresPanel9, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_clip_corner(ui_valoresPanel9, false, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_recolor(ui_valoresPanel9, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_recolor(ui_valoresPanel9, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_img_recolor_opa(ui_valoresPanel9, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_valoresPanel10 = lv_obj_create(ui_Modo_Diario_24hrs);
@@ -327,11 +327,11 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_obj_set_flex_align(ui_valoresPanel10, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_clear_flag(ui_valoresPanel10, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_radius(ui_valoresPanel10, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_valoresPanel10, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_valoresPanel10, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_valoresPanel10, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(ui_valoresPanel10, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_color(ui_valoresPanel10, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_clip_corner(ui_valoresPanel10, false, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_recolor(ui_valoresPanel10, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_recolor(ui_valoresPanel10, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_img_recolor_opa(ui_valoresPanel10, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_valoresPanel11 = lv_obj_create(ui_Modo_Diario_24hrs);
@@ -344,11 +344,11 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_obj_set_flex_align(ui_valoresPanel11, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_clear_flag(ui_valoresPanel11, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_radius(ui_valoresPanel11, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_valoresPanel11, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_valoresPanel11, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_valoresPanel11, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(ui_valoresPanel11, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_color(ui_valoresPanel11, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_clip_corner(ui_valoresPanel11, false, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_recolor(ui_valoresPanel11, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_recolor(ui_valoresPanel11, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_img_recolor_opa(ui_valoresPanel11, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_valoresPanel12 = lv_obj_create(ui_Modo_Diario_24hrs);
@@ -361,11 +361,11 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_obj_set_flex_align(ui_valoresPanel12, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_clear_flag(ui_valoresPanel12, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_radius(ui_valoresPanel12, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_valoresPanel12, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_valoresPanel12, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_valoresPanel12, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(ui_valoresPanel12, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_color(ui_valoresPanel12, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_clip_corner(ui_valoresPanel12, false, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_recolor(ui_valoresPanel12, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_recolor(ui_valoresPanel12, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_img_recolor_opa(ui_valoresPanel12, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_valoresPanel13 = lv_obj_create(ui_Modo_Diario_24hrs);
@@ -378,11 +378,11 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_obj_set_flex_align(ui_valoresPanel13, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_clear_flag(ui_valoresPanel13, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_radius(ui_valoresPanel13, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_valoresPanel13, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_valoresPanel13, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_valoresPanel13, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(ui_valoresPanel13, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_color(ui_valoresPanel13, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_clip_corner(ui_valoresPanel13, false, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_recolor(ui_valoresPanel13, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_recolor(ui_valoresPanel13, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_img_recolor_opa(ui_valoresPanel13, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_valoresPanel14 = lv_obj_create(ui_Modo_Diario_24hrs);
@@ -395,11 +395,11 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_obj_set_flex_align(ui_valoresPanel14, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_clear_flag(ui_valoresPanel14, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_radius(ui_valoresPanel14, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_valoresPanel14, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_valoresPanel14, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_valoresPanel14, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(ui_valoresPanel14, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_color(ui_valoresPanel14, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_clip_corner(ui_valoresPanel14, false, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_recolor(ui_valoresPanel14, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_recolor(ui_valoresPanel14, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_img_recolor_opa(ui_valoresPanel14, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_PotenciaLabel15 = lv_label_create(ui_Modo_Diario_24hrs);
@@ -411,7 +411,7 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_obj_set_flex_flow(ui_PotenciaLabel15, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_PotenciaLabel15, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
     lv_label_set_text(ui_PotenciaLabel15, "	  Cambiar\nDiario/Mensual");
-    lv_obj_set_style_text_color(ui_PotenciaLabel15, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui_PotenciaLabel15, UI_COLOR_TEXT_LABEL, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel15, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_PotenciaLabel15, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
