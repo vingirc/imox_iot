@@ -162,9 +162,9 @@
                           "strval": "Corriente",
                           "integer": 1000253,
                           "intarray": [
-                            118,
                             255,
-                            3,
+                            255,
+                            255,
                             255
                           ],
                           "InheritedType": 7
@@ -172,7 +172,7 @@
                         {
                           "nid": 10450,
                           "strtype": "_style/Text_Font",
-                          "strval": "RobotoMono96",
+                          "strval": "Valores",
                           "InheritedType": 3
                         }
                       ],

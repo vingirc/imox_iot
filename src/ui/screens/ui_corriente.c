@@ -94,7 +94,7 @@ void ui_corriente_screen_init(void)
                                            _ui_theme_color_Corriente);
     ui_object_set_themeable_style_property(ui_corrienteVal, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
                                            _ui_theme_alpha_Corriente);
-    lv_obj_set_style_text_font(ui_corrienteVal, &ui_font_RobotoMono96, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_corrienteVal, &ui_font_Valores, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_voltageLabel1 = lv_label_create(ui_valoresPanel1);
     lv_obj_set_width(ui_voltageLabel1, LV_SIZE_CONTENT);   /// 1

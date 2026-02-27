@@ -1,6 +1,6 @@
 {
   "codename": "Micro_text",
-  "ttf_path": "/assets/RobotoMono-Light.ttf",
+  "ttf_path": "/assets/Qualy Bold.ttf",
   "bin_path": "/assets\\ui_font_Micro_text.bin",
   "c_path": "/assets\\ui_font_Micro_text.c",
   "cfg_path": "/assets\\ui_font_Micro_text.fcfg",

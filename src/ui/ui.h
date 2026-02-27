@@ -47,15 +47,14 @@ extern "C" {
 extern lv_obj_t * ui____initial_actions0;
 
 // FONTS
+LV_FONT_DECLARE(ui_font_diagElem);
+LV_FONT_DECLARE(ui_font_diagTitle);
 LV_FONT_DECLARE(ui_font_LecturaS);
 LV_FONT_DECLARE(ui_font_LecturaS48);
 LV_FONT_DECLARE(ui_font_Micro_text);
 LV_FONT_DECLARE(ui_font_Secondary_info);
 LV_FONT_DECLARE(ui_font_Unidades);
-LV_FONT_DECLARE(ui_font_RobotoMono96);
-LV_FONT_DECLARE(ui_font_LecturaS);
-LV_FONT_DECLARE(ui_font_diagElem);
-LV_FONT_DECLARE(ui_font_diagTitle);
+LV_FONT_DECLARE(ui_font_Valores);
 
 // UI INIT
 void ui_init(void);

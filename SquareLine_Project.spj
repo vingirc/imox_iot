@@ -106,7 +106,7 @@
   },
   "animations": [],
   "selected_theme": "Default",
-  "selected_screen": "GUID19998166-202599S57755544",
+  "selected_screen": "GUID72309715-515841S663527",
   "info": {
     "name": "SquareLine_Project.spj",
     "depth": 2,
@@ -134,7 +134,7 @@
     "custom_variable_prefix": "uic",
     "separate_screen_save": true,
     "hierarchy_state_save": false,
-    "backup_cnt": 22,
+    "backup_cnt": 25,
     "autosave_cnt": 0,
     "group_color_cnt": 1,
     "imagebytearrayprefix": "",

@@ -1,6 +1,6 @@
 {
   "codename": "diagTitle",
-  "ttf_path": "/assets/RobotoMono-Medium.ttf",
+  "ttf_path": "/assets/Qualy Bold.ttf",
   "bin_path": "/assets\\ui_font_diagTitle.bin",
   "c_path": "/assets\\ui_font_diagTitle.c",
   "cfg_path": "/assets\\ui_font_diagTitle.fcfg",

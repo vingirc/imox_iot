@@ -165,8 +165,8 @@
                               "strval": "Voltaje",
                               "integer": 1000252,
                               "intarray": [
-                                0,
-                                229,
+                                255,
+                                255,
                                 255,
                                 255
                               ],
@@ -1400,9 +1400,9 @@
                               "strval": "Corriente",
                               "integer": 1000253,
                               "intarray": [
-                                118,
                                 255,
-                                3,
+                                255,
+                                255,
                                 255
                               ],
                               "InheritedType": 7
@@ -3685,8 +3685,8 @@
                               "integer": 1000254,
                               "intarray": [
                                 255,
-                                234,
-                                0,
+                                255,
+                                255,
                                 255
                               ],
                               "InheritedType": 7

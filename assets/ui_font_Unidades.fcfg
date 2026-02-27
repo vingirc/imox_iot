@@ -1,6 +1,6 @@
 {
   "codename": "Unidades",
-  "ttf_path": "/assets/RobotoMono-Medium.ttf",
+  "ttf_path": "/assets/Qualy Bold.ttf",
   "bin_path": "/assets\\ui_font_Unidades.bin",
   "c_path": "/assets\\ui_font_Unidades.c",
   "cfg_path": "/assets\\ui_font_Unidades.fcfg",

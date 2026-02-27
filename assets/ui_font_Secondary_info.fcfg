@@ -1,6 +1,6 @@
 {
   "codename": "Secondary_info",
-  "ttf_path": "/assets/RobotoMono-Regular.ttf",
+  "ttf_path": "/assets/Qualy Bold.ttf",
   "bin_path": "/assets\\ui_font_Secondary_info.bin",
   "c_path": "/assets\\ui_font_Secondary_info.c",
   "cfg_path": "/assets\\ui_font_Secondary_info.fcfg",
@@ -8,8 +8,7 @@
   "bpp": 4,
   "letters": 0,
   "ranges": [
-    "0x20-0x7f",
-    "0x3a6"
+    "0x20-0x7f"
   ],
   "symbols": "",
   "customparams": "--no-compress --no-prefilter",

@@ -12,14 +12,13 @@ SET(SOURCES components/ui_comp_navpanel.c
     ui.c
     components/ui_comp_hook.c
     ui_helpers.c
+    fonts/ui_font_diagElem.c
+    fonts/ui_font_diagTitle.c
     fonts/ui_font_LecturaS.c
     fonts/ui_font_LecturaS48.c
     fonts/ui_font_Micro_text.c
     fonts/ui_font_Secondary_info.c
     fonts/ui_font_Unidades.c
-    fonts/ui_font_RobotoMono96.c
-    fonts/ui_font_LecturaS.c
-    fonts/ui_font_diagElem.c
-    fonts/ui_font_diagTitle.c)
+    fonts/ui_font_Valores.c)
 
 add_library(ui ${SOURCES})

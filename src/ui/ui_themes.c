@@ -6,19 +6,19 @@
 #include "ui.h"
 
 
-const ui_theme_variable_t _ui_theme_color_Voltaje[3] = {0x00E5FF, 0xFFFFFF, 0x00E5FF};
+const ui_theme_variable_t _ui_theme_color_Voltaje[3] = {0xFFFFFF, 0xFFFFFF, 0xFFFFFF};
 const ui_theme_variable_t _ui_theme_alpha_Voltaje[3] = {255, 255, 255};
 
-const ui_theme_variable_t _ui_theme_color_Corriente[3] = {0x76FF03, 0xB0B0B0, 0x76FF03};
+const ui_theme_variable_t _ui_theme_color_Corriente[3] = {0xFFFFFF, 0xFFFFFF, 0xFFFFFF};
 const ui_theme_variable_t _ui_theme_alpha_Corriente[3] = {255, 255, 255};
 
-const ui_theme_variable_t _ui_theme_color_Potencia[3] = {0xFFEA00, 0x606060, 0xFFEA00};
+const ui_theme_variable_t _ui_theme_color_Potencia[3] = {0xFFFFFF, 0xFFFFFF, 0xFFFFFF};
 const ui_theme_variable_t _ui_theme_alpha_Potencia[3] = {255, 255, 255};
 
-const ui_theme_variable_t _ui_theme_color_Stats[3] = {0xB388FF, 0x404040, 0xB388FF};
+const ui_theme_variable_t _ui_theme_color_Stats[3] = {0xFFFFFF, 0xFFFFFF, 0xFFFFFF};
 const ui_theme_variable_t _ui_theme_alpha_Stats[3] = {255, 255, 255};
 
-const ui_theme_variable_t _ui_theme_color_Voltage_Red[3] = {0xFF3D00, 0x0A0A0A, 0xFF3D00};
+const ui_theme_variable_t _ui_theme_color_Voltage_Red[3] = {0xFFFFFF, 0xFFFFFF, 0xFFFFFF};
 const ui_theme_variable_t _ui_theme_alpha_Voltage_Red[3] = {255, 255, 255};
 uint8_t ui_theme_idx = UI_THEME_DEFAULT;
 

@@ -7,8 +7,8 @@
         "strtype": "THEME_COLOR",
         "strval": "Voltaje",
         "intarray": [
-          0,
-          229,
+          255,
+          255,
           255,
           255
         ],
@@ -19,9 +19,9 @@
         "strtype": "THEME_COLOR",
         "strval": "Corriente",
         "intarray": [
-          118,
           255,
-          3,
+          255,
+          255,
           255
         ],
         "InheritedType": 0
@@ -32,8 +32,8 @@
         "strval": "Potencia",
         "intarray": [
           255,
-          234,
-          0,
+          255,
+          255,
           255
         ],
         "InheritedType": 0
@@ -43,8 +43,8 @@
         "strtype": "THEME_COLOR",
         "strval": "Stats",
         "intarray": [
-          179,
-          136,
+          255,
+          255,
           255,
           255
         ],
@@ -56,8 +56,8 @@
         "strval": "Voltage Red",
         "intarray": [
           255,
-          61,
-          0,
+          255,
+          255,
           255
         ],
         "InheritedType": 0
@@ -85,9 +85,9 @@
           "strtype": "THEME_COLOR",
           "strval": "Corriente",
           "intarray": [
-            176,
-            176,
-            176,
+            255,
+            255,
+            255,
             255
           ],
           "InheritedType": 0
@@ -97,9 +97,9 @@
           "strtype": "THEME_COLOR",
           "strval": "Potencia",
           "intarray": [
-            96,
-            96,
-            96,
+            255,
+            255,
+            255,
             255
           ],
           "InheritedType": 0
@@ -109,9 +109,9 @@
           "strtype": "THEME_COLOR",
           "strval": "Stats",
           "intarray": [
-            64,
-            64,
-            64,
+            255,
+            255,
+            255,
             255
           ],
           "InheritedType": 0
@@ -121,9 +121,9 @@
           "strtype": "THEME_COLOR",
           "strval": "Voltage Red",
           "intarray": [
-            10,
-            10,
-            10,
+            255,
+            255,
+            255,
             255
           ],
           "InheritedType": 0
@@ -138,8 +138,8 @@
           "strtype": "THEME_COLOR",
           "strval": "Voltaje",
           "intarray": [
-            0,
-            229,
+            255,
+            255,
             255,
             255
           ],
@@ -150,9 +150,9 @@
           "strtype": "THEME_COLOR",
           "strval": "Corriente",
           "intarray": [
-            118,
             255,
-            3,
+            255,
+            255,
             255
           ],
           "InheritedType": 0
@@ -163,8 +163,8 @@
           "strval": "Potencia",
           "intarray": [
             255,
-            234,
-            0,
+            255,
+            255,
             255
           ],
           "InheritedType": 0
@@ -174,8 +174,8 @@
           "strtype": "THEME_COLOR",
           "strval": "Stats",
           "intarray": [
-            179,
-            136,
+            255,
+            255,
             255,
             255
           ],
@@ -187,8 +187,8 @@
           "strval": "Voltage Red",
           "intarray": [
             255,
-            61,
-            0,
+            255,
+            255,
             255
           ],
           "InheritedType": 0
