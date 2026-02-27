@@ -85,339 +85,173 @@ void ui_dashboard_screen_init(void)
     lv_obj_set_style_outline_color(ui_contentPanel3, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_outline_opa(ui_contentPanel3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    /* ============================================================
+     *  CUADRANTE 1 (↖): VOLTAJE - V
+     * ============================================================ */
     ui_valoresPanelVoltaje3 = lv_obj_create(ui_contentPanel3);
-    lv_obj_set_height(ui_valoresPanelVoltaje3, 148);
+    lv_obj_set_height(ui_valoresPanelVoltaje3, 90);
     lv_obj_set_flex_grow(ui_valoresPanelVoltaje3, 1);
-    lv_obj_set_x(ui_valoresPanelVoltaje3, 244);
-    lv_obj_set_y(ui_valoresPanelVoltaje3, 40);
     lv_obj_set_align(ui_valoresPanelVoltaje3, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_valoresPanelVoltaje3, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_flex_align(ui_valoresPanelVoltaje3, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_valoresPanelVoltaje3, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_flex_flow(ui_valoresPanelVoltaje3, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(ui_valoresPanelVoltaje3, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_END, LV_FLEX_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_valoresPanelVoltaje3, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_set_style_bg_color(ui_valoresPanelVoltaje3, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_valoresPanelVoltaje3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_color(ui_valoresPanelVoltaje3, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_valoresPanelVoltaje3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_outline_color(ui_valoresPanelVoltaje3, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_outline_opa(ui_valoresPanelVoltaje3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_column(ui_valoresPanelVoltaje3, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_secundario1Panel6 = lv_obj_create(ui_valoresPanelVoltaje3);
-    lv_obj_set_width(ui_secundario1Panel6, 220);
-    lv_obj_set_height(ui_secundario1Panel6, 47);
-    lv_obj_set_x(ui_secundario1Panel6, 76);
-    lv_obj_set_y(ui_secundario1Panel6, 37);
-    lv_obj_set_flex_flow(ui_secundario1Panel6, LV_FLEX_FLOW_ROW_WRAP);
-    lv_obj_set_flex_align(ui_secundario1Panel6, LV_FLEX_ALIGN_SPACE_AROUND, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_secundario1Panel6, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_secundario1Panel6, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_secundario1Panel6, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_secundario1Panel6, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(ui_secundario1Panel6, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_VoltajeValD = lv_label_create(ui_secundario1Panel6);
-    lv_obj_set_height(ui_VoltajeValD, 43);
-    lv_obj_set_width(ui_VoltajeValD, LV_SIZE_CONTENT);   /// 150
-    lv_obj_set_x(ui_VoltajeValD, 292);
-    lv_obj_set_y(ui_VoltajeValD, -52);
-    lv_obj_set_align(ui_VoltajeValD, LV_ALIGN_CENTER);
+    ui_VoltajeValD = lv_label_create(ui_valoresPanelVoltaje3);
+    lv_obj_set_width(ui_VoltajeValD, LV_SIZE_CONTENT);
+    lv_obj_set_height(ui_VoltajeValD, LV_SIZE_CONTENT);
     lv_label_set_text(ui_VoltajeValD, "0.00");
-    ui_object_set_themeable_style_property(ui_VoltajeValD, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
-                                           _ui_theme_color_Voltaje);
-    ui_object_set_themeable_style_property(ui_VoltajeValD, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
-                                           _ui_theme_alpha_Voltaje);
-    lv_obj_set_style_text_font(ui_VoltajeValD, &ui_font_Qualy48, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui_VoltajeValD, UI_COLOR_TEXT_ACTIVE, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_VoltajeValD, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_VoltajeValD, UI_FONT_DASH_VALUE, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_PotenciaLabel3 = lv_label_create(ui_secundario1Panel6);
-    lv_obj_set_width(ui_PotenciaLabel3, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_PotenciaLabel3, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_PotenciaLabel3, 427);
-    lv_obj_set_y(ui_PotenciaLabel3, -95);
-    lv_obj_set_align(ui_PotenciaLabel3, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_PotenciaLabel3, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_flex_align(ui_PotenciaLabel3, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
+    ui_PotenciaLabel3 = lv_label_create(ui_valoresPanelVoltaje3);
+    lv_obj_set_width(ui_PotenciaLabel3, LV_SIZE_CONTENT);
+    lv_obj_set_height(ui_PotenciaLabel3, LV_SIZE_CONTENT);
     lv_label_set_text(ui_PotenciaLabel3, "V");
     lv_obj_set_style_text_color(ui_PotenciaLabel3, UI_COLOR_TEXT_LABEL, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_PotenciaLabel3, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_PotenciaLabel3, UI_FONT_DASH_UNIT, LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    /* -- Panel secundario de Hz (COMENTADO para diseño simplificado) --
     ui_secundario1Panel3 = lv_obj_create(ui_valoresPanelVoltaje3);
     lv_obj_set_width(ui_secundario1Panel3, 151);
     lv_obj_set_height(ui_secundario1Panel3, 30);
-    lv_obj_set_x(ui_secundario1Panel3, 76);
-    lv_obj_set_y(ui_secundario1Panel3, 37);
     lv_obj_set_flex_flow(ui_secundario1Panel3, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(ui_secundario1Panel3, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_secundario1Panel3, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_clear_flag(ui_secundario1Panel3, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_set_style_bg_color(ui_secundario1Panel3, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_secundario1Panel3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_color(ui_secundario1Panel3, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_secundario1Panel3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-
     ui_frecuenciaValD = lv_label_create(ui_secundario1Panel3);
-    lv_obj_set_width(ui_frecuenciaValD, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_frecuenciaValD, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_frecuenciaValD, -187);
-    lv_obj_set_y(ui_frecuenciaValD, 40);
-    lv_obj_set_align(ui_frecuenciaValD, LV_ALIGN_CENTER);
     lv_label_set_text(ui_frecuenciaValD, "121.4");
-    lv_obj_set_style_text_color(ui_frecuenciaValD, UI_COLOR_TEXT_INFO, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_frecuenciaValD, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-
     ui_DateVal5 = lv_label_create(ui_secundario1Panel3);
-    lv_obj_set_width(ui_DateVal5, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_DateVal5, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_DateVal5, -187);
-    lv_obj_set_y(ui_DateVal5, 40);
-    lv_obj_set_align(ui_DateVal5, LV_ALIGN_CENTER);
     lv_label_set_text(ui_DateVal5, "Hz");
-    lv_obj_set_style_text_color(ui_DateVal5, UI_COLOR_TEXT_INFO, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_DateVal5, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    -- fin panel secundario Hz */
 
+    /* ============================================================
+     *  CUADRANTE 2 (↗): WATTS - W
+     * ============================================================ */
     ui_valoresPanelVoltaje1 = lv_obj_create(ui_contentPanel3);
-    lv_obj_set_height(ui_valoresPanelVoltaje1, 148);
+    lv_obj_set_height(ui_valoresPanelVoltaje1, 90);
     lv_obj_set_flex_grow(ui_valoresPanelVoltaje1, 1);
-    lv_obj_set_x(ui_valoresPanelVoltaje1, 244);
-    lv_obj_set_y(ui_valoresPanelVoltaje1, 40);
     lv_obj_set_align(ui_valoresPanelVoltaje1, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_valoresPanelVoltaje1, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_flex_align(ui_valoresPanelVoltaje1, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_valoresPanelVoltaje1, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_flex_flow(ui_valoresPanelVoltaje1, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(ui_valoresPanelVoltaje1, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_END, LV_FLEX_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_valoresPanelVoltaje1, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_set_style_bg_color(ui_valoresPanelVoltaje1, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_valoresPanelVoltaje1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_color(ui_valoresPanelVoltaje1, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_valoresPanelVoltaje1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_outline_color(ui_valoresPanelVoltaje1, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_outline_opa(ui_valoresPanelVoltaje1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_column(ui_valoresPanelVoltaje1, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_secundario1Panel2 = lv_obj_create(ui_valoresPanelVoltaje1);
-    lv_obj_set_width(ui_secundario1Panel2, 220);
-    lv_obj_set_height(ui_secundario1Panel2, 47);
-    lv_obj_set_x(ui_secundario1Panel2, 76);
-    lv_obj_set_y(ui_secundario1Panel2, 37);
-    lv_obj_set_align(ui_secundario1Panel2, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_secundario1Panel2, LV_FLEX_FLOW_ROW_WRAP);
-    lv_obj_set_flex_align(ui_secundario1Panel2, LV_FLEX_ALIGN_SPACE_AROUND, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_secundario1Panel2, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_secundario1Panel2, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_secundario1Panel2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_secundario1Panel2, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(ui_secundario1Panel2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_pactivaValD = lv_label_create(ui_valoresPanelVoltaje1);
+    lv_obj_set_width(ui_pactivaValD, LV_SIZE_CONTENT);
+    lv_obj_set_height(ui_pactivaValD, LV_SIZE_CONTENT);
+    lv_label_set_text(ui_pactivaValD, "0");
+    lv_obj_set_style_text_color(ui_pactivaValD, UI_COLOR_TEXT_ACTIVE, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_pactivaValD, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_pactivaValD, UI_FONT_DASH_VALUE, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_CorrienteValD = lv_label_create(ui_secundario1Panel2);
-    lv_obj_set_width(ui_CorrienteValD, 118);
-    lv_obj_set_height(ui_CorrienteValD, 43);
-    lv_obj_set_x(ui_CorrienteValD, 292);
-    lv_obj_set_y(ui_CorrienteValD, -52);
-    lv_obj_set_align(ui_CorrienteValD, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_CorrienteValD, "0.00");
-    ui_object_set_themeable_style_property(ui_CorrienteValD, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
-                                           _ui_theme_color_Corriente);
-    ui_object_set_themeable_style_property(ui_CorrienteValD, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
-                                           _ui_theme_alpha_Corriente);
-    lv_obj_set_style_text_font(ui_CorrienteValD, &ui_font_Qualy48, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_PotenciaLabel1 = lv_label_create(ui_secundario1Panel2);
-    lv_obj_set_width(ui_PotenciaLabel1, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_PotenciaLabel1, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_PotenciaLabel1, 427);
-    lv_obj_set_y(ui_PotenciaLabel1, -95);
-    lv_obj_set_align(ui_PotenciaLabel1, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_PotenciaLabel1, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_flex_align(ui_PotenciaLabel1, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
-    lv_label_set_text(ui_PotenciaLabel1, "A");
+    ui_PotenciaLabel1 = lv_label_create(ui_valoresPanelVoltaje1);
+    lv_obj_set_width(ui_PotenciaLabel1, LV_SIZE_CONTENT);
+    lv_obj_set_height(ui_PotenciaLabel1, LV_SIZE_CONTENT);
+    lv_label_set_text(ui_PotenciaLabel1, "W");
     lv_obj_set_style_text_color(ui_PotenciaLabel1, UI_COLOR_TEXT_LABEL, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_PotenciaLabel1, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_PotenciaLabel1, UI_FONT_DASH_UNIT, LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    /* -- Panel secundario de W (COMENTADO para diseño simplificado) --
     ui_secundario1Panel4 = lv_obj_create(ui_valoresPanelVoltaje1);
-    lv_obj_set_width(ui_secundario1Panel4, 151);
-    lv_obj_set_height(ui_secundario1Panel4, 30);
-    lv_obj_set_x(ui_secundario1Panel4, 76);
-    lv_obj_set_y(ui_secundario1Panel4, 37);
-    lv_obj_set_flex_flow(ui_secundario1Panel4, LV_FLEX_FLOW_ROW);
-    lv_obj_set_flex_align(ui_secundario1Panel4, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_secundario1Panel4, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_secundario1Panel4, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_secundario1Panel4, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_secundario1Panel4, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(ui_secundario1Panel4, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_pactivaValD = lv_label_create(ui_secundario1Panel4);
-    lv_obj_set_width(ui_pactivaValD, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_pactivaValD, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_pactivaValD, -187);
-    lv_obj_set_y(ui_pactivaValD, 40);
-    lv_obj_set_align(ui_pactivaValD, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_pactivaValD, "510");
-    lv_obj_set_style_text_color(ui_pactivaValD, UI_COLOR_TEXT_INFO, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_pactivaValD, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-
+    ...
     ui_DateVal6 = lv_label_create(ui_secundario1Panel4);
-    lv_obj_set_width(ui_DateVal6, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_DateVal6, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_DateVal6, -187);
-    lv_obj_set_y(ui_DateVal6, 40);
-    lv_obj_set_align(ui_DateVal6, LV_ALIGN_CENTER);
     lv_label_set_text(ui_DateVal6, "W");
-    lv_obj_set_style_text_color(ui_DateVal6, UI_COLOR_TEXT_INFO, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_DateVal6, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    -- fin panel secundario W */
 
+    /* ============================================================
+     *  CUADRANTE 3 (↙): CORRIENTE - A
+     * ============================================================ */
     ui_valoresPanelVoltaje2 = lv_obj_create(ui_contentPanel3);
-    lv_obj_set_height(ui_valoresPanelVoltaje2, 148);
+    lv_obj_set_height(ui_valoresPanelVoltaje2, 90);
     lv_obj_set_flex_grow(ui_valoresPanelVoltaje2, 1);
-    lv_obj_set_x(ui_valoresPanelVoltaje2, 244);
-    lv_obj_set_y(ui_valoresPanelVoltaje2, 40);
     lv_obj_set_align(ui_valoresPanelVoltaje2, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_valoresPanelVoltaje2, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_flex_align(ui_valoresPanelVoltaje2, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_add_flag(ui_valoresPanelVoltaje2, LV_OBJ_FLAG_FLEX_IN_NEW_TRACK);     /// Flags
-    lv_obj_clear_flag(ui_valoresPanelVoltaje2, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_flex_flow(ui_valoresPanelVoltaje2, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(ui_valoresPanelVoltaje2, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_END, LV_FLEX_ALIGN_CENTER);
+    lv_obj_add_flag(ui_valoresPanelVoltaje2, LV_OBJ_FLAG_FLEX_IN_NEW_TRACK);
+    lv_obj_clear_flag(ui_valoresPanelVoltaje2, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_set_style_bg_color(ui_valoresPanelVoltaje2, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_valoresPanelVoltaje2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_color(ui_valoresPanelVoltaje2, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_valoresPanelVoltaje2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_outline_color(ui_valoresPanelVoltaje2, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_outline_opa(ui_valoresPanelVoltaje2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_column(ui_valoresPanelVoltaje2, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_secundario1Panel5 = lv_obj_create(ui_valoresPanelVoltaje2);
-    lv_obj_set_width(ui_secundario1Panel5, 220);
-    lv_obj_set_height(ui_secundario1Panel5, 47);
-    lv_obj_set_x(ui_secundario1Panel5, 76);
-    lv_obj_set_y(ui_secundario1Panel5, 37);
-    lv_obj_set_align(ui_secundario1Panel5, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_secundario1Panel5, LV_FLEX_FLOW_ROW_WRAP);
-    lv_obj_set_flex_align(ui_secundario1Panel5, LV_FLEX_ALIGN_SPACE_AROUND, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_secundario1Panel5, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_secundario1Panel5, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_secundario1Panel5, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_secundario1Panel5, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(ui_secundario1Panel5, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_CorrienteValD = lv_label_create(ui_valoresPanelVoltaje2);
+    lv_obj_set_width(ui_CorrienteValD, LV_SIZE_CONTENT);
+    lv_obj_set_height(ui_CorrienteValD, LV_SIZE_CONTENT);
+    lv_label_set_text(ui_CorrienteValD, "0.00");
+    lv_obj_set_style_text_color(ui_CorrienteValD, UI_COLOR_TEXT_ACTIVE, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_CorrienteValD, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_CorrienteValD, UI_FONT_DASH_VALUE, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_PotenciaValD = lv_label_create(ui_secundario1Panel5);
-    lv_obj_set_width(ui_PotenciaValD, 123);
-    lv_obj_set_height(ui_PotenciaValD, 43);
-    lv_obj_set_x(ui_PotenciaValD, 292);
-    lv_obj_set_y(ui_PotenciaValD, -52);
-    lv_obj_set_align(ui_PotenciaValD, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_PotenciaValD, "0.00");
-    lv_obj_set_style_text_color(ui_PotenciaValD, UI_COLOR_TEXT_LABEL, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_PotenciaValD, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_PotenciaValD, &ui_font_Qualy48, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_PotenciaLabel2 = lv_label_create(ui_secundario1Panel5);
-    lv_obj_set_width(ui_PotenciaLabel2, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_PotenciaLabel2, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_PotenciaLabel2, 427);
-    lv_obj_set_y(ui_PotenciaLabel2, -95);
-    lv_obj_set_align(ui_PotenciaLabel2, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_PotenciaLabel2, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_flex_align(ui_PotenciaLabel2, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
-    lv_label_set_text(ui_PotenciaLabel2, "PF");
+    ui_PotenciaLabel2 = lv_label_create(ui_valoresPanelVoltaje2);
+    lv_obj_set_width(ui_PotenciaLabel2, LV_SIZE_CONTENT);
+    lv_obj_set_height(ui_PotenciaLabel2, LV_SIZE_CONTENT);
+    lv_label_set_text(ui_PotenciaLabel2, "A");
     lv_obj_set_style_text_color(ui_PotenciaLabel2, UI_COLOR_TEXT_LABEL, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_PotenciaLabel2, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_PotenciaLabel2, UI_FONT_DASH_UNIT, LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    /* -- Panel secundario de Coseno/PF (COMENTADO para diseño simplificado) --
     ui_secundario1Panel7 = lv_obj_create(ui_valoresPanelVoltaje2);
-    lv_obj_set_width(ui_secundario1Panel7, 151);
-    lv_obj_set_height(ui_secundario1Panel7, 30);
-    lv_obj_set_x(ui_secundario1Panel7, 76);
-    lv_obj_set_y(ui_secundario1Panel7, 37);
-    lv_obj_set_flex_flow(ui_secundario1Panel7, LV_FLEX_FLOW_ROW);
-    lv_obj_set_flex_align(ui_secundario1Panel7, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_secundario1Panel7, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_secundario1Panel7, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_secundario1Panel7, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_secundario1Panel7, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(ui_secundario1Panel7, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-
+    ...
     ui_DateVal3 = lv_label_create(ui_secundario1Panel7);
-    lv_obj_set_width(ui_DateVal3, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_DateVal3, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_DateVal3, -187);
-    lv_obj_set_y(ui_DateVal3, 40);
-    lv_obj_set_align(ui_DateVal3, LV_ALIGN_CENTER);
     lv_label_set_text(ui_DateVal3, "(Coseno Φ)");
-    lv_obj_set_style_text_color(ui_DateVal3, UI_COLOR_TEXT_INFO, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_DateVal3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    -- fin panel secundario Coseno */
 
+    /* ============================================================
+     *  CUADRANTE 4 (↘): FRECUENCIA - Hz
+     * ============================================================ */
     ui_valoresPanelVoltaje4 = lv_obj_create(ui_contentPanel3);
-    lv_obj_set_height(ui_valoresPanelVoltaje4, 148);
+    lv_obj_set_height(ui_valoresPanelVoltaje4, 90);
     lv_obj_set_flex_grow(ui_valoresPanelVoltaje4, 1);
-    lv_obj_set_x(ui_valoresPanelVoltaje4, 244);
-    lv_obj_set_y(ui_valoresPanelVoltaje4, 40);
     lv_obj_set_align(ui_valoresPanelVoltaje4, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_valoresPanelVoltaje4, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_flex_align(ui_valoresPanelVoltaje4, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_valoresPanelVoltaje4, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_flex_flow(ui_valoresPanelVoltaje4, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(ui_valoresPanelVoltaje4, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_END, LV_FLEX_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_valoresPanelVoltaje4, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_set_style_bg_color(ui_valoresPanelVoltaje4, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_valoresPanelVoltaje4, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_color(ui_valoresPanelVoltaje4, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_valoresPanelVoltaje4, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_outline_color(ui_valoresPanelVoltaje4, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_outline_opa(ui_valoresPanelVoltaje4, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_column(ui_valoresPanelVoltaje4, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_secundario1Panel8 = lv_obj_create(ui_valoresPanelVoltaje4);
-    lv_obj_set_width(ui_secundario1Panel8, 220);
-    lv_obj_set_height(ui_secundario1Panel8, 47);
-    lv_obj_set_x(ui_secundario1Panel8, 76);
-    lv_obj_set_y(ui_secundario1Panel8, 37);
-    lv_obj_set_align(ui_secundario1Panel8, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_secundario1Panel8, LV_FLEX_FLOW_ROW_WRAP);
-    lv_obj_set_flex_align(ui_secundario1Panel8, LV_FLEX_ALIGN_SPACE_BETWEEN, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_secundario1Panel8, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_secundario1Panel8, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_secundario1Panel8, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_secundario1Panel8, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(ui_secundario1Panel8, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_frecuenciaValD = lv_label_create(ui_valoresPanelVoltaje4);
+    lv_obj_set_width(ui_frecuenciaValD, LV_SIZE_CONTENT);
+    lv_obj_set_height(ui_frecuenciaValD, LV_SIZE_CONTENT);
+    lv_label_set_text(ui_frecuenciaValD, "0.0");
+    lv_obj_set_style_text_color(ui_frecuenciaValD, UI_COLOR_TEXT_ACTIVE, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_frecuenciaValD, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_frecuenciaValD, UI_FONT_DASH_VALUE, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_energiaValD = lv_label_create(ui_secundario1Panel8);
-    lv_obj_set_width(ui_energiaValD, 119);
-    lv_obj_set_height(ui_energiaValD, 43);
-    lv_obj_set_x(ui_energiaValD, 292);
-    lv_obj_set_y(ui_energiaValD, -52);
-    lv_obj_set_align(ui_energiaValD, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_energiaValD, "0.00");
-    ui_object_set_themeable_style_property(ui_energiaValD, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
-                                           _ui_theme_color_Potencia);
-    ui_object_set_themeable_style_property(ui_energiaValD, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
-                                           _ui_theme_alpha_Potencia);
-    lv_obj_set_style_text_font(ui_energiaValD, &ui_font_Qualy48, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_PotenciaLabel4 = lv_label_create(ui_secundario1Panel8);
-    lv_obj_set_width(ui_PotenciaLabel4, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_PotenciaLabel4, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_PotenciaLabel4, 427);
-    lv_obj_set_y(ui_PotenciaLabel4, -95);
-    lv_obj_set_align(ui_PotenciaLabel4, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_PotenciaLabel4, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_flex_align(ui_PotenciaLabel4, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
-    lv_label_set_text(ui_PotenciaLabel4, "kWh");
+    ui_PotenciaLabel4 = lv_label_create(ui_valoresPanelVoltaje4);
+    lv_obj_set_width(ui_PotenciaLabel4, LV_SIZE_CONTENT);
+    lv_obj_set_height(ui_PotenciaLabel4, LV_SIZE_CONTENT);
+    lv_label_set_text(ui_PotenciaLabel4, "Hz");
     lv_obj_set_style_text_color(ui_PotenciaLabel4, UI_COLOR_TEXT_LABEL, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel4, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_PotenciaLabel4, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_PotenciaLabel4, UI_FONT_DASH_UNIT, LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    /* -- Panel secundario de Hoy/kWh (COMENTADO para diseño simplificado) --
     ui_secundario1Panel9 = lv_obj_create(ui_valoresPanelVoltaje4);
-    lv_obj_set_width(ui_secundario1Panel9, 151);
-    lv_obj_set_height(ui_secundario1Panel9, 30);
-    lv_obj_set_x(ui_secundario1Panel9, 76);
-    lv_obj_set_y(ui_secundario1Panel9, 37);
-    lv_obj_set_flex_flow(ui_secundario1Panel9, LV_FLEX_FLOW_ROW);
-    lv_obj_set_flex_align(ui_secundario1Panel9, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_secundario1Panel9, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_secundario1Panel9, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_secundario1Panel9, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_secundario1Panel9, UI_COLOR_BG, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(ui_secundario1Panel9, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-
+    ...
     ui_tiempoLabel = lv_label_create(ui_secundario1Panel9);
-    lv_obj_set_width(ui_tiempoLabel, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_tiempoLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_tiempoLabel, -187);
-    lv_obj_set_y(ui_tiempoLabel, 40);
-    lv_obj_set_align(ui_tiempoLabel, LV_ALIGN_CENTER);
     lv_label_set_text(ui_tiempoLabel, "(Hoy)");
-    lv_obj_set_style_text_color(ui_tiempoLabel, UI_COLOR_TEXT_INFO, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_tiempoLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    -- fin panel secundario Hoy */
+
 
     ui_navPanel2 = ui_navPanel_create(ui_dashboard);
     lv_obj_set_x(ui_navPanel2, 0);

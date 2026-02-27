@@ -98,7 +98,13 @@ void updateUI() {
     // VISTA 1: VOLTAJE (ui_voltaje)
     // ----------------------------------------------------
     if (ui_voltajeVal) {
-        lv_label_set_text_fmt(ui_voltajeVal, "%.1f", v_voltage);
+        int int_voltage = (int)v_voltage;
+        lv_label_set_text_fmt(ui_voltajeVal, "%d", int_voltage);
+        if (ui_voltajeDecimal) {
+            int dec_voltage = (int)((v_voltage - int_voltage) * 100);
+            if (dec_voltage < 0) dec_voltage = 0;
+            lv_label_set_text_fmt(ui_voltajeDecimal, ".%02d", dec_voltage);
+        }
     }
     if (ui_frecuencia) {
         lv_label_set_text_fmt(ui_frecuencia, "%.1f", v_frequency);
@@ -111,7 +117,13 @@ void updateUI() {
     // VISTA 2: CORRIENTE (ui_corriente)
     // ----------------------------------------------------
     if (ui_corrienteVal) {
-        lv_label_set_text_fmt(ui_corrienteVal, "%.3f", v_current);
+        int int_current = (int)v_current;
+        lv_label_set_text_fmt(ui_corrienteVal, "%d.", int_current); // Punto grande para corriente
+        if (ui_corrienteDecimal) {
+            int dec_current = (int)((v_current - int_current) * 100);
+            if (dec_current < 0) dec_current = 0;
+            lv_label_set_text_fmt(ui_corrienteDecimal, "%02d", dec_current); // Sin punto aquí
+        }
     }
     if (ui_pactivaVal) {
         lv_label_set_text_fmt(ui_pactivaVal, "%.1f", v_power);

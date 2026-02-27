@@ -18,6 +18,7 @@ extern lv_obj_t * ui_corriente;
 extern lv_obj_t * ui_contentPanel2;
 extern lv_obj_t * ui_valoresPanel1;
 extern lv_obj_t * ui_corrienteVal;
+extern lv_obj_t * ui_corrienteDecimal;
 extern lv_obj_t * ui_voltageLabel1;
 extern lv_obj_t * ui_extrasPanel1;
 extern lv_obj_t * ui_secundario1Panel1;

@@ -39,11 +39,14 @@
 
 /*--- Vistas 1 y 2: Voltaje / Corriente (lectura principal) ---*/
 
-/** Valor numérico principal grande (ej. "120.5") */
-#define UI_FONT_HERO_VALUE          (&ui_font_Qualy72)
+/** Parte entera del valor principal (ej. "120") — fuente grande */
+#define UI_FONT_HERO_INTEGER        (&ui_font_Qualy150)
 
-/** Etiqueta de unidad (ej. "V", "A") */
-#define UI_FONT_UNIT_LABEL          (&ui_font_Qualy24)
+/** Parte decimal del valor principal (ej. ".5") y etiqueta de unidad */
+#define UI_FONT_HERO_DECIMAL        (&ui_font_Qualy48)
+
+/** Etiqueta de unidad (ej. "V", "A") — mismo tamaño que decimales */
+#define UI_FONT_UNIT_LABEL          (&ui_font_Qualy48)
 
 /** Texto por defecto de la pantalla / secundarios */
 #define UI_FONT_SCREEN_DEFAULT      (&ui_font_Qualy24)
@@ -51,10 +54,10 @@
 /*--- Vista 3: Dashboard (4 cuadrantes) ---*/
 
 /** Valor numérico del dashboard (más pequeño que el hero) */
-#define UI_FONT_DASH_VALUE          (&ui_font_Qualy48)
+#define UI_FONT_DASH_VALUE          (&ui_font_Qualy96)
 
 /** Etiqueta de unidad en el dashboard */
-#define UI_FONT_DASH_UNIT           (&ui_font_Qualy24)
+#define UI_FONT_DASH_UNIT           (&ui_font_Qualy72)
 
 /*--- Vistas 4 y 5: Gráficas (statsWatts / voltageStats) ---*/
 

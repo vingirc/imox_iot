@@ -18,6 +18,7 @@ extern lv_obj_t * ui_voltaje;
 extern lv_obj_t * ui_contentPanel;
 extern lv_obj_t * ui_valoresPanel;
 extern lv_obj_t * ui_voltajeVal;
+extern lv_obj_t * ui_voltajeDecimal;
 extern lv_obj_t * ui_voltageLabel;
 extern lv_obj_t * ui_extrasPanel;
 extern lv_obj_t * ui_secundario1Panel;
