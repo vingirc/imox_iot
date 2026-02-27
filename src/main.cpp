@@ -143,7 +143,7 @@ void updateUI() {
     // VISTA 3: DASHBOARD (ui_dashboard)
     // ----------------------------------------------------
     if (ui_VoltajeValD) {
-        lv_label_set_text_fmt(ui_VoltajeValD, "%.1f", v_voltage);
+        lv_label_set_text_fmt(ui_VoltajeValD, "%.0f", v_voltage);
     }
     if (ui_CorrienteValD) {
         lv_label_set_text_fmt(ui_CorrienteValD, "%.2f", v_current);

@@ -89,7 +89,7 @@ void ui_dashboard_screen_init(void)
      *  CUADRANTE 1 (↖): VOLTAJE - V
      * ============================================================ */
     ui_valoresPanelVoltaje3 = lv_obj_create(ui_contentPanel3);
-    lv_obj_set_height(ui_valoresPanelVoltaje3, 90);
+    lv_obj_set_height(ui_valoresPanelVoltaje3, 140);
     lv_obj_set_flex_grow(ui_valoresPanelVoltaje3, 1);
     lv_obj_set_align(ui_valoresPanelVoltaje3, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(ui_valoresPanelVoltaje3, LV_FLEX_FLOW_ROW);
@@ -138,7 +138,7 @@ void ui_dashboard_screen_init(void)
      *  CUADRANTE 2 (↗): WATTS - W
      * ============================================================ */
     ui_valoresPanelVoltaje1 = lv_obj_create(ui_contentPanel3);
-    lv_obj_set_height(ui_valoresPanelVoltaje1, 90);
+    lv_obj_set_height(ui_valoresPanelVoltaje1, 140);
     lv_obj_set_flex_grow(ui_valoresPanelVoltaje1, 1);
     lv_obj_set_align(ui_valoresPanelVoltaje1, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(ui_valoresPanelVoltaje1, LV_FLEX_FLOW_ROW);
@@ -177,7 +177,7 @@ void ui_dashboard_screen_init(void)
      *  CUADRANTE 3 (↙): CORRIENTE - A
      * ============================================================ */
     ui_valoresPanelVoltaje2 = lv_obj_create(ui_contentPanel3);
-    lv_obj_set_height(ui_valoresPanelVoltaje2, 90);
+    lv_obj_set_height(ui_valoresPanelVoltaje2, 140);
     lv_obj_set_flex_grow(ui_valoresPanelVoltaje2, 1);
     lv_obj_set_align(ui_valoresPanelVoltaje2, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(ui_valoresPanelVoltaje2, LV_FLEX_FLOW_ROW);
@@ -217,7 +217,7 @@ void ui_dashboard_screen_init(void)
      *  CUADRANTE 4 (↘): FRECUENCIA - Hz
      * ============================================================ */
     ui_valoresPanelVoltaje4 = lv_obj_create(ui_contentPanel3);
-    lv_obj_set_height(ui_valoresPanelVoltaje4, 90);
+    lv_obj_set_height(ui_valoresPanelVoltaje4, 140);
     lv_obj_set_flex_grow(ui_valoresPanelVoltaje4, 1);
     lv_obj_set_align(ui_valoresPanelVoltaje4, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(ui_valoresPanelVoltaje4, LV_FLEX_FLOW_ROW);

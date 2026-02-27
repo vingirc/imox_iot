@@ -58,6 +58,8 @@ LV_FONT_DECLARE(ui_font_Qualy150);
 LV_FONT_DECLARE(ui_font_Qualy200);
 LV_FONT_DECLARE(ui_font_Qualy114);
 LV_FONT_DECLARE(ui_font_Qualy180);
+LV_FONT_DECLARE(ui_font_Qualy82);
+LV_FONT_DECLARE(ui_font_Qualy90);
 
 // GLOBALS (configuración centralizada)
 #include "ui_globals.h"

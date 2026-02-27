@@ -54,10 +54,10 @@
 /*--- Vista 3: Dashboard (4 cuadrantes) ---*/
 
 /** Valor numérico del dashboard (más pequeño que el hero) */
-#define UI_FONT_DASH_VALUE          (&ui_font_Qualy96)
+#define UI_FONT_DASH_VALUE          (&ui_font_Qualy82)
 
 /** Etiqueta de unidad en el dashboard */
-#define UI_FONT_DASH_UNIT           (&ui_font_Qualy72)
+#define UI_FONT_DASH_UNIT           (&ui_font_Qualy48)
 
 /*--- Vistas 4 y 5: Gráficas (statsWatts / voltageStats) ---*/
 
