@@ -35,24 +35,26 @@ void ui_init(void)
     lv_theme_t * theme = lv_theme_default_init(dispp, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED),
                                                true, LV_FONT_DEFAULT);
     lv_disp_set_theme(dispp, theme);
-    ui_voltaje_screen_init();
     ui_corriente_screen_init();
+    ui_diagnostic_screen_init();
+    ui_voltageStats_screen_init();
     ui_dashboard_screen_init();
     ui_Modo_Diario_24hrs_screen_init();
     ui_statsWatts_screen_init();
-    ui_voltageStats_screen_init();
-    ui_diagnostic_screen_init();
+    ui_config_screen_init();
+    ui_voltaje_screen_init();
     ui____initial_actions0 = lv_obj_create(NULL);
-    lv_disp_load_scr(ui_voltaje);
+    lv_disp_load_scr(ui_corriente);
 }
 
 void ui_destroy(void)
 {
-    ui_voltaje_screen_destroy();
     ui_corriente_screen_destroy();
+    ui_diagnostic_screen_destroy();
+    ui_voltageStats_screen_destroy();
     ui_dashboard_screen_destroy();
     ui_Modo_Diario_24hrs_screen_destroy();
     ui_statsWatts_screen_destroy();
-    ui_voltageStats_screen_destroy();
-    ui_diagnostic_screen_destroy();
+    ui_config_screen_destroy();
+    ui_voltaje_screen_destroy();
 }

@@ -53,7 +53,7 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_label_set_text(ui_PotenciaLabel6, "Consumo diario (24) horas");
     lv_obj_set_style_text_color(ui_PotenciaLabel6, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel6, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_PotenciaLabel6, &ui_font_Unidades, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_PotenciaLabel6, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_PotenciaLabel7 = lv_label_create(ui_Modo_Diario_24hrs);
     lv_obj_set_width(ui_PotenciaLabel7, LV_SIZE_CONTENT);   /// 1
@@ -66,7 +66,7 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_label_set_text(ui_PotenciaLabel7, "▲ 650W");
     lv_obj_set_style_text_color(ui_PotenciaLabel7, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel7, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_PotenciaLabel7, &ui_font_Unidades, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_PotenciaLabel7, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_valoresPanel2 = lv_obj_create(ui_Modo_Diario_24hrs);
     lv_obj_set_width(ui_valoresPanel2, 479);
@@ -124,7 +124,7 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_label_set_text(ui_PotenciaLabel5, "0");
     lv_obj_set_style_text_color(ui_PotenciaLabel5, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel5, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_PotenciaLabel5, &ui_font_Unidades, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_PotenciaLabel5, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_PotenciaLabel8 = lv_label_create(ui_Modo_Diario_24hrs);
     lv_obj_set_width(ui_PotenciaLabel8, LV_SIZE_CONTENT);   /// 1
@@ -137,7 +137,7 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_label_set_text(ui_PotenciaLabel8, "4");
     lv_obj_set_style_text_color(ui_PotenciaLabel8, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel8, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_PotenciaLabel8, &ui_font_Unidades, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_PotenciaLabel8, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_PotenciaLabel9 = lv_label_create(ui_Modo_Diario_24hrs);
     lv_obj_set_width(ui_PotenciaLabel9, LV_SIZE_CONTENT);   /// 1
@@ -150,7 +150,7 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_label_set_text(ui_PotenciaLabel9, "8");
     lv_obj_set_style_text_color(ui_PotenciaLabel9, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel9, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_PotenciaLabel9, &ui_font_Unidades, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_PotenciaLabel9, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_PotenciaLabel10 = lv_label_create(ui_Modo_Diario_24hrs);
     lv_obj_set_width(ui_PotenciaLabel10, LV_SIZE_CONTENT);   /// 1
@@ -163,7 +163,7 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_label_set_text(ui_PotenciaLabel10, "12");
     lv_obj_set_style_text_color(ui_PotenciaLabel10, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel10, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_PotenciaLabel10, &ui_font_Unidades, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_PotenciaLabel10, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_PotenciaLabel11 = lv_label_create(ui_Modo_Diario_24hrs);
     lv_obj_set_width(ui_PotenciaLabel11, LV_SIZE_CONTENT);   /// 1
@@ -176,7 +176,7 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_label_set_text(ui_PotenciaLabel11, "24");
     lv_obj_set_style_text_color(ui_PotenciaLabel11, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel11, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_PotenciaLabel11, &ui_font_Unidades, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_PotenciaLabel11, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_PotenciaLabel12 = lv_label_create(ui_Modo_Diario_24hrs);
     lv_obj_set_width(ui_PotenciaLabel12, LV_SIZE_CONTENT);   /// 1
@@ -189,7 +189,7 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_label_set_text(ui_PotenciaLabel12, "16");
     lv_obj_set_style_text_color(ui_PotenciaLabel12, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel12, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_PotenciaLabel12, &ui_font_Unidades, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_PotenciaLabel12, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_PotenciaLabel13 = lv_label_create(ui_Modo_Diario_24hrs);
     lv_obj_set_width(ui_PotenciaLabel13, LV_SIZE_CONTENT);   /// 1
@@ -202,7 +202,7 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_label_set_text(ui_PotenciaLabel13, "20");
     lv_obj_set_style_text_color(ui_PotenciaLabel13, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel13, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_PotenciaLabel13, &ui_font_Unidades, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_PotenciaLabel13, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_PotenciaLabel14 = lv_label_create(ui_Modo_Diario_24hrs);
     lv_obj_set_width(ui_PotenciaLabel14, LV_SIZE_CONTENT);   /// 1
@@ -215,7 +215,7 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_label_set_text(ui_PotenciaLabel14, "Desliza");
     lv_obj_set_style_text_color(ui_PotenciaLabel14, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel14, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_PotenciaLabel14, &ui_font_Micro_text, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_PotenciaLabel14, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_valoresPanel4 = lv_obj_create(ui_Modo_Diario_24hrs);
     lv_obj_set_width(ui_valoresPanel4, 17);
@@ -413,7 +413,7 @@ void ui_Modo_Diario_24hrs_screen_init(void)
     lv_label_set_text(ui_PotenciaLabel15, "	  Cambiar\nDiario/Mensual");
     lv_obj_set_style_text_color(ui_PotenciaLabel15, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel15, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_PotenciaLabel15, &ui_font_Micro_text, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_PotenciaLabel15, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
 }
 

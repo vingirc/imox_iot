@@ -64,6 +64,10 @@ void ui_event_diagnostic(lv_event_t * e)
         lv_indev_wait_release(lv_indev_get_act());
         _ui_screen_change(&ui_voltaje, LV_SCR_LOAD_ANIM_MOVE_LEFT, 200, 0, &ui_voltaje_screen_init);
     }
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_TOP) {
+        lv_indev_wait_release(lv_indev_get_act());
+        _ui_screen_change(&ui_config, LV_SCR_LOAD_ANIM_FADE_ON, 200, 0, &ui_config_screen_init);
+    }
 }
 
 // build funtions
@@ -80,7 +84,7 @@ void ui_diagnostic_screen_init(void)
     lv_obj_set_style_border_opa(ui_diagnostic, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui_diagnostic, lv_color_hex(0x606060), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_diagnostic, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_diagnostic, &ui_font_Secondary_info, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_diagnostic, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_contentPanel9 = lv_obj_create(ui_diagnostic);
     lv_obj_set_height(ui_contentPanel9, 237);
@@ -120,7 +124,7 @@ void ui_diagnostic_screen_init(void)
     lv_label_set_text(ui_redLabel, "RED");
     lv_obj_set_style_text_color(ui_redLabel, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_redLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_redLabel, &ui_font_diagTitle, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_redLabel, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_sectionPanel = lv_obj_create(ui_redPanel);
     lv_obj_set_height(ui_sectionPanel, 68);
@@ -168,7 +172,7 @@ void ui_diagnostic_screen_init(void)
     lv_label_set_text(ui_elementLabel, "IP Local");
     lv_obj_set_style_text_color(ui_elementLabel, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_elementLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_elementLabel, &ui_font_diagElem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_elementLabel, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_elementSep = lv_label_create(ui_ipPanel);
     lv_obj_set_width(ui_elementSep, LV_SIZE_CONTENT);   /// 1
@@ -178,7 +182,7 @@ void ui_diagnostic_screen_init(void)
     lv_obj_add_flag(ui_elementSep, LV_OBJ_FLAG_FLEX_IN_NEW_TRACK);     /// Flags
     lv_obj_set_style_text_color(ui_elementSep, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_elementSep, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_elementSep, &ui_font_diagElem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_elementSep, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_elementVal = lv_label_create(ui_ipPanel);
     lv_obj_set_width(ui_elementVal, LV_SIZE_CONTENT);   /// 1
@@ -188,7 +192,7 @@ void ui_diagnostic_screen_init(void)
     lv_obj_add_flag(ui_elementVal, LV_OBJ_FLAG_FLEX_IN_NEW_TRACK);     /// Flags
     lv_obj_set_style_text_color(ui_elementVal, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_elementVal, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_elementVal, &ui_font_diagElem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_elementVal, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_rssiPanel = lv_obj_create(ui_sectionPanel);
     lv_obj_set_height(ui_rssiPanel, 25);
@@ -213,7 +217,7 @@ void ui_diagnostic_screen_init(void)
     lv_label_set_text(ui_elementLabel1, "RSSI");
     lv_obj_set_style_text_color(ui_elementLabel1, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_elementLabel1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_elementLabel1, &ui_font_diagElem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_elementLabel1, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_elementSep1 = lv_label_create(ui_rssiPanel);
     lv_obj_set_width(ui_elementSep1, LV_SIZE_CONTENT);   /// 1
@@ -223,7 +227,7 @@ void ui_diagnostic_screen_init(void)
     lv_obj_add_flag(ui_elementSep1, LV_OBJ_FLAG_FLEX_IN_NEW_TRACK);     /// Flags
     lv_obj_set_style_text_color(ui_elementSep1, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_elementSep1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_elementSep1, &ui_font_diagElem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_elementSep1, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_elementVal1 = lv_label_create(ui_rssiPanel);
     lv_obj_set_width(ui_elementVal1, LV_SIZE_CONTENT);   /// 1
@@ -233,7 +237,7 @@ void ui_diagnostic_screen_init(void)
     lv_obj_add_flag(ui_elementVal1, LV_OBJ_FLAG_FLEX_IN_NEW_TRACK);     /// Flags
     lv_obj_set_style_text_color(ui_elementVal1, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_elementVal1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_elementVal1, &ui_font_diagElem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_elementVal1, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_elementVal2 = lv_label_create(ui_rssiPanel);
     lv_obj_set_width(ui_elementVal2, LV_SIZE_CONTENT);   /// 1
@@ -243,7 +247,7 @@ void ui_diagnostic_screen_init(void)
     lv_obj_add_flag(ui_elementVal2, LV_OBJ_FLAG_FLEX_IN_NEW_TRACK);     /// Flags
     lv_obj_set_style_text_color(ui_elementVal2, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_elementVal2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_elementVal2, &ui_font_diagElem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_elementVal2, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_rssiBar = lv_bar_create(ui_rssiPanel);
     lv_bar_set_value(ui_rssiBar, 25, LV_ANIM_OFF);
@@ -276,7 +280,7 @@ void ui_diagnostic_screen_init(void)
     lv_label_set_text(ui_elementLabel2, "Uptime");
     lv_obj_set_style_text_color(ui_elementLabel2, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_elementLabel2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_elementLabel2, &ui_font_diagElem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_elementLabel2, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_elementSep2 = lv_label_create(ui_uptimePanel);
     lv_obj_set_width(ui_elementSep2, LV_SIZE_CONTENT);   /// 1
@@ -286,7 +290,7 @@ void ui_diagnostic_screen_init(void)
     lv_obj_add_flag(ui_elementSep2, LV_OBJ_FLAG_FLEX_IN_NEW_TRACK);     /// Flags
     lv_obj_set_style_text_color(ui_elementSep2, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_elementSep2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_elementSep2, &ui_font_diagElem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_elementSep2, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_elementVal3 = lv_label_create(ui_uptimePanel);
     lv_obj_set_width(ui_elementVal3, LV_SIZE_CONTENT);   /// 1
@@ -296,7 +300,7 @@ void ui_diagnostic_screen_init(void)
     lv_obj_add_flag(ui_elementVal3, LV_OBJ_FLAG_FLEX_IN_NEW_TRACK);     /// Flags
     lv_obj_set_style_text_color(ui_elementVal3, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_elementVal3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_elementVal3, &ui_font_diagElem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_elementVal3, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_cloudPanel = lv_obj_create(ui_contentPanel9);
     lv_obj_set_width(ui_cloudPanel, 285);
@@ -321,7 +325,7 @@ void ui_diagnostic_screen_init(void)
     lv_label_set_text(ui_cloudLabel, "CLOUD");
     lv_obj_set_style_text_color(ui_cloudLabel, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_cloudLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_cloudLabel, &ui_font_diagTitle, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_cloudLabel, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_sectionPanel1 = lv_obj_create(ui_cloudPanel);
     lv_obj_set_height(ui_sectionPanel1, 68);
@@ -369,7 +373,7 @@ void ui_diagnostic_screen_init(void)
     lv_label_set_text(ui_elementLabel3, "MQTT Broker");
     lv_obj_set_style_text_color(ui_elementLabel3, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_elementLabel3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_elementLabel3, &ui_font_diagElem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_elementLabel3, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_elementSep3 = lv_label_create(ui_mqttPanel);
     lv_obj_set_width(ui_elementSep3, LV_SIZE_CONTENT);   /// 1
@@ -379,7 +383,7 @@ void ui_diagnostic_screen_init(void)
     lv_obj_add_flag(ui_elementSep3, LV_OBJ_FLAG_FLEX_IN_NEW_TRACK);     /// Flags
     lv_obj_set_style_text_color(ui_elementSep3, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_elementSep3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_elementSep3, &ui_font_diagElem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_elementSep3, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_elementVal4 = lv_label_create(ui_mqttPanel);
     lv_obj_set_width(ui_elementVal4, LV_SIZE_CONTENT);   /// 1
@@ -389,7 +393,7 @@ void ui_diagnostic_screen_init(void)
     lv_obj_add_flag(ui_elementVal4, LV_OBJ_FLAG_FLEX_IN_NEW_TRACK);     /// Flags
     lv_obj_set_style_text_color(ui_elementVal4, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_elementVal4, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_elementVal4, &ui_font_diagElem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_elementVal4, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_syncPanel = lv_obj_create(ui_sectionPanel1);
     lv_obj_set_height(ui_syncPanel, 25);
@@ -414,7 +418,7 @@ void ui_diagnostic_screen_init(void)
     lv_label_set_text(ui_elementLabel5, "Last Sync");
     lv_obj_set_style_text_color(ui_elementLabel5, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_elementLabel5, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_elementLabel5, &ui_font_diagElem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_elementLabel5, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_elementSep5 = lv_label_create(ui_syncPanel);
     lv_obj_set_width(ui_elementSep5, LV_SIZE_CONTENT);   /// 1
@@ -424,7 +428,7 @@ void ui_diagnostic_screen_init(void)
     lv_obj_add_flag(ui_elementSep5, LV_OBJ_FLAG_FLEX_IN_NEW_TRACK);     /// Flags
     lv_obj_set_style_text_color(ui_elementSep5, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_elementSep5, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_elementSep5, &ui_font_diagElem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_elementSep5, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_elementVal7 = lv_label_create(ui_syncPanel);
     lv_obj_set_width(ui_elementVal7, LV_SIZE_CONTENT);   /// 1
@@ -434,7 +438,7 @@ void ui_diagnostic_screen_init(void)
     lv_obj_add_flag(ui_elementVal7, LV_OBJ_FLAG_FLEX_IN_NEW_TRACK);     /// Flags
     lv_obj_set_style_text_color(ui_elementVal7, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_elementVal7, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_elementVal7, &ui_font_diagElem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_elementVal7, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_hardPanel = lv_obj_create(ui_contentPanel9);
     lv_obj_set_width(ui_hardPanel, 277);
@@ -460,7 +464,7 @@ void ui_diagnostic_screen_init(void)
     lv_label_set_text(ui_hardLabel, "HARDWARE");
     lv_obj_set_style_text_color(ui_hardLabel, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_hardLabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_hardLabel, &ui_font_diagTitle, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_hardLabel, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_sectionPanel2 = lv_obj_create(ui_hardPanel);
     lv_obj_set_height(ui_sectionPanel2, 68);
@@ -508,7 +512,7 @@ void ui_diagnostic_screen_init(void)
     lv_label_set_text(ui_elementLabel4, "MAC Address");
     lv_obj_set_style_text_color(ui_elementLabel4, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_elementLabel4, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_elementLabel4, &ui_font_diagElem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_elementLabel4, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_elementSep4 = lv_label_create(ui_macPanel);
     lv_obj_set_width(ui_elementSep4, LV_SIZE_CONTENT);   /// 1
@@ -518,7 +522,7 @@ void ui_diagnostic_screen_init(void)
     lv_obj_add_flag(ui_elementSep4, LV_OBJ_FLAG_FLEX_IN_NEW_TRACK);     /// Flags
     lv_obj_set_style_text_color(ui_elementSep4, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_elementSep4, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_elementSep4, &ui_font_diagElem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_elementSep4, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_elementVal5 = lv_label_create(ui_macPanel);
     lv_obj_set_width(ui_elementVal5, LV_SIZE_CONTENT);   /// 1
@@ -528,7 +532,7 @@ void ui_diagnostic_screen_init(void)
     lv_obj_add_flag(ui_elementVal5, LV_OBJ_FLAG_FLEX_IN_NEW_TRACK);     /// Flags
     lv_obj_set_style_text_color(ui_elementVal5, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_elementVal5, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_elementVal5, &ui_font_diagElem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_elementVal5, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_pzemPanel = lv_obj_create(ui_sectionPanel2);
     lv_obj_set_height(ui_pzemPanel, 25);
@@ -553,7 +557,7 @@ void ui_diagnostic_screen_init(void)
     lv_label_set_text(ui_elementLabel6, "PZEM Status");
     lv_obj_set_style_text_color(ui_elementLabel6, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_elementLabel6, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_elementLabel6, &ui_font_diagElem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_elementLabel6, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_elementSep6 = lv_label_create(ui_pzemPanel);
     lv_obj_set_width(ui_elementSep6, LV_SIZE_CONTENT);   /// 1
@@ -563,7 +567,7 @@ void ui_diagnostic_screen_init(void)
     lv_obj_add_flag(ui_elementSep6, LV_OBJ_FLAG_FLEX_IN_NEW_TRACK);     /// Flags
     lv_obj_set_style_text_color(ui_elementSep6, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_elementSep6, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_elementSep6, &ui_font_diagElem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_elementSep6, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_elementVal6 = lv_label_create(ui_pzemPanel);
     lv_obj_set_width(ui_elementVal6, LV_SIZE_CONTENT);   /// 1
@@ -573,7 +577,7 @@ void ui_diagnostic_screen_init(void)
     lv_obj_add_flag(ui_elementVal6, LV_OBJ_FLAG_FLEX_IN_NEW_TRACK);     /// Flags
     lv_obj_set_style_text_color(ui_elementVal6, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_elementVal6, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_elementVal6, &ui_font_diagElem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_elementVal6, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_heapPanel = lv_obj_create(ui_sectionPanel2);
     lv_obj_set_height(ui_heapPanel, 25);
@@ -598,7 +602,7 @@ void ui_diagnostic_screen_init(void)
     lv_label_set_text(ui_elementLabel7, "Free Heap");
     lv_obj_set_style_text_color(ui_elementLabel7, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_elementLabel7, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_elementLabel7, &ui_font_diagElem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_elementLabel7, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_elementSep7 = lv_label_create(ui_heapPanel);
     lv_obj_set_width(ui_elementSep7, LV_SIZE_CONTENT);   /// 1
@@ -608,7 +612,7 @@ void ui_diagnostic_screen_init(void)
     lv_obj_add_flag(ui_elementSep7, LV_OBJ_FLAG_FLEX_IN_NEW_TRACK);     /// Flags
     lv_obj_set_style_text_color(ui_elementSep7, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_elementSep7, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_elementSep7, &ui_font_diagElem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_elementSep7, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_elementVal8 = lv_label_create(ui_heapPanel);
     lv_obj_set_width(ui_elementVal8, LV_SIZE_CONTENT);   /// 1
@@ -618,7 +622,7 @@ void ui_diagnostic_screen_init(void)
     lv_obj_add_flag(ui_elementVal8, LV_OBJ_FLAG_FLEX_IN_NEW_TRACK);     /// Flags
     lv_obj_set_style_text_color(ui_elementVal8, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_elementVal8, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_elementVal8, &ui_font_diagElem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_elementVal8, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_navPanel7 = ui_navPanel_create(ui_diagnostic);
     lv_obj_set_x(ui_navPanel7, 0);

@@ -31,6 +31,10 @@ void ui_event_corriente(lv_event_t * e)
         lv_indev_wait_release(lv_indev_get_act());
         _ui_screen_change(&ui_dashboard, LV_SCR_LOAD_ANIM_MOVE_LEFT, 200, 0, &ui_dashboard_screen_init);
     }
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_TOP) {
+        lv_indev_wait_release(lv_indev_get_act());
+        _ui_screen_change(&ui_config, LV_SCR_LOAD_ANIM_MOVE_TOP, 200, 0, &ui_config_screen_init);
+    }
 }
 
 // build funtions
@@ -47,7 +51,7 @@ void ui_corriente_screen_init(void)
     lv_obj_set_style_border_opa(ui_corriente, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui_corriente, lv_color_hex(0x606060), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_corriente, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_corriente, &ui_font_Secondary_info, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_corriente, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_contentPanel2 = lv_obj_create(ui_corriente);
     lv_obj_set_width(ui_contentPanel2, 513);
@@ -94,7 +98,7 @@ void ui_corriente_screen_init(void)
                                            _ui_theme_color_Corriente);
     ui_object_set_themeable_style_property(ui_corrienteVal, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
                                            _ui_theme_alpha_Corriente);
-    lv_obj_set_style_text_font(ui_corrienteVal, &ui_font_Valores, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_corrienteVal, &ui_font_Qualy72, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_voltageLabel1 = lv_label_create(ui_valoresPanel1);
     lv_obj_set_width(ui_voltageLabel1, LV_SIZE_CONTENT);   /// 1
@@ -107,7 +111,7 @@ void ui_corriente_screen_init(void)
     lv_label_set_text(ui_voltageLabel1, "A");
     lv_obj_set_style_text_color(ui_voltageLabel1, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_voltageLabel1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_voltageLabel1, &ui_font_Unidades, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_voltageLabel1, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_extrasPanel1 = lv_obj_create(ui_contentPanel2);
     lv_obj_set_height(ui_extrasPanel1, 25);

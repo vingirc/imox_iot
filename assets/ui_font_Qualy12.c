@@ -1,16 +1,16 @@
 /*******************************************************************************
  * Size: 12 px
  * Bpp: 1
- * Opts: --bpp 1 --size 12 --font C:/Users/irvin/OneDrive/Documentos/tareas8/imox_square-line_ui/assets/Qualy Bold.ttf -o C:/Users/irvin/OneDrive/Documentos/tareas8/imox_square-line_ui/assets\ui_font_diagElem.c --format lvgl -r 0x20-0x7f --no-compress --no-prefilter
+ * Opts: --bpp 1 --size 12 --font C:/Users/irvin/OneDrive/Documentos/tareas8/imox_square-line_ui/assets/Qualy Bold.ttf -o C:/Users/irvin/OneDrive/Documentos/tareas8/imox_square-line_ui/assets\ui_font_Qualy12.c --format lvgl -r 0x20-0x7f --no-compress --no-prefilter
  ******************************************************************************/
 
 #include "../ui.h"
 
-#ifndef UI_FONT_DIAGELEM
-#define UI_FONT_DIAGELEM 1
+#ifndef UI_FONT_QUALY12
+#define UI_FONT_QUALY12 1
 #endif
 
-#if UI_FONT_DIAGELEM
+#if UI_FONT_QUALY12
 
 /*-----------------
  *    BITMAPS
@@ -481,9 +481,9 @@ static lv_font_fmt_txt_dsc_t font_dsc = {
 
 /*Initialize a public general font descriptor*/
 #if LVGL_VERSION_MAJOR >= 8
-const lv_font_t ui_font_diagElem = {
+const lv_font_t ui_font_Qualy12 = {
 #else
-lv_font_t ui_font_diagElem = {
+lv_font_t ui_font_Qualy12 = {
 #endif
     .get_glyph_dsc = lv_font_get_glyph_dsc_fmt_txt,    /*Function pointer to get glyph's data*/
     .get_glyph_bitmap = lv_font_get_bitmap_fmt_txt,    /*Function pointer to get glyph's bitmap*/
@@ -505,5 +505,5 @@ lv_font_t ui_font_diagElem = {
 
 
 
-#endif /*#if UI_FONT_DIAGELEM*/
+#endif /*#if UI_FONT_QUALY12*/
 

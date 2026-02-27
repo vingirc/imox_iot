@@ -27,6 +27,14 @@ void ui_event_statsWatts(lv_event_t * e)
         lv_indev_wait_release(lv_indev_get_act());
         _ui_screen_change(&ui_voltageStats, LV_SCR_LOAD_ANIM_MOVE_LEFT, 200, 0, &ui_voltageStats_screen_init);
     }
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_TOP) {
+        lv_indev_wait_release(lv_indev_get_act());
+        _ui_screen_change(&ui_config, LV_SCR_LOAD_ANIM_MOVE_TOP, 200, 0, &ui_config_screen_init);
+    }
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_BOTTOM) {
+        lv_indev_wait_release(lv_indev_get_act());
+        statsWattsChange(e);
+    }
 }
 
 // build funtions
@@ -43,7 +51,7 @@ void ui_statsWatts_screen_init(void)
     lv_obj_set_style_border_opa(ui_statsWatts, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui_statsWatts, lv_color_hex(0x606060), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_statsWatts, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_statsWatts, &ui_font_Secondary_info, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_statsWatts, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_contentPanel1 = lv_obj_create(ui_statsWatts);
     lv_obj_set_height(ui_contentPanel1, 200);
@@ -59,7 +67,7 @@ void ui_statsWatts_screen_init(void)
     lv_obj_set_style_border_opa(ui_contentPanel1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_outline_color(ui_contentPanel1, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_outline_opa(ui_contentPanel1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_contentPanel1, &ui_font_Secondary_info, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_contentPanel1, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_contentPanel4 = lv_obj_create(ui_contentPanel1);
     lv_obj_set_height(ui_contentPanel4, 37);
@@ -87,7 +95,7 @@ void ui_statsWatts_screen_init(void)
     lv_label_set_text(ui_PotenciaLabel16, "Consumo semanal");
     lv_obj_set_style_text_color(ui_PotenciaLabel16, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel16, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_PotenciaLabel16, &ui_font_Unidades, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_PotenciaLabel16, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_contentPanel5 = lv_obj_create(ui_contentPanel4);
     lv_obj_set_height(ui_contentPanel5, LV_SIZE_CONTENT);    /// 200
@@ -115,7 +123,7 @@ void ui_statsWatts_screen_init(void)
     lv_label_set_text(ui_wattsVal, "0");
     lv_obj_set_style_text_color(ui_wattsVal, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_wattsVal, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_wattsVal, &ui_font_Unidades, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_wattsVal, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_PotenciaLabel21 = lv_label_create(ui_contentPanel5);
     lv_obj_set_width(ui_PotenciaLabel21, LV_SIZE_CONTENT);   /// 1
@@ -128,7 +136,7 @@ void ui_statsWatts_screen_init(void)
     lv_label_set_text(ui_PotenciaLabel21, "W");
     lv_obj_set_style_text_color(ui_PotenciaLabel21, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel21, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_PotenciaLabel21, &ui_font_Unidades, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_PotenciaLabel21, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_wattsChart = lv_chart_create(ui_contentPanel1);
     lv_obj_set_width(ui_wattsChart, lv_pct(80));

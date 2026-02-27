@@ -31,13 +31,27 @@ extern "C" {
 
 ///////////////////// SCREENS ////////////////////
 
-#include "screens/ui_voltaje.h"
 #include "screens/ui_corriente.h"
+#include "screens/ui_diagnostic.h"
+#include "screens/ui_voltageStats.h"
 #include "screens/ui_dashboard.h"
 #include "screens/ui_Modo_Diario_24hrs.h"
 #include "screens/ui_statsWatts.h"
-#include "screens/ui_voltageStats.h"
+#include "screens/ui_config.h"
+#include "screens/ui_voltaje.h"
+
+///////////////////// VARIABLES ////////////////////
+
+///////////////////// SCREENS ////////////////////
+
+#include "screens/ui_corriente.h"
 #include "screens/ui_diagnostic.h"
+#include "screens/ui_voltageStats.h"
+#include "screens/ui_dashboard.h"
+#include "screens/ui_Modo_Diario_24hrs.h"
+#include "screens/ui_statsWatts.h"
+#include "screens/ui_config.h"
+#include "screens/ui_voltaje.h"
 
 ///////////////////// VARIABLES ////////////////////
 
@@ -47,14 +61,17 @@ extern "C" {
 extern lv_obj_t * ui____initial_actions0;
 
 // FONTS
-LV_FONT_DECLARE(ui_font_diagElem);
-LV_FONT_DECLARE(ui_font_diagTitle);
-LV_FONT_DECLARE(ui_font_LecturaS);
-LV_FONT_DECLARE(ui_font_LecturaS48);
-LV_FONT_DECLARE(ui_font_Micro_text);
-LV_FONT_DECLARE(ui_font_Secondary_info);
-LV_FONT_DECLARE(ui_font_Unidades);
-LV_FONT_DECLARE(ui_font_Valores);
+LV_FONT_DECLARE(ui_font_Qualy12);
+LV_FONT_DECLARE(ui_font_Qualy14);
+LV_FONT_DECLARE(ui_font_Qualy24);
+LV_FONT_DECLARE(ui_font_Qualy28);
+LV_FONT_DECLARE(ui_font_Qualy48);
+LV_FONT_DECLARE(ui_font_Qualy72);
+LV_FONT_DECLARE(ui_font_Qualy96);
+LV_FONT_DECLARE(ui_font_Qualy150);
+LV_FONT_DECLARE(ui_font_Qualy200);
+LV_FONT_DECLARE(ui_font_Qualy114);
+LV_FONT_DECLARE(ui_font_Qualy180);
 
 // UI INIT
 void ui_init(void);

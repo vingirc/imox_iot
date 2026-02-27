@@ -12,10 +12,10 @@ lv_obj_t * ui_navPanel_create(lv_obj_t * comp_parent)
 
     lv_obj_t * cui_navPanel;
     cui_navPanel = lv_obj_create(comp_parent);
-    lv_obj_set_height(cui_navPanel, 25);
-    lv_obj_set_width(cui_navPanel, lv_pct(54));
+    lv_obj_set_height(cui_navPanel, 14);
+    lv_obj_set_width(cui_navPanel, lv_pct(25));
     lv_obj_set_x(cui_navPanel, 0);
-    lv_obj_set_y(cui_navPanel, 101);
+    lv_obj_set_y(cui_navPanel, 100);
     lv_obj_set_align(cui_navPanel, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(cui_navPanel, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(cui_navPanel, LV_FLEX_ALIGN_SPACE_BETWEEN, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
@@ -28,8 +28,8 @@ lv_obj_t * ui_navPanel_create(lv_obj_t * comp_parent)
 
     lv_obj_t * cui_circle1;
     cui_circle1 = lv_obj_create(cui_navPanel);
-    lv_obj_set_width(cui_circle1, 20);
-    lv_obj_set_height(cui_circle1, 20);
+    lv_obj_set_width(cui_circle1, 10);
+    lv_obj_set_height(cui_circle1, 10);
     lv_obj_set_align(cui_circle1, LV_ALIGN_CENTER);
     lv_obj_clear_flag(cui_circle1, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE |
                       LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE);     /// Flags
@@ -47,8 +47,8 @@ lv_obj_t * ui_navPanel_create(lv_obj_t * comp_parent)
 
     lv_obj_t * cui_circle2;
     cui_circle2 = lv_obj_create(cui_navPanel);
-    lv_obj_set_width(cui_circle2, 20);
-    lv_obj_set_height(cui_circle2, 20);
+    lv_obj_set_width(cui_circle2, 10);
+    lv_obj_set_height(cui_circle2, 10);
     lv_obj_set_align(cui_circle2, LV_ALIGN_CENTER);
     lv_obj_clear_flag(cui_circle2, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE |
                       LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE);     /// Flags
@@ -66,8 +66,8 @@ lv_obj_t * ui_navPanel_create(lv_obj_t * comp_parent)
 
     lv_obj_t * cui_circle3;
     cui_circle3 = lv_obj_create(cui_navPanel);
-    lv_obj_set_width(cui_circle3, 20);
-    lv_obj_set_height(cui_circle3, 20);
+    lv_obj_set_width(cui_circle3, 10);
+    lv_obj_set_height(cui_circle3, 10);
     lv_obj_set_align(cui_circle3, LV_ALIGN_CENTER);
     lv_obj_clear_flag(cui_circle3, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE |
                       LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE);     /// Flags
@@ -85,8 +85,8 @@ lv_obj_t * ui_navPanel_create(lv_obj_t * comp_parent)
 
     lv_obj_t * cui_circle4;
     cui_circle4 = lv_obj_create(cui_navPanel);
-    lv_obj_set_width(cui_circle4, 20);
-    lv_obj_set_height(cui_circle4, 20);
+    lv_obj_set_width(cui_circle4, 10);
+    lv_obj_set_height(cui_circle4, 10);
     lv_obj_set_align(cui_circle4, LV_ALIGN_CENTER);
     lv_obj_clear_flag(cui_circle4, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE |
                       LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE);     /// Flags
@@ -104,8 +104,8 @@ lv_obj_t * ui_navPanel_create(lv_obj_t * comp_parent)
 
     lv_obj_t * cui_circle5;
     cui_circle5 = lv_obj_create(cui_navPanel);
-    lv_obj_set_width(cui_circle5, 20);
-    lv_obj_set_height(cui_circle5, 20);
+    lv_obj_set_width(cui_circle5, 10);
+    lv_obj_set_height(cui_circle5, 10);
     lv_obj_set_align(cui_circle5, LV_ALIGN_CENTER);
     lv_obj_clear_flag(cui_circle5, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE |
                       LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE);     /// Flags
@@ -123,8 +123,8 @@ lv_obj_t * ui_navPanel_create(lv_obj_t * comp_parent)
 
     lv_obj_t * cui_circle6;
     cui_circle6 = lv_obj_create(cui_navPanel);
-    lv_obj_set_width(cui_circle6, 20);
-    lv_obj_set_height(cui_circle6, 20);
+    lv_obj_set_width(cui_circle6, 10);
+    lv_obj_set_height(cui_circle6, 10);
     lv_obj_set_align(cui_circle6, LV_ALIGN_CENTER);
     lv_obj_clear_flag(cui_circle6, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE |
                       LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE);     /// Flags

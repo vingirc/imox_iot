@@ -48,6 +48,10 @@ void ui_event_dashboard(lv_event_t * e)
         lv_indev_wait_release(lv_indev_get_act());
         _ui_screen_change(&ui_statsWatts, LV_SCR_LOAD_ANIM_MOVE_LEFT, 200, 0, &ui_statsWatts_screen_init);
     }
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_TOP) {
+        lv_indev_wait_release(lv_indev_get_act());
+        _ui_screen_change(&ui_config, LV_SCR_LOAD_ANIM_MOVE_TOP, 200, 0, &ui_config_screen_init);
+    }
 }
 
 // build funtions
@@ -64,7 +68,7 @@ void ui_dashboard_screen_init(void)
     lv_obj_set_style_border_opa(ui_dashboard, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui_dashboard, lv_color_hex(0x606060), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_dashboard, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_dashboard, &ui_font_Secondary_info, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_dashboard, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_contentPanel3 = lv_obj_create(ui_dashboard);
     lv_obj_set_height(ui_contentPanel3, 192);
@@ -121,7 +125,7 @@ void ui_dashboard_screen_init(void)
                                            _ui_theme_color_Voltaje);
     ui_object_set_themeable_style_property(ui_VoltajeValD, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
                                            _ui_theme_alpha_Voltaje);
-    lv_obj_set_style_text_font(ui_VoltajeValD, &ui_font_LecturaS48, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_VoltajeValD, &ui_font_Qualy48, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_PotenciaLabel3 = lv_label_create(ui_secundario1Panel6);
     lv_obj_set_width(ui_PotenciaLabel3, LV_SIZE_CONTENT);   /// 1
@@ -134,7 +138,7 @@ void ui_dashboard_screen_init(void)
     lv_label_set_text(ui_PotenciaLabel3, "V");
     lv_obj_set_style_text_color(ui_PotenciaLabel3, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_PotenciaLabel3, &ui_font_Unidades, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_PotenciaLabel3, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_secundario1Panel3 = lv_obj_create(ui_valoresPanelVoltaje3);
     lv_obj_set_width(ui_secundario1Panel3, 151);
@@ -210,7 +214,7 @@ void ui_dashboard_screen_init(void)
                                            _ui_theme_color_Corriente);
     ui_object_set_themeable_style_property(ui_CorrienteValD, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
                                            _ui_theme_alpha_Corriente);
-    lv_obj_set_style_text_font(ui_CorrienteValD, &ui_font_LecturaS48, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_CorrienteValD, &ui_font_Qualy48, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_PotenciaLabel1 = lv_label_create(ui_secundario1Panel2);
     lv_obj_set_width(ui_PotenciaLabel1, LV_SIZE_CONTENT);   /// 1
@@ -223,7 +227,7 @@ void ui_dashboard_screen_init(void)
     lv_label_set_text(ui_PotenciaLabel1, "A");
     lv_obj_set_style_text_color(ui_PotenciaLabel1, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_PotenciaLabel1, &ui_font_Unidades, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_PotenciaLabel1, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_secundario1Panel4 = lv_obj_create(ui_valoresPanelVoltaje1);
     lv_obj_set_width(ui_secundario1Panel4, 151);
@@ -298,7 +302,7 @@ void ui_dashboard_screen_init(void)
     lv_label_set_text(ui_PotenciaValD, "0.00");
     lv_obj_set_style_text_color(ui_PotenciaValD, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaValD, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_PotenciaValD, &ui_font_LecturaS48, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_PotenciaValD, &ui_font_Qualy48, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_PotenciaLabel2 = lv_label_create(ui_secundario1Panel5);
     lv_obj_set_width(ui_PotenciaLabel2, LV_SIZE_CONTENT);   /// 1
@@ -311,7 +315,7 @@ void ui_dashboard_screen_init(void)
     lv_label_set_text(ui_PotenciaLabel2, "PF");
     lv_obj_set_style_text_color(ui_PotenciaLabel2, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_PotenciaLabel2, &ui_font_Unidades, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_PotenciaLabel2, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_secundario1Panel7 = lv_obj_create(ui_valoresPanelVoltaje2);
     lv_obj_set_width(ui_secundario1Panel7, 151);
@@ -377,7 +381,7 @@ void ui_dashboard_screen_init(void)
                                            _ui_theme_color_Potencia);
     ui_object_set_themeable_style_property(ui_energiaValD, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
                                            _ui_theme_alpha_Potencia);
-    lv_obj_set_style_text_font(ui_energiaValD, &ui_font_LecturaS48, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_energiaValD, &ui_font_Qualy48, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_PotenciaLabel4 = lv_label_create(ui_secundario1Panel8);
     lv_obj_set_width(ui_PotenciaLabel4, LV_SIZE_CONTENT);   /// 1
@@ -390,7 +394,7 @@ void ui_dashboard_screen_init(void)
     lv_label_set_text(ui_PotenciaLabel4, "kWh");
     lv_obj_set_style_text_color(ui_PotenciaLabel4, lv_color_hex(0xB0B0B0), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_PotenciaLabel4, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_PotenciaLabel4, &ui_font_Unidades, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_PotenciaLabel4, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_secundario1Panel9 = lv_obj_create(ui_valoresPanelVoltaje4);
     lv_obj_set_width(ui_secundario1Panel9, 151);

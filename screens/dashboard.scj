@@ -5172,6 +5172,7 @@
     {
       "disabled": false,
       "nid": 1000317,
+      "flags": 1048576,
       "strtype": "_event/EventHandler",
       "strval": "GESTURE_RIGHT(GESTURE)",
       "childs": [
@@ -5248,6 +5249,7 @@
     {
       "disabled": false,
       "nid": 1000345,
+      "flags": 1048576,
       "strtype": "_event/EventHandler",
       "strval": "GESTURE_LEFT(GESTURE)",
       "childs": [
@@ -5312,6 +5314,83 @@
             },
             {
               "nid": 1000356,
+              "strtype": "CHANGE SCREEN/Delay",
+              "InheritedType": 6
+            }
+          ],
+          "InheritedType": 10
+        }
+      ],
+      "InheritedType": 4
+    },
+    {
+      "disabled": false,
+      "nid": 1000465,
+      "flags": 1048576,
+      "strtype": "_event/EventHandler",
+      "strval": "GESTURE_UP(GESTURE)",
+      "childs": [
+        {
+          "nid": 1000466,
+          "strtype": "_event/name",
+          "strval": "SwipeUp",
+          "InheritedType": 10
+        },
+        {
+          "nid": 1000467,
+          "strtype": "_event/condition_C",
+          "strval": "",
+          "InheritedType": 10
+        },
+        {
+          "nid": 1000468,
+          "strtype": "_event/condition_P",
+          "strval": "",
+          "InheritedType": 10
+        },
+        {
+          "nid": 1000511,
+          "strtype": "_event/action",
+          "strval": "CHANGE SCREEN",
+          "childs": [
+            {
+              "nid": 1000512,
+              "strtype": "CHANGE SCREEN/Name",
+              "strval": "CHANGE SCREEN",
+              "InheritedType": 10
+            },
+            {
+              "nid": 1000513,
+              "strtype": "CHANGE SCREEN/Call",
+              "strval": "ChangeScreen( <{Screen_to}>, lv.SCR_LOAD_ANIM.<{Fade_mode}>, <{Speed}>, <{Delay}>)",
+              "InheritedType": 10
+            },
+            {
+              "nid": 1000514,
+              "strtype": "CHANGE SCREEN/CallC",
+              "strval": "_ui_screen_change( &<{Screen_to}>, LV_SCR_LOAD_ANIM_<{Fade_mode}>, <{Speed}>, <{Delay}>, &<{Screen_to}>_screen_init);",
+              "InheritedType": 10
+            },
+            {
+              "nid": 1000515,
+              "strtype": "CHANGE SCREEN/Screen_to",
+              "strval": "GUID49313935-84399S25760557",
+              "InheritedType": 9
+            },
+            {
+              "nid": 1000516,
+              "strtype": "CHANGE SCREEN/Fade_mode",
+              "strval": "MOVE_TOP",
+              "InheritedType": 3
+            },
+            {
+              "nid": 1000517,
+              "strtype": "CHANGE SCREEN/Speed",
+              "integer": 200,
+              "InheritedType": 6
+            },
+            {
+              "nid": 1000518,
               "strtype": "CHANGE SCREEN/Delay",
               "InheritedType": 6
             }

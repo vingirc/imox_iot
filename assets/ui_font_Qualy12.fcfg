@@ -1,0 +1,16 @@
+{
+  "codename": "Qualy12",
+  "ttf_path": "/assets/Qualy Bold.ttf",
+  "bin_path": "/assets\\ui_font_Qualy12.bin",
+  "c_path": "/assets\\ui_font_Qualy12.c",
+  "cfg_path": "/assets\\ui_font_Qualy12.fcfg",
+  "size": 12,
+  "bpp": 1,
+  "letters": 0,
+  "ranges": [
+    "0x20-0x7f"
+  ],
+  "symbols": "",
+  "customparams": "--no-compress --no-prefilter",
+  "uploaded": false
+}

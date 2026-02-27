@@ -48,8 +48,8 @@
           "flags": 17,
           "strtype": "OBJECT/Size",
           "intarray": [
-            20,
-            20
+            10,
+            10
           ],
           "InheritedType": 7
         },
@@ -443,8 +443,8 @@
           "flags": 17,
           "strtype": "OBJECT/Size",
           "intarray": [
-            20,
-            20
+            10,
+            10
           ],
           "InheritedType": 7
         },
@@ -838,8 +838,8 @@
           "flags": 17,
           "strtype": "OBJECT/Size",
           "intarray": [
-            20,
-            20
+            10,
+            10
           ],
           "InheritedType": 7
         },
@@ -1233,8 +1233,8 @@
           "flags": 17,
           "strtype": "OBJECT/Size",
           "intarray": [
-            20,
-            20
+            10,
+            10
           ],
           "InheritedType": 7
         },
@@ -1628,8 +1628,8 @@
           "flags": 17,
           "strtype": "OBJECT/Size",
           "intarray": [
-            20,
-            20
+            10,
+            10
           ],
           "InheritedType": 7
         },
@@ -2023,8 +2023,8 @@
           "flags": 17,
           "strtype": "OBJECT/Size",
           "intarray": [
-            20,
-            20
+            10,
+            10
           ],
           "InheritedType": 7
         },
@@ -2408,7 +2408,7 @@
       "strtype": "OBJECT/Position",
       "intarray": [
         0,
-        101
+        100
       ],
       "InheritedType": 7
     },
@@ -2417,8 +2417,8 @@
       "flags": 18,
       "strtype": "OBJECT/Size",
       "intarray": [
-        54,
-        25
+        25,
+        14
       ],
       "InheritedType": 7
     },
