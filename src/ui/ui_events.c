@@ -7,10 +7,10 @@
 
 void voltageStatsChange(lv_event_t * e)
 {
-	// Your code here
+    _ui_screen_change(&ui_statsWatts, UI_ANIM_SWIPE_UP, UI_ANIM_SWIPE_DURATION, UI_ANIM_SWIPE_DELAY, &ui_statsWatts_screen_init);
 }
 
 void statsWattsChange(lv_event_t * e)
 {
-	// Your code here
+    _ui_screen_change(&ui_voltageStats, UI_ANIM_SWIPE_UP, UI_ANIM_SWIPE_DURATION, UI_ANIM_SWIPE_DELAY, &ui_voltageStats_screen_init);
 }
