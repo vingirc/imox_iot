@@ -30,6 +30,9 @@ void sensorTaskCode(void * pvParameters) {
     Serial.print("SensorTask corriendo en el núcleo: ");
     Serial.println(xPortGetCoreID());
 
+    uint8_t startup_skip_count = 0;
+    const uint8_t MAX_STARTUP_SKIP = 2; // Primeras 2 lecturas ignoradas, pues se generan picos falsos al recien conectarse el sensor
+
     for(;;) {
         // Lee los datos del sensor (esto puede ser bloqueante o tardado, pero no afecta la UI)
         float voltage = pzem.voltage();
@@ -40,21 +43,43 @@ void sensorTaskCode(void * pvParameters) {
         float pf = pzem.pf();
 
         if (!isnan(voltage)) {
-            // Actualizamos variables globales
-            v_voltage = voltage;
-            v_current = current;
-            v_power = power;
-            v_energy = energy;
-            v_frequency = frequency;
-            v_pf = pf;
+            // 1. Filtro de inicialización: Ignorar las primeras 2 lecturas REALES (no NAN)
+            // Estas son las que suelen traer picos tras la conexión física del sensor.
+            if (startup_skip_count < MAX_STARTUP_SKIP) {
+                startup_skip_count++;
+                Serial.printf("PZEM: Ignorando lectura válida de estabilización %d/%d...\n", startup_skip_count, MAX_STARTUP_SKIP);
+                vTaskDelay(pdMS_TO_TICKS(PZEM_READ_INTERVAL_MS));
+                continue;
+            }
 
-            Serial.println("===== MEDICIONES PZEM (Core 0) =====");
-            Serial.printf("Voltaje: %.2f V\n", voltage);
-            Serial.printf("Corriente: %.3f A\n", current);
-            Serial.printf("Potencia: %.2f W\n", power);
-            Serial.println("===================================");
+            // 2. Filtro de rango (Outlier Filter): Ignorar picos imposibles
+            // Basado en límites físicos razonables para evitar errores en gráficas/históricos
+            bool is_valid = true;
+            if (voltage > 450.0 || voltage < 0.0) is_valid = false;
+            if (current > 100.0 || current < 0.0) is_valid = false;
+            if (power > 25000.0 || power < 0.0) is_valid = false;
+
+            if (is_valid) {
+                // Actualizamos variables globales
+                v_voltage = voltage;
+                v_current = current;
+                v_power = power;
+                v_energy = energy;
+                v_frequency = frequency;
+                v_pf = pf;
+
+                Serial.println("===== MEDICIONES PZEM (Core 0) =====");
+                Serial.printf("Voltaje: %.2f V\n", voltage);
+                Serial.printf("Corriente: %.3f A\n", current);
+                Serial.printf("Potencia: %.2f W\n", power);
+                Serial.println("===================================");
+            } else {
+                Serial.println(">>> PZEM SPIKE DETECTED: Lectura ignorada por valores fuera de rango <<<");
+                Serial.printf("V: %.2f, I: %.2f, P: %.2f\n", voltage, current, power);
+            }
         } else {
-            Serial.println("Error leyendo PZEM");
+            v_voltage = NAN; // Indicar error para la pantalla de diagnóstico
+            Serial.println("Error leyendo PZEM (NAN)");
         }
         
         // Espera definidida en config.h antes de la siguiente lectura
@@ -95,21 +120,29 @@ void setup() {
 }
 
 void updateUI() {
+    // Pre-validamos los valores para evitar picos o NAN en la UI
+    float display_v = isnan(v_voltage) ? 0.0 : v_voltage;
+    float display_i = isnan(v_current) ? 0.0 : v_current;
+    float display_p = isnan(v_power) ? 0.0 : v_power;
+    float display_e = isnan(v_energy) ? 0.0 : v_energy;
+    float display_f = isnan(v_frequency) ? 0.0 : v_frequency;
+    float display_pf = isnan(v_pf) ? 0.0 : v_pf;
+
     // ----------------------------------------------------
     // VISTA 1: VOLTAJE (ui_voltaje)
     // ----------------------------------------------------
     if (ui_voltajeVal) {
-        int int_voltage = (int)v_voltage;
+        int int_voltage = (int)display_v;
         lv_label_set_text_fmt(ui_voltajeVal, "%d", int_voltage);
         if (ui_voltajeDecimal) {
             lv_label_set_text(ui_voltajeDecimal, ""); // No decimals as per client request
         }
     }
     if (ui_frecuencia) {
-        lv_label_set_text_fmt(ui_frecuencia, "%.1f", v_frequency);
+        lv_label_set_text_fmt(ui_frecuencia, "%.1f", display_f);
     }
     if (ui_potencia) {
-        lv_label_set_text_fmt(ui_potencia, "%.1f", v_power);
+        lv_label_set_text_fmt(ui_potencia, "%.1f", display_p);
     }
 
     // ----------------------------------------------------
@@ -141,24 +174,24 @@ void updateUI() {
     // VISTA 2: CORRIENTE (ui_corriente)
     // ----------------------------------------------------
     if (ui_corrienteVal) {
-        int int_current = (int)v_current;
+        int int_current = (int)display_i;
         lv_label_set_text_fmt(ui_corrienteVal, "%d.", int_current); // Punto grande para corriente
         if (ui_corrienteDecimal) {
-            int dec_current = (int)((v_current - int_current) * 100);
+            int dec_current = (int)((display_i - int_current) * 100);
             if (dec_current < 0) dec_current = 0;
             lv_label_set_text_fmt(ui_corrienteDecimal, "%02d", dec_current); // Sin punto aquí
         }
     }
     if (ui_pactivaVal) {
-        lv_label_set_text_fmt(ui_pactivaVal, "%.1f", v_power);
+        lv_label_set_text_fmt(ui_pactivaVal, "%.1f", display_p);
     }
     if (ui_preactivaVal) {
         // Cálculo aproximado de Reactiva: Q = sqrt(S^2 - P^2)
         // S = V * I
-        float apparent = v_voltage * v_current;
+        float apparent = display_v * display_i;
         float reactive = 0.0;
-        if (apparent > v_power) {
-            reactive = sqrt((apparent * apparent) - (v_power * v_power));
+        if (apparent > display_p) {
+            reactive = sqrt((apparent * apparent) - (display_p * display_p));
         }
         lv_label_set_text_fmt(ui_preactivaVal, "%.1f", reactive);
     }
@@ -167,23 +200,23 @@ void updateUI() {
     // VISTA 3: DASHBOARD (ui_dashboard)
     // ----------------------------------------------------
     if (ui_VoltajeValD) {
-        lv_label_set_text_fmt(ui_VoltajeValD, "%.0f", v_voltage);
+        lv_label_set_text_fmt(ui_VoltajeValD, "%.0f", display_v);
     }
     if (ui_CorrienteValD) {
-        lv_label_set_text_fmt(ui_CorrienteValD, "%.2f", v_current);
+        lv_label_set_text_fmt(ui_CorrienteValD, "%.2f", display_i);
     }
     if (ui_pactivaValD) {
-        lv_label_set_text_fmt(ui_pactivaValD, "%.0f", v_power);
+        lv_label_set_text_fmt(ui_pactivaValD, "%.0f", display_p);
     }
     if (ui_energiaValD) {
         // Energía en kWh
-        lv_label_set_text_fmt(ui_energiaValD, "%.3f", v_energy);
+        lv_label_set_text_fmt(ui_energiaValD, "%.3f", display_e);
     }
     if (ui_frecuenciaValD) {
-        lv_label_set_text_fmt(ui_frecuenciaValD, "%.1f", v_frequency);
+        lv_label_set_text_fmt(ui_frecuenciaValD, "%.1f", display_f);
     }
     if (ui_PotenciaValD) { // Factor de Potencia según análisis
-        lv_label_set_text_fmt(ui_PotenciaValD, "%.2f", v_pf);
+        lv_label_set_text_fmt(ui_PotenciaValD, "%.2f", display_pf);
     }
 }
 
