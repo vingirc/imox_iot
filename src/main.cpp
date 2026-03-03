@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <LilyGo_AMOLED.h>
+#include <WiFi.h>
 #include <LV_Helper.h> // Necesario si usas la versión de la librería que requiere helper
 #include "ui/ui.h" 
 #include "config.h" 
@@ -114,8 +115,26 @@ void updateUI() {
     // ----------------------------------------------------
     // VISTA 6: DIAGNÓSTICO (ui_diagnostic)
     // ----------------------------------------------------
-    if (ui_elementVal6) { // Voltaje en PZEM/Diagnóstico
-        lv_label_set_text_fmt(ui_elementVal6, "%d V", (int)v_voltage);
+    if (ui_elementVal3) { // Uptime
+        uint32_t sec = millis() / 1000;
+        uint32_t min = sec / 60;
+        uint32_t hr = min / 60;
+        lv_label_set_text_fmt(ui_elementVal3, "%02d:%02d:%02d", hr, min % 60, sec % 60);
+    }
+    if (ui_elementVal5) { // MAC
+        lv_label_set_text(ui_elementVal5, WiFi.macAddress().c_str());
+    }
+    if (ui_elementVal6) { // PZEM Status
+        if (!isnan(v_voltage) && v_voltage > 0) {
+            lv_label_set_text(ui_elementVal6, "CONECTADO");
+        } else {
+            lv_label_set_text(ui_elementVal6, "ERROR / DESCONECTADO");
+        }
+    }
+    if (ui_elementVal8) { // Heap
+        uint32_t freeHeap = ESP.getFreeHeap() / 1024;
+        uint32_t totalHeap = ESP.getHeapSize() / 1024;
+        lv_label_set_text_fmt(ui_elementVal8, "%u / %u KB", freeHeap, totalHeap);
     }
 
     // ----------------------------------------------------
