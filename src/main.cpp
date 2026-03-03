@@ -101,9 +101,7 @@ void updateUI() {
         int int_voltage = (int)v_voltage;
         lv_label_set_text_fmt(ui_voltajeVal, "%d", int_voltage);
         if (ui_voltajeDecimal) {
-            int dec_voltage = (int)((v_voltage - int_voltage) * 100);
-            if (dec_voltage < 0) dec_voltage = 0;
-            lv_label_set_text_fmt(ui_voltajeDecimal, ".%02d", dec_voltage);
+            lv_label_set_text(ui_voltajeDecimal, ""); // No decimals as per client request
         }
     }
     if (ui_frecuencia) {
@@ -111,6 +109,13 @@ void updateUI() {
     }
     if (ui_potencia) {
         lv_label_set_text_fmt(ui_potencia, "%.1f", v_power);
+    }
+
+    // ----------------------------------------------------
+    // VISTA 6: DIAGNÓSTICO (ui_diagnostic)
+    // ----------------------------------------------------
+    if (ui_elementVal6) { // Voltaje en PZEM/Diagnóstico
+        lv_label_set_text_fmt(ui_elementVal6, "%d V", (int)v_voltage);
     }
 
     // ----------------------------------------------------
