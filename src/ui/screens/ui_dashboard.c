@@ -55,9 +55,10 @@ void ui_event_dashboard(lv_event_t *e) {
                       &ui_statsWatts_screen_init);
   }
   if (event_code == LV_EVENT_GESTURE &&
-      lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_BOTTOM) {
+      (lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_BOTTOM ||
+       lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_TOP)) {
     lv_indev_wait_release(lv_indev_get_act());
-    ui_last_screen_index = 2;
+    ui_last_screen_index = 0;
     _ui_screen_change(&ui_config, UI_ANIM_SWIPE_DOWN, UI_ANIM_SWIPE_DURATION,
                       UI_ANIM_SWIPE_DELAY, &ui_config_screen_init);
   }
@@ -338,7 +339,9 @@ void ui_dashboard_screen_init(void) {
   uic_secundario1Panel6 = ui_secundario1Panel6;
 
   // Hints
-  ui_swipe_hint_create(ui_dashboard, true); // ▲ arriba (swipe down config)
+  // Swipe Hints
+  ui_swipe_hint_create(ui_dashboard, true);  // ▼ abajo (swipe down config)
+  ui_swipe_hint_create(ui_dashboard, false); // ▲ arriba (swipe up config)
 }
 
 void ui_dashboard_screen_destroy(void) {

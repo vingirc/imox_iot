@@ -278,4 +278,9 @@ void hw_restart(void) {
   ESP.restart();
 }
 
+void hw_turn_off_screen(void) {
+  amoled.setBrightness(0);
+  Serial.println("Pantalla apagada (Brillo 0)");
+}
+
 } // extern "C"

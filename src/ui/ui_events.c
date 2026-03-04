@@ -38,8 +38,27 @@ void onRestartConfirm(void) { hw_restart(); }
 // hardware
 extern void hw_turn_off_screen(void);
 
+static lv_obj_t *wake_layer = NULL;
+
+static void wake_layer_cb(lv_event_t *e) {
+  if (wake_layer) {
+    lv_obj_del(wake_layer);
+    wake_layer = NULL;
+    hw_set_brightness(128); // Brillo medio al despertar
+  }
+}
+
 void onTurnOffScreen(void) {
-  // Aquí puedes llamar a una función de main.cpp para apagar la pantalla.
-  // Ejemplo:
-  // hw_turn_off_screen();
+  // Apagar hardware
+  hw_turn_off_screen();
+
+  // Crear capa de "despertar" sobre todo
+  if (!wake_layer) {
+    wake_layer = lv_obj_create(lv_layer_top());
+    lv_obj_set_size(wake_layer, lv_pct(100), lv_pct(100));
+    lv_obj_set_style_bg_opa(wake_layer, 0, LV_PART_MAIN); // Invisible
+    lv_obj_set_style_border_width(wake_layer, 0, LV_PART_MAIN);
+    lv_obj_add_flag(wake_layer, LV_OBJ_FLAG_CLICKABLE);
+    lv_obj_add_event_cb(wake_layer, wake_layer_cb, LV_EVENT_CLICKED, NULL);
+  }
 }

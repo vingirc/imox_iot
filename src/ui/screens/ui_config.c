@@ -96,7 +96,7 @@ static lv_obj_t *create_modal_buttons(lv_obj_t *card,
 
   // Botón Cancelar
   lv_obj_t *btn_cancel = lv_btn_create(btn_row);
-  lv_obj_set_height(btn_cancel, 50);
+  lv_obj_set_height(btn_cancel, 65);
   lv_obj_set_style_bg_color(btn_cancel, lv_color_hex(0x666666),
                             LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_t *label_cancel = lv_label_create(btn_cancel);
@@ -107,7 +107,7 @@ static lv_obj_t *create_modal_buttons(lv_obj_t *card,
 
   // Botón Confirmar
   lv_obj_t *btn_confirm = lv_btn_create(btn_row);
-  lv_obj_set_height(btn_confirm, 50);
+  lv_obj_set_height(btn_confirm, 65);
   lv_obj_set_style_bg_color(btn_confirm, UI_COLOR_ACCENT,
                             LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_t *label_confirm = lv_label_create(btn_confirm);
@@ -210,8 +210,7 @@ void ui_config_screen_init(void) {
   ui_wifiBtn = lv_btn_create(main_container);
   lv_obj_set_width(ui_wifiBtn, lv_pct(100));
   lv_obj_set_height(ui_wifiBtn, 60); // Botón alto
-  // Empezamos asumiendo inactivo (rojo) por defecto, aunque en un entorno real
-  // consultaríamos WiFi.status() al iniciar la pantalla
+  // Empezamos asumiendo inactivo (rojo) por defecto
   lv_obj_set_style_bg_color(ui_wifiBtn, lv_color_hex(0xC62828),
                             LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_radius(ui_wifiBtn, 15, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -219,11 +218,6 @@ void ui_config_screen_init(void) {
   lv_obj_set_flex_align(ui_wifiBtn, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER,
                         LV_FLEX_ALIGN_CENTER);
   lv_obj_set_style_pad_column(ui_wifiBtn, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-  ui_wifiBtnIcon = lv_label_create(ui_wifiBtn);
-  lv_label_set_text(ui_wifiBtnIcon, "📶");
-  lv_obj_set_style_text_font(ui_wifiBtnIcon, &ui_font_symbols_24,
-                             LV_PART_MAIN | LV_STATE_DEFAULT);
 
   ui_wifiBtnLabel = lv_label_create(ui_wifiBtn);
   lv_label_set_text(ui_wifiBtnLabel, "WiFi: INACTIVO");
@@ -243,11 +237,6 @@ void ui_config_screen_init(void) {
                         LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
   lv_obj_set_style_pad_column(ui_restartBtn, 10,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
-
-  ui_restartBtnIcon = lv_label_create(ui_restartBtn);
-  lv_label_set_text(ui_restartBtnIcon, "🔄");
-  lv_obj_set_style_text_font(ui_restartBtnIcon, &ui_font_symbols_24,
-                             LV_PART_MAIN | LV_STATE_DEFAULT);
 
   ui_restartBtnLabel = lv_label_create(ui_restartBtn);
   lv_label_set_text(ui_restartBtnLabel, "Reiniciar Dispositivo");

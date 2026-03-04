@@ -120,7 +120,7 @@ void ui_config_brightness_screen_init(void) {
 
   lv_obj_t *sun_icon = lv_label_create(ui_config_brightness);
   lv_obj_align_to(sun_icon, ui_brightnessSlider, LV_ALIGN_OUT_LEFT_MID, -20, 0);
-  lv_label_set_text(sun_icon, "☀"); // Icono Unicode de Sol
+  lv_label_set_text(sun_icon, "\xE2\x98\x80"); // Sun icon ☀
   lv_obj_set_style_text_color(sun_icon, UI_COLOR_TEXT_INFO,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_text_font(
@@ -148,8 +148,8 @@ void ui_config_brightness_screen_init(void) {
 
   // Botón apagar pantalla
   lv_obj_t *ui_turnOffBtn = lv_btn_create(ui_config_brightness);
-  lv_obj_set_width(ui_turnOffBtn, 200);
-  lv_obj_set_height(ui_turnOffBtn, 50);
+  lv_obj_set_width(ui_turnOffBtn, 240);
+  lv_obj_set_height(ui_turnOffBtn, 60);
   lv_obj_align(ui_turnOffBtn, LV_ALIGN_CENTER, 0, 80);
   lv_obj_set_style_bg_color(ui_turnOffBtn, lv_color_hex(0x666666),
                             LV_PART_MAIN | LV_STATE_DEFAULT);
