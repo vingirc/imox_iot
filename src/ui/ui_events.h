@@ -17,6 +17,7 @@ void statsWattsChange(lv_event_t *e);
 void onWifiConfirm(bool enable);
 void onRestartConfirm(void);
 void onBrightnessChange(int32_t value);
+void onTurnOffScreen(void);
 
 #ifdef __cplusplus
 } /*extern "C"*/

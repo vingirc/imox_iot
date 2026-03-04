@@ -10,9 +10,10 @@ extern "C" {
 
 #include "lvgl.h"
 
-// Crea un label con un triángulo (▲ o ▼) que parpadea lentamente.
-// point_up: true para '▲' (útil en top_mid o bottom_mid), false para '▼'
-lv_obj_t *ui_swipe_hint_create(lv_obj_t *parent, bool point_up);
+// Crea un label con un triangulo que parpadea lentamente.
+// is_top: true para colocarlo arriba (con flecha hacia abajo), false para
+// colocarlo abajo (con flecha hacia arriba)
+lv_obj_t *ui_swipe_hint_create(lv_obj_t *parent, bool is_top);
 
 #ifdef __cplusplus
 } /*extern "C"*/

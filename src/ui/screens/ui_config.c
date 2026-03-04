@@ -8,10 +8,14 @@
 #include "../ui_swipe_hint.h"
 #include <stdio.h>
 
+extern const lv_font_t ui_font_symbols_24;
+
 lv_obj_t *ui_config = NULL;
 lv_obj_t *ui_wifiBtn = NULL;
+lv_obj_t *ui_wifiBtnIcon = NULL;
 lv_obj_t *ui_wifiBtnLabel = NULL;
 lv_obj_t *ui_restartBtn = NULL;
+lv_obj_t *ui_restartBtnIcon = NULL;
 lv_obj_t *ui_restartBtnLabel = NULL;
 
 // Variables estáticas para los modales
@@ -46,7 +50,7 @@ static void create_modal_overlay(void) {
   lv_obj_add_flag(modal_overlay, LV_OBJ_FLAG_CLICKABLE);
 }
 
-static lv_obj_t *create_modal_card(const char *title, const char *msg) {
+static lv_obj_t *create_modal_card(const char *title) {
   create_modal_overlay();
 
   lv_obj_t *card = lv_obj_create(modal_overlay);
@@ -68,12 +72,13 @@ static lv_obj_t *create_modal_card(const char *title, const char *msg) {
   lv_label_set_text(title_label, title);
   lv_obj_set_style_text_color(title_label, UI_COLOR_TEXT_INFO,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_text_font(title_label, &ui_font_Qualy14,
+  lv_obj_set_style_text_font(title_label, &ui_font_Qualy24,
                              LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_pad_bottom(title_label, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-  // Hemos omitido el texto del mensaje para dar más espacio a los botones
-  // y para evitar problemas de fuentes con caracteres especiales.
+  lv_label_set_long_mode(title_label, LV_LABEL_LONG_WRAP);
+  lv_obj_set_style_text_align(title_label, LV_TEXT_ALIGN_CENTER,
+                              LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_width(title_label, lv_pct(100));
+  lv_obj_set_style_pad_bottom(title_label, 30, LV_PART_MAIN | LV_STATE_DEFAULT);
 
   return card;
 }
@@ -91,21 +96,23 @@ static lv_obj_t *create_modal_buttons(lv_obj_t *card,
 
   // Botón Cancelar
   lv_obj_t *btn_cancel = lv_btn_create(btn_row);
-  lv_obj_set_width(btn_cancel, 120);
   lv_obj_set_height(btn_cancel, 50);
   lv_obj_set_style_bg_color(btn_cancel, lv_color_hex(0x666666),
                             LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_t *label_cancel = lv_label_create(btn_cancel);
+  lv_obj_set_style_text_font(label_cancel, &ui_font_Qualy14,
+                             LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_label_set_text(label_cancel, "Cancelar");
   lv_obj_add_event_cb(btn_cancel, close_modal_cb, LV_EVENT_CLICKED, NULL);
 
   // Botón Confirmar
   lv_obj_t *btn_confirm = lv_btn_create(btn_row);
-  lv_obj_set_width(btn_confirm, 120);
   lv_obj_set_height(btn_confirm, 50);
   lv_obj_set_style_bg_color(btn_confirm, UI_COLOR_ACCENT,
                             LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_t *label_confirm = lv_label_create(btn_confirm);
+  lv_obj_set_style_text_font(label_confirm, &ui_font_Qualy14,
+                             LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_label_set_text(label_confirm, "Confirmar");
   lv_obj_add_event_cb(btn_confirm, confirm_cb, LV_EVENT_CLICKED, NULL);
   lv_obj_add_event_cb(btn_confirm, close_modal_cb, LV_EVENT_CLICKED,
@@ -123,11 +130,11 @@ static void modal_confirm_wifi_cb(lv_event_t *e) {
   // actualizamos la UI asumiendo que el comando se envió.
   // En un sistema real, un evento del WiFi actualizaría este label.
   if (pending_wifi_state) {
-    lv_label_set_text(ui_wifiBtnLabel, "📶  WiFi: ACTIVO");
+    lv_label_set_text(ui_wifiBtnLabel, "WiFi: ACTIVO");
     lv_obj_set_style_bg_color(ui_wifiBtn, lv_color_hex(0x2E7D32),
                               LV_PART_MAIN | LV_STATE_DEFAULT); // Verde oscuro
   } else {
-    lv_label_set_text(ui_wifiBtnLabel, "📶  WiFi: INACTIVO");
+    lv_label_set_text(ui_wifiBtnLabel, "WiFi: INACTIVO");
     lv_obj_set_style_bg_color(ui_wifiBtn, lv_color_hex(0xC62828),
                               LV_PART_MAIN | LV_STATE_DEFAULT); // Rojo oscuro
   }
@@ -142,9 +149,8 @@ static void wifi_btn_cb(lv_event_t *e) {
 
   pending_wifi_state = !is_currently_active; // Invertir estado
 
-  const char *msg = pending_wifi_state ? "¿Deseas activar el WiFi?"
-                                       : "¿Deseas desactivar el WiFi?";
-  lv_obj_t *card = create_modal_card("Ajustes de Red", msg);
+  const char *title = pending_wifi_state ? "Encender WiFi" : "Apagar WiFi";
+  lv_obj_t *card = create_modal_card(title);
   create_modal_buttons(card, modal_confirm_wifi_cb);
 }
 
@@ -153,9 +159,7 @@ static void modal_confirm_restart_cb(lv_event_t *e) { onRestartConfirm(); }
 
 // Callback del botón de reiniciar
 static void restart_btn_cb(lv_event_t *e) {
-  lv_obj_t *card = create_modal_card(
-      "Reiniciar Dispositivo",
-      "¿Estás seguro de que deseas reiniciar\nel dispositivo?");
+  lv_obj_t *card = create_modal_card("Reiniciar Dispositivo");
   create_modal_buttons(card, modal_confirm_restart_cb);
 }
 
@@ -211,10 +215,18 @@ void ui_config_screen_init(void) {
   lv_obj_set_style_bg_color(ui_wifiBtn, lv_color_hex(0xC62828),
                             LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_radius(ui_wifiBtn, 15, LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_flex_flow(ui_wifiBtn, LV_FLEX_FLOW_ROW);
+  lv_obj_set_flex_align(ui_wifiBtn, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER,
+                        LV_FLEX_ALIGN_CENTER);
+  lv_obj_set_style_pad_column(ui_wifiBtn, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  ui_wifiBtnIcon = lv_label_create(ui_wifiBtn);
+  lv_label_set_text(ui_wifiBtnIcon, "📶");
+  lv_obj_set_style_text_font(ui_wifiBtnIcon, &ui_font_symbols_24,
+                             LV_PART_MAIN | LV_STATE_DEFAULT);
 
   ui_wifiBtnLabel = lv_label_create(ui_wifiBtn);
-  lv_label_set_text(ui_wifiBtnLabel, "📶  WiFi: INACTIVO");
-  lv_obj_center(ui_wifiBtnLabel);
+  lv_label_set_text(ui_wifiBtnLabel, "WiFi: INACTIVO");
   lv_obj_set_style_text_font(ui_wifiBtnLabel, &ui_font_Qualy24,
                              LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_add_event_cb(ui_wifiBtn, wifi_btn_cb, LV_EVENT_CLICKED, NULL);
@@ -226,18 +238,27 @@ void ui_config_screen_init(void) {
   lv_obj_set_style_bg_color(ui_restartBtn, UI_COLOR_ACCENT,
                             LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_radius(ui_restartBtn, 15, LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_flex_flow(ui_restartBtn, LV_FLEX_FLOW_ROW);
+  lv_obj_set_flex_align(ui_restartBtn, LV_FLEX_ALIGN_CENTER,
+                        LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+  lv_obj_set_style_pad_column(ui_restartBtn, 10,
+                              LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  ui_restartBtnIcon = lv_label_create(ui_restartBtn);
+  lv_label_set_text(ui_restartBtnIcon, "🔄");
+  lv_obj_set_style_text_font(ui_restartBtnIcon, &ui_font_symbols_24,
+                             LV_PART_MAIN | LV_STATE_DEFAULT);
 
   ui_restartBtnLabel = lv_label_create(ui_restartBtn);
-  lv_label_set_text(ui_restartBtnLabel, "🔄  Reiniciar Dispositivo");
-  lv_obj_center(ui_restartBtnLabel);
+  lv_label_set_text(ui_restartBtnLabel, "Reiniciar Dispositivo");
   lv_obj_set_style_text_font(ui_restartBtnLabel, &ui_font_Qualy24,
                              LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_add_event_cb(ui_restartBtn, restart_btn_cb, LV_EVENT_CLICKED, NULL);
 
   lv_obj_add_event_cb(ui_config, ui_event_config, LV_EVENT_ALL, NULL);
 
-  // Indicador de Swipe (▲) - parpadeo abajo
-  ui_swipe_hint_create(ui_config, true);
+  // Indicador de Swipe (▲) - en la configuracion debe ir ABAJO
+  ui_swipe_hint_create(ui_config, false);
 }
 
 void ui_config_screen_destroy(void) {
@@ -245,8 +266,10 @@ void ui_config_screen_destroy(void) {
     lv_obj_del(ui_config);
   ui_config = NULL;
   ui_wifiBtn = NULL;
+  ui_wifiBtnIcon = NULL;
   ui_wifiBtnLabel = NULL;
   ui_restartBtn = NULL;
+  ui_restartBtnIcon = NULL;
   ui_restartBtnLabel = NULL;
   modal_overlay = NULL;
   active_modal = NULL;

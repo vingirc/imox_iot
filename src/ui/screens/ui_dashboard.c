@@ -6,7 +6,6 @@
 #include "../ui.h"
 #include "../ui_swipe_hint.h"
 
-
 lv_obj_t *uic_secundario1Panel6;
 lv_obj_t *ui_dashboard = NULL;
 lv_obj_t *ui_contentPanel3 = NULL;

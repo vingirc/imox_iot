@@ -19,8 +19,10 @@ extern lv_obj_t *ui_config;
 
 // Botones y Labels
 extern lv_obj_t *ui_wifiBtn;
+extern lv_obj_t *ui_wifiBtnIcon;
 extern lv_obj_t *ui_wifiBtnLabel;
 extern lv_obj_t *ui_restartBtn;
+extern lv_obj_t *ui_restartBtnIcon;
 extern lv_obj_t *ui_restartBtnLabel;
 
 #ifdef __cplusplus

@@ -33,3 +33,13 @@ void onBrightnessChange(int32_t value) {
 void onWifiConfirm(bool enable) { hw_wifi_toggle(enable); }
 
 void onRestartConfirm(void) { hw_restart(); }
+
+// Necesitas agregar "extern void hw_turn_off_screen(void);" si lo haces por
+// hardware
+extern void hw_turn_off_screen(void);
+
+void onTurnOffScreen(void) {
+  // Aquí puedes llamar a una función de main.cpp para apagar la pantalla.
+  // Ejemplo:
+  // hw_turn_off_screen();
+}

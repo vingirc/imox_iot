@@ -5,7 +5,6 @@
 #include <LilyGo_AMOLED.h>
 #include <WiFi.h>
 
-
 #include <PZEM004Tv30.h>
 
 // Definición de pines para UART2 (PZEM) tomados de config.h

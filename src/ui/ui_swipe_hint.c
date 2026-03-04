@@ -4,6 +4,7 @@
 #include "ui_swipe_hint.h"
 #include "ui.h"
 
+extern const lv_font_t ui_font_symbols_14;
 
 // Callback de animación para la opacidad
 static void swipe_hint_anim_cb(void *var, int32_t v) {
@@ -11,31 +12,30 @@ static void swipe_hint_anim_cb(void *var, int32_t v) {
                             LV_PART_MAIN | LV_STATE_DEFAULT);
 }
 
-lv_obj_t *ui_swipe_hint_create(lv_obj_t *parent, bool point_up) {
+lv_obj_t *ui_swipe_hint_create(lv_obj_t *parent, bool is_top) {
   lv_obj_t *hint = lv_label_create(parent);
 
-  // Usar el triángulo Unicode según la dirección
-  if (point_up) {
-    lv_label_set_text(hint, "▲");
-  } else {
+  // Usar el triángulo Unicode según la posición (arriba -> indica hacer swipe
+  // abajo)
+  if (is_top) {
     lv_label_set_text(hint, "▼");
+  } else {
+    lv_label_set_text(hint, "▲");
   }
 
   // Estilo base
   lv_obj_set_style_text_color(hint, UI_COLOR_TEXT_INFO,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_text_font(hint, &ui_font_Qualy14,
+  lv_obj_set_style_text_font(hint, &ui_font_symbols_14,
                              LV_PART_MAIN | LV_STATE_DEFAULT);
 
-  // Posicionamiento por defecto (arriba si apunta arriba, abajo si apunta abajo
-  // en vistas normales, pero la vista padre puede ajustarlo después o
-  // realinearlo)
-  if (point_up) {
+  // Posicionamiento
+  if (is_top) {
     lv_obj_set_align(hint, LV_ALIGN_TOP_MID);
-    lv_obj_set_y(hint, 5); // Pequeño margen superior
+    lv_obj_set_y(hint, 5); // Margen superior
   } else {
     lv_obj_set_align(hint, LV_ALIGN_BOTTOM_MID);
-    lv_obj_set_y(hint, -5); // Pequeño margen inferior
+    lv_obj_set_y(hint, -5); // Margen inferior
   }
 
   // Animación de parpadeo (fade in/out muy suave y lento)

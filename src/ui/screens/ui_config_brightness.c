@@ -7,6 +7,8 @@
 #include "../ui_swipe_hint.h"
 #include <stdio.h>
 
+extern const lv_font_t ui_font_symbols_24;
+
 lv_obj_t *ui_config_brightness = NULL;
 lv_obj_t *ui_brightnessSlider = NULL;
 lv_obj_t *ui_brightnessValLabel = NULL;
@@ -27,6 +29,13 @@ static void brightness_slider_cb(lv_event_t *e) {
 
   // Llamar al callback de hardware
   onBrightnessChange(v);
+}
+
+// Callback para el botón de apagar pantalla
+static void turn_off_btn_cb(lv_event_t *e) {
+  // Llama a la función global para apagar
+  extern void onTurnOffScreen(void);
+  onTurnOffScreen();
 }
 
 void ui_event_config_brightness(lv_event_t *e) {
@@ -66,7 +75,7 @@ void ui_config_brightness_screen_init(void) {
   lv_obj_set_width(ui_brightnessSlider, 300);
   lv_obj_set_height(ui_brightnessSlider, 20); // Track grueso
   lv_obj_set_align(ui_brightnessSlider, LV_ALIGN_CENTER);
-  lv_slider_set_range(ui_brightnessSlider, 0, 255);
+  lv_slider_set_range(ui_brightnessSlider, 20, 255);
   lv_slider_set_value(ui_brightnessSlider, UI_BRIGHTNESS_DEFAULT, LV_ANIM_OFF);
   lv_obj_remove_style(ui_brightnessSlider, NULL,
                       LV_PART_INDICATOR); // Quitamos indicador default
@@ -115,8 +124,8 @@ void ui_config_brightness_screen_init(void) {
   lv_obj_set_style_text_color(sun_icon, UI_COLOR_TEXT_INFO,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_text_font(
-      sun_icon, &ui_font_Qualy24,
-      LV_PART_MAIN | LV_STATE_DEFAULT); // Fuente suficientemente grande
+      sun_icon, &ui_font_symbols_24,
+      LV_PART_MAIN | LV_STATE_DEFAULT); // Fuente exclusivamente de símbolos
 
   // Label del porcentaje a la derecha (calculamos el inicial)
   ui_brightnessValLabel = lv_label_create(ui_config_brightness);
@@ -137,8 +146,26 @@ void ui_config_brightness_screen_init(void) {
   lv_obj_add_event_cb(ui_config_brightness, ui_event_config_brightness,
                       LV_EVENT_ALL, NULL);
 
-  // Swipe Hint: Triángulo parpadeando hacia arriba en la parte inferior
-  lv_obj_t *hint = ui_swipe_hint_create(ui_config_brightness, true);
+  // Botón apagar pantalla
+  lv_obj_t *ui_turnOffBtn = lv_btn_create(ui_config_brightness);
+  lv_obj_set_width(ui_turnOffBtn, 200);
+  lv_obj_set_height(ui_turnOffBtn, 50);
+  lv_obj_align(ui_turnOffBtn, LV_ALIGN_CENTER, 0, 80);
+  lv_obj_set_style_bg_color(ui_turnOffBtn, lv_color_hex(0x666666),
+                            LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_radius(ui_turnOffBtn, 15, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  lv_obj_t *ui_turnOffLabel = lv_label_create(ui_turnOffBtn);
+  lv_label_set_text(ui_turnOffLabel, "Apagar Pantalla");
+  lv_obj_center(ui_turnOffLabel);
+  lv_obj_set_style_text_font(ui_turnOffLabel, &ui_font_Qualy14,
+                             LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  lv_obj_add_event_cb(ui_turnOffBtn, turn_off_btn_cb, LV_EVENT_CLICKED, NULL);
+
+  // Swipe Hint: Triangulo apuntando hacia arriba en la parte inferior (is_top =
+  // false)
+  lv_obj_t *hint = ui_swipe_hint_create(ui_config_brightness, false);
 }
 
 void ui_config_brightness_screen_destroy(void) {
