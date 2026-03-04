@@ -10,8 +10,13 @@
 extern "C" {
 #endif
 
-void voltageStatsChange(lv_event_t * e);
-void statsWattsChange(lv_event_t * e);
+void voltageStatsChange(lv_event_t *e);
+void statsWattsChange(lv_event_t *e);
+
+// Config screen callbacks (llamados tras confirmar modal)
+void onWifiConfirm(bool enable);
+void onRestartConfirm(void);
+void onBrightnessChange(int32_t value);
 
 #ifdef __cplusplus
 } /*extern "C"*/

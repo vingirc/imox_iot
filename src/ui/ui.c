@@ -9,16 +9,16 @@
 ///////////////////// VARIABLES ////////////////////
 
 // EVENTS
-lv_obj_t * ui____initial_actions0;
+lv_obj_t *ui____initial_actions0;
 
 // IMAGES AND IMAGE SETS
 
 ///////////////////// TEST LVGL SETTINGS ////////////////////
 #if LV_COLOR_DEPTH != 16
-    #warning "LV_COLOR_DEPTH should be 16bit to match SquareLine Studio's settings"
+#warning "LV_COLOR_DEPTH should be 16bit to match SquareLine Studio's settings"
 #endif
-#if LV_COLOR_16_SWAP !=1
-    #warning "LV_COLOR_16_SWAP should be 1 to match SquareLine Studio's settings"
+#if LV_COLOR_16_SWAP != 1
+#warning "LV_COLOR_16_SWAP should be 1 to match SquareLine Studio's settings"
 #endif
 
 ///////////////////// ANIMATIONS ////////////////////
@@ -27,34 +27,35 @@ lv_obj_t * ui____initial_actions0;
 
 ///////////////////// SCREENS ////////////////////
 
-void ui_init(void)
-{
-    LV_EVENT_GET_COMP_CHILD = lv_event_register_id();
+void ui_init(void) {
+  LV_EVENT_GET_COMP_CHILD = lv_event_register_id();
 
-    lv_disp_t * dispp = lv_disp_get_default();
-    lv_theme_t * theme = lv_theme_default_init(dispp, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED),
-                                               true, LV_FONT_DEFAULT);
-    lv_disp_set_theme(dispp, theme);
-    ui_corriente_screen_init();
-    ui_diagnostic_screen_init();
-    ui_voltageStats_screen_init();
-    ui_dashboard_screen_init();
-    ui_Modo_Diario_24hrs_screen_init();
-    ui_statsWatts_screen_init();
-    ui_config_screen_init();
-    ui_voltaje_screen_init();
-    ui____initial_actions0 = lv_obj_create(NULL);
-    lv_disp_load_scr(ui_voltaje);
+  lv_disp_t *dispp = lv_disp_get_default();
+  lv_theme_t *theme = lv_theme_default_init(
+      dispp, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED),
+      true, LV_FONT_DEFAULT);
+  lv_disp_set_theme(dispp, theme);
+  ui_corriente_screen_init();
+  ui_diagnostic_screen_init();
+  ui_voltageStats_screen_init();
+  ui_dashboard_screen_init();
+  ui_Modo_Diario_24hrs_screen_init();
+  ui_statsWatts_screen_init();
+  ui_config_screen_init();
+  ui_config_brightness_screen_init();
+  ui_voltaje_screen_init();
+  ui____initial_actions0 = lv_obj_create(NULL);
+  lv_disp_load_scr(ui_voltaje);
 }
 
-void ui_destroy(void)
-{
-    ui_corriente_screen_destroy();
-    ui_diagnostic_screen_destroy();
-    ui_voltageStats_screen_destroy();
-    ui_dashboard_screen_destroy();
-    ui_Modo_Diario_24hrs_screen_destroy();
-    ui_statsWatts_screen_destroy();
-    ui_config_screen_destroy();
-    ui_voltaje_screen_destroy();
+void ui_destroy(void) {
+  ui_corriente_screen_destroy();
+  ui_diagnostic_screen_destroy();
+  ui_voltageStats_screen_destroy();
+  ui_dashboard_screen_destroy();
+  ui_Modo_Diario_24hrs_screen_destroy();
+  ui_statsWatts_screen_destroy();
+  ui_config_screen_destroy();
+  ui_config_brightness_screen_destroy();
+  ui_voltaje_screen_destroy();
 }

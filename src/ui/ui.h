@@ -22,29 +22,32 @@ extern "C" {
 #include "lvgl.h"
 #endif
 
-#include "ui_helpers.h"
 #include "components/ui_comp.h"
 #include "components/ui_comp_hook.h"
 #include "ui_events.h"
+#include "ui_helpers.h"
 #include "ui_theme_manager.h"
 #include "ui_themes.h"
 
+
 ///////////////////// SCREENS ////////////////////
 
-#include "screens/ui_corriente.h"
-#include "screens/ui_diagnostic.h"
-#include "screens/ui_voltageStats.h"
-#include "screens/ui_dashboard.h"
 #include "screens/ui_Modo_Diario_24hrs.h"
-#include "screens/ui_statsWatts.h"
 #include "screens/ui_config.h"
+#include "screens/ui_config_brightness.h"
+#include "screens/ui_corriente.h"
+#include "screens/ui_dashboard.h"
+#include "screens/ui_diagnostic.h"
+#include "screens/ui_statsWatts.h"
+#include "screens/ui_voltageStats.h"
 #include "screens/ui_voltaje.h"
+
 
 ///////////////////// VARIABLES ////////////////////
 
 // EVENTS
 
-extern lv_obj_t * ui____initial_actions0;
+extern lv_obj_t *ui____initial_actions0;
 
 // FONTS
 LV_FONT_DECLARE(ui_font_Qualy12);
@@ -73,4 +76,3 @@ void ui_destroy(void);
 #endif
 
 #endif
-
