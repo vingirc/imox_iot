@@ -3,9 +3,10 @@
 #include <Arduino.h>
 #include <LV_Helper.h> // Necesario si usas la versión de la librería que requiere helper
 #include <LilyGo_AMOLED.h>
-#include <WiFi.h>
-
 #include <PZEM004Tv30.h>
+#include <WiFi.h>
+#include <PubSubClient.h>
+#include <ArduinoJson.h>
 
 // Definición de pines para UART2 (PZEM) tomados de config.h
 #define PZEM_SERIAL Serial2
@@ -22,9 +23,69 @@ float v_energy = 0.0;
 float v_frequency = 0.0;
 float v_pf = 0.0;
 
+WiFiClient espClient;
+PubSubClient mqttClient(espClient);
+
 TaskHandle_t SensorTask; // Handle para la tarea del sensor
 
 LilyGo_Class amoled;
+
+// --- Funciones MQTT ---
+void reconnectMQTT() {
+  while (!mqttClient.connected()) {
+    Serial.print("Intentando conexión MQTT...");
+    // Intentar conectar con ID de dispositivo
+    String clientId = "IMOX-Device-";
+    clientId += String(MQTT_IOT_ID);
+    
+    // Aquí podrías usar el deviceSecret como password si el broker lo requiere
+    if (mqttClient.connect(clientId.c_str())) {
+      Serial.println("conectado");
+      // Opcional: suscribirse a tópicos de comando si fuera necesario
+    } else {
+      Serial.print("falló, rc=");
+      Serial.print(mqttClient.state());
+      Serial.println(" intentando de nuevo en 5 segundos");
+      vTaskDelay(pdMS_TO_TICKS(5000));
+    }
+  }
+}
+
+void sendTelemetry(float v, float i, float p, float e, float f, float pf) {
+  if (!mqttClient.connected()) {
+    return;
+  }
+
+  JsonDocument doc;
+  
+  // Bloque eléctricas
+  JsonObject electricas = doc["electricas"].to<JsonObject>();
+  electricas["voltaje_v"] = v;
+  electricas["corriente_a"] = i;
+  electricas["potencia_w"] = p;
+  electricas["energia_kwh"] = e;
+  electricas["frecuencia_hz"] = f;
+  electricas["factor_potencia"] = pf;
+
+  // Bloque diagnóstico
+  JsonObject diagnostico = doc["diagnostico"].to<JsonObject>();
+  diagnostico["ip"] = WiFi.localIP().toString();
+  diagnostico["rssi_dbm"] = WiFi.RSSI();
+  diagnostico["pzem_status"] = isnan(v) ? "ERROR" : "OK";
+  diagnostico["uptime_s"] = millis() / 1000;
+
+  // Opcional: timestamp si fuera necesario, el servidor lo pone si no
+  // doc["timestamp"] = "2026-03-05T..."
+
+  char buffer[512];
+  serializeJson(doc, buffer);
+  
+  if (mqttClient.publish(MQTT_TOPIC_TELEMETRY, buffer)) {
+    Serial.println("MQTT: Telemetría enviada con éxito");
+  } else {
+    Serial.println("MQTT: Error al enviar telemetría");
+  }
+}
 
 // --- Tarea del Sensor (Core 0) ---
 void sensorTaskCode(void *pvParameters) {
@@ -94,14 +155,37 @@ void sensorTaskCode(void *pvParameters) {
       Serial.println("Error leyendo PZEM (NAN)");
     }
 
-    // Espera definidida en config.h antes de la siguiente lectura
+    // Espera definida en config.h antes de la siguiente lectura
     vTaskDelay(pdMS_TO_TICKS(PZEM_READ_INTERVAL_MS));
+
+    // Envío de telemetría por MQTT
+    static unsigned long lastMQTTSendTime = 0;
+    if (millis() - lastMQTTSendTime > TELEMETRY_SEND_INTERVAL_MS) {
+      if (startup_skip_count >= MAX_STARTUP_SKIP && !isnan(v_voltage)) {
+        sendTelemetry(v_voltage, v_current, v_power, v_energy, v_frequency, v_pf);
+      }
+      lastMQTTSendTime = millis();
+    }
   }
 }
 
 void setup() {
   Serial.begin(SERIAL_BAUD_RATE);
   delay(500);
+
+  // 0. Conexión WiFi
+  Serial.print("Conectando a WiFi...");
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("\nWiFi Conectado!");
+  Serial.print("IP: ");
+  Serial.println(WiFi.localIP());
+
+  // Configuración MQTT
+  mqttClient.setServer(MQTT_BROKER, MQTT_PORT);
 
   // 1. Inicia Hardware
   bool res = amoled.begin();
@@ -238,6 +322,12 @@ void updateUI() {
 }
 
 void loop() {
+  // Asegurar conexión MQTT
+  if (!mqttClient.connected()) {
+    reconnectMQTT();
+  }
+  mqttClient.loop();
+
   // 5. Manejador LVGL (Corre en el Núcleo 1, el default de loop())
   lv_task_handler();
 

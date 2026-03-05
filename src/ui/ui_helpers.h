@@ -128,10 +128,15 @@ void _ui_spinbox_step(lv_obj_t *target, int val);
 void _ui_switch_theme(int val);
 
 // --- Config Navigation Helpers ---
-// Almacena el índice de la pantalla de la que venimos
+// Almacena el índice de la pantalla de la que venimos (0: Voltaje, 1: Corriente, etc)
 extern uint8_t ui_last_screen_index;
+// Almacena la última página de configuración visitada (0: Config, 1: Brightness)
+extern uint8_t ui_last_config_index;
+
 // Regresa a la pantalla correspondiente al índice almacenado
 void _ui_screen_change_by_index(uint8_t index);
+// Navega a la pantalla de configuración correspondiente al índice
+void _ui_config_change_by_index(uint8_t index);
 
 #ifdef __cplusplus
 

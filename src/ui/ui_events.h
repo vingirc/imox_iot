@@ -18,6 +18,7 @@ void onWifiConfirm(bool enable);
 void onRestartConfirm(void);
 void onBrightnessChange(int32_t value);
 void onTurnOffScreen(void);
+void ui_event_stats_toggle(lv_obj_t * label, lv_obj_t * chart);
 
 #ifdef __cplusplus
 } /*extern "C"*/

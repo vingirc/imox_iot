@@ -333,6 +333,18 @@ void _ui_switch_theme(int val)
 
 // --- Config Navigation Helpers ---
 uint8_t ui_last_screen_index = 0; // Default a 0 (Voltaje)
+uint8_t ui_last_config_index = 0; // Default a 0 (Config principal)
+
+void _ui_config_change_by_index(uint8_t index) {
+  if (index == 1) {
+    _ui_screen_change(&ui_config_brightness, UI_ANIM_SWIPE_DOWN,
+                      UI_ANIM_SWIPE_DURATION, UI_ANIM_SWIPE_DELAY,
+                      &ui_config_brightness_screen_init);
+  } else {
+    _ui_screen_change(&ui_config, UI_ANIM_SWIPE_DOWN, UI_ANIM_SWIPE_DURATION,
+                      UI_ANIM_SWIPE_DELAY, &ui_config_screen_init);
+  }
+}
 
 void _ui_screen_change_by_index(uint8_t index) {
   // Definimos los índices:

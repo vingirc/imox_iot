@@ -34,12 +34,16 @@ void ui_event_statsWatts(lv_event_t *e) {
                       &ui_voltageStats_screen_init);
   }
   if (event_code == LV_EVENT_GESTURE &&
-      (lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_BOTTOM ||
-       lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_TOP)) {
+      lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_BOTTOM) {
     lv_indev_wait_release(lv_indev_get_act());
     ui_last_screen_index = 3;
-    _ui_screen_change(&ui_config, UI_ANIM_SWIPE_DOWN, UI_ANIM_SWIPE_DURATION,
-                      UI_ANIM_SWIPE_DELAY, &ui_config_screen_init);
+    _ui_config_change_by_index(ui_last_config_index);
+  }
+  if (event_code == LV_EVENT_GESTURE &&
+      lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_TOP) {
+    lv_indev_wait_release(lv_indev_get_act());
+    // Toggle semanal/mensual
+    ui_event_stats_toggle(ui_PotenciaLabel16, ui_wattsChart);
   }
 }
 
@@ -226,8 +230,8 @@ void ui_statsWatts_screen_init(void) {
   lv_obj_add_event_cb(ui_statsWatts, ui_event_statsWatts, LV_EVENT_ALL, NULL);
 
   // Swipe Hints
-  ui_swipe_hint_create(ui_statsWatts, true);  // ▲ arriba (swipe down config)
-  ui_swipe_hint_create(ui_statsWatts, false); // ▼ abajo (swipe up toggle)
+  ui_swipe_hint_create(ui_statsWatts, true);  // ▼ abajo (para Config)
+  ui_swipe_hint_create(ui_statsWatts, false); // ▲ arriba (para Toggle)
 }
 
 void ui_statsWatts_screen_destroy(void) {

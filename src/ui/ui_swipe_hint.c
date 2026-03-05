@@ -35,10 +35,10 @@ lv_obj_t *ui_swipe_hint_create(lv_obj_t *parent, bool is_top) {
   // Posicionamiento
   if (is_top) {
     lv_obj_set_align(hint, LV_ALIGN_TOP_MID);
-    lv_obj_set_y(hint, 10);
+    lv_obj_set_y(hint, 25);
   } else {
     lv_obj_set_align(hint, LV_ALIGN_BOTTOM_MID);
-    lv_obj_set_y(hint, -10);
+    lv_obj_set_y(hint, -25);
   }
 
   lv_obj_move_foreground(hint);

@@ -171,6 +171,7 @@ void ui_event_config(lv_event_t *e) {
   if (event_code == LV_EVENT_GESTURE &&
       lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_LEFT) {
     lv_indev_wait_release(lv_indev_get_act());
+    ui_last_config_index = 1;
     _ui_screen_change(&ui_config_brightness, UI_ANIM_SWIPE_LEFT,
                       UI_ANIM_SWIPE_DURATION, UI_ANIM_SWIPE_DELAY,
                       &ui_config_brightness_screen_init);

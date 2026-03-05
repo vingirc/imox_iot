@@ -50,6 +50,23 @@
 #define LVGL_TICK_PERIOD_MS 5       // Tick de LVGL cada 5ms
 
 // ============================================================================
+// CONFIGURACIÓN DE RED Y MQTT
+// ============================================================================
+#define WIFI_SSID             "TU_SSID"
+#define WIFI_PASSWORD         "TU_PASSWORD"
+
+#define MQTT_BROKER           "dietpi.tail02564c.ts.net"
+#define MQTT_PORT             1883
+#define MQTT_IOT_ID           3
+#define MQTT_DEVICE_SECRET    "b67a81fa475cacdc6a036c2e1395e8399b893764883a8c1b"
+
+// Tópicos MQTT
+#define MQTT_TOPIC_TELEMETRY  "imox/devices/3/telemetry"
+
+// Intervalo de envío de telemetría (1.5 segundos)
+#define TELEMETRY_SEND_INTERVAL_MS 1500
+
+// ============================================================================
 // CONFIGURACIÓN DE DEBUGGING
 // ============================================================================
 #define SERIAL_BAUD_RATE 115200     // Baudrate del monitor serial

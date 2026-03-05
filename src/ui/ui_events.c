@@ -62,3 +62,14 @@ void onTurnOffScreen(void) {
     lv_obj_add_event_cb(wake_layer, wake_layer_cb, LV_EVENT_CLICKED, NULL);
   }
 }
+
+void ui_event_stats_toggle(lv_obj_t *label, lv_obj_t *chart) {
+  if (!label)
+    return;
+  const char *current_text = lv_label_get_text(label);
+  if (strcmp(current_text, "Consumo semanal") == 0) {
+    lv_label_set_text(label, "Consumo mensual");
+  } else {
+    lv_label_set_text(label, "Consumo semanal");
+  }
+}

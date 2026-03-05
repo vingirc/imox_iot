@@ -45,6 +45,7 @@ void ui_event_config_brightness(lv_event_t *e) {
   if (event_code == LV_EVENT_GESTURE &&
       lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT) {
     lv_indev_wait_release(lv_indev_get_act());
+    ui_last_config_index = 0;
     _ui_screen_change(&ui_config, UI_ANIM_SWIPE_RIGHT, UI_ANIM_SWIPE_DURATION,
                       UI_ANIM_SWIPE_DELAY, &ui_config_screen_init);
   }
@@ -74,7 +75,8 @@ void ui_config_brightness_screen_init(void) {
   ui_brightnessSlider = lv_slider_create(ui_config_brightness);
   lv_obj_set_width(ui_brightnessSlider, 300);
   lv_obj_set_height(ui_brightnessSlider, 20); // Track grueso
-  lv_obj_set_align(ui_brightnessSlider, LV_ALIGN_CENTER);
+  lv_obj_set_align(ui_brightnessSlider, LV_ALIGN_TOP_MID);
+  lv_obj_set_y(ui_brightnessSlider, 80);
   lv_slider_set_range(ui_brightnessSlider, 20, 255);
   lv_slider_set_value(ui_brightnessSlider, UI_BRIGHTNESS_DEFAULT, LV_ANIM_OFF);
   lv_obj_remove_style(ui_brightnessSlider, NULL,
@@ -150,7 +152,8 @@ void ui_config_brightness_screen_init(void) {
   lv_obj_t *ui_turnOffBtn = lv_btn_create(ui_config_brightness);
   lv_obj_set_width(ui_turnOffBtn, 240);
   lv_obj_set_height(ui_turnOffBtn, 60);
-  lv_obj_align(ui_turnOffBtn, LV_ALIGN_CENTER, 0, 80);
+  lv_obj_set_align(ui_turnOffBtn, LV_ALIGN_TOP_MID);
+  lv_obj_set_y(ui_turnOffBtn, 140);
   lv_obj_set_style_bg_color(ui_turnOffBtn, lv_color_hex(0x666666),
                             LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_radius(ui_turnOffBtn, 15, LV_PART_MAIN | LV_STATE_DEFAULT);
