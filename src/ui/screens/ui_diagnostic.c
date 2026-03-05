@@ -15,6 +15,7 @@ lv_obj_t * ui_elementVal = NULL;
 lv_obj_t * ui_rssiPanel = NULL;
 lv_obj_t * ui_elementLabel1 = NULL;
 lv_obj_t * ui_elementVal1 = NULL;
+lv_obj_t * ui_rssiBar = NULL;
 lv_obj_t * ui_uptimePanel = NULL;
 lv_obj_t * ui_elementLabel2 = NULL;
 lv_obj_t * ui_elementVal3 = NULL;
@@ -151,6 +152,21 @@ void ui_diagnostic_screen_init(void)
     lv_label_set_text(ui_elementVal1, "-- dBm"); 
     lv_obj_set_style_text_color(ui_elementVal1, UI_COLOR_TEXT_LABEL, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_elementVal1, UI_FONT_DIAG_ELEMENT, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_rssiBar = lv_bar_create(ui_rssiPanel);
+    lv_obj_set_width(ui_rssiBar, 100);
+    lv_obj_set_height(ui_rssiBar, 15);
+    lv_bar_set_range(ui_rssiBar, 0, 100);
+    lv_bar_set_value(ui_rssiBar, 0, LV_ANIM_OFF);
+    
+    // Monochromatic style for the bar
+    lv_obj_set_style_bg_color(ui_rssiBar, UI_COLOR_SLIDER_TRACK, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_rssiBar, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui_rssiBar, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
+    
+    lv_obj_set_style_bg_color(ui_rssiBar, UI_COLOR_TEXT_ACTIVE, LV_PART_INDICATOR | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_rssiBar, 255, LV_PART_INDICATOR | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui_rssiBar, 5, LV_PART_INDICATOR | LV_STATE_DEFAULT);
 
     // Uptime Panel
     ui_uptimePanel = lv_obj_create(ui_redPanel);
@@ -328,6 +344,7 @@ void ui_diagnostic_screen_destroy(void)
     ui_rssiPanel = NULL;
     ui_elementLabel1 = NULL;
     ui_elementVal1 = NULL;
+    ui_rssiBar = NULL;
     ui_uptimePanel = NULL;
     ui_elementLabel2 = NULL;
     ui_elementVal3 = NULL;

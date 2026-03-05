@@ -307,9 +307,19 @@ void updateUI() {
   }
   if (ui_elementVal1) { // RSSI
     if (WiFi.status() == WL_CONNECTED) {
-        lv_label_set_text_fmt(ui_elementVal1, "%d dBm", WiFi.RSSI());
+        int rssi = WiFi.RSSI();
+        lv_label_set_text_fmt(ui_elementVal1, "%d dBm", rssi);
+        
+        if (ui_rssiBar) {
+          // Mapeo: -100 dBm (0%) a -30 dBm (100%)
+          int pct = (rssi + 100) * 100 / 70;
+          if (pct < 0) pct = 0;
+          if (pct > 100) pct = 100;
+          lv_bar_set_value(ui_rssiBar, pct, LV_ANIM_OFF);
+        }
     } else {
         lv_label_set_text(ui_elementVal1, "--- dBm");
+        if (ui_rssiBar) lv_bar_set_value(ui_rssiBar, 0, LV_ANIM_OFF);
     }
   }
 
