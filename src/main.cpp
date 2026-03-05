@@ -26,6 +26,7 @@ float v_pf = 0.0;
 
 esp_mqtt_client_handle_t mqtt_client = NULL;
 bool mqtt_connected = false;
+unsigned long last_mqtt_sync_ms = 0; // Tiempo de la última sincronización Cloud exitosa
 
 TaskHandle_t SensorTask; // Handle para la tarea del sensor
 
@@ -87,6 +88,7 @@ void sendTelemetry(float v, float i, float p, float e, float f, float pf) {
   int msg_id = esp_mqtt_client_publish(mqtt_client, MQTT_TOPIC_TELEMETRY, buffer, 0, 1, 0);
   if (msg_id != -1) {
     Serial.printf("MQTT: Telemetría enviada (ID: %d)\n", msg_id);
+    last_mqtt_sync_ms = millis(); // Actualizar tiempo de última sincronización
   } else {
     Serial.println("MQTT: Error al publicar");
   }
@@ -174,16 +176,11 @@ void setup() {
   Serial.begin(SERIAL_BAUD_RATE);
   delay(500);
 
-  // 0. Conexión WiFi
-  Serial.print("Conectando a WiFi...");
+  // 0. Conexión WiFi (No bloqueante)
+  Serial.print("Iniciando WiFi...");
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.println("\nWiFi Conectado!");
-  Serial.print("IP: ");
-  Serial.println(WiFi.localIP());
+  // Eliminamos el bucle while(WiFi.status() != WL_CONNECTED)
+  Serial.println(" WiFi iniciado en segundo plano.");
 
   delay(2000); // Dar un momento extra para estabilizar red
   
@@ -285,6 +282,46 @@ void updateUI() {
     lv_label_set_text_fmt(ui_elementVal3, "%02d:%02d:%02d", hr, min % 60,
                           sec % 60);
   }
+
+  // --- NUEVO: Estado de Conexión WiFi ---
+  if (ui_elementVal) { // IP Local
+    if (WiFi.status() == WL_CONNECTED) {
+        lv_label_set_text(ui_elementVal, WiFi.localIP().toString().c_str());
+    } else {
+        lv_label_set_text(ui_elementVal, "DESCONECTADO");
+    }
+  }
+  if (ui_elementVal1) { // RSSI
+    if (WiFi.status() == WL_CONNECTED) {
+        lv_label_set_text_fmt(ui_elementVal1, "%d dBm", WiFi.RSSI());
+    } else {
+        lv_label_set_text(ui_elementVal1, "--- dBm");
+    }
+  }
+
+  // --- NUEVO: Estado de MQTT ---
+  if (ui_elementVal4) { // MQTT Broker Status
+    if (mqtt_connected) {
+        lv_label_set_text(ui_elementVal4, "CONECTADO");
+    } else {
+        lv_label_set_text(ui_elementVal4, "DESCONECTADO");
+    }
+  }
+  if (ui_elementVal7) { // Last Sync (Cloud)
+    if (last_mqtt_sync_ms == 0) {
+        lv_label_set_text(ui_elementVal7, "NUNCA");
+    } else {
+        uint32_t diff_s = (millis() - last_mqtt_sync_ms) / 1000;
+        if (diff_s < 5) {
+            lv_label_set_text(ui_elementVal7, "AHORA");
+        } else if (diff_s < 60) {
+            lv_label_set_text_fmt(ui_elementVal7, "HACE %u s", diff_s);
+        } else {
+            uint32_t diff_m = diff_s / 60;
+            lv_label_set_text_fmt(ui_elementVal7, "HACE %u m", diff_m);
+        }
+    }
+  }
   if (ui_elementVal5) { // MAC
     lv_label_set_text(ui_elementVal5, WiFi.macAddress().c_str());
   }
@@ -295,10 +332,26 @@ void updateUI() {
       lv_label_set_text(ui_elementVal6, "ERROR / DESCONECTADO");
     }
   }
-  if (ui_elementVal8) { // Heap
+  if (ui_elementVal8) { // Memory & Core Info
     uint32_t freeHeap = ESP.getFreeHeap() / 1024;
     uint32_t totalHeap = ESP.getHeapSize() / 1024;
-    lv_label_set_text_fmt(ui_elementVal8, "%u / %u KB", freeHeap, totalHeap);
+    
+    // Monitoreo de Stack (High Water Mark en palabras de 4 bytes)
+    UBaseType_t sensorStackFree = uxTaskGetStackHighWaterMark(SensorTask);
+    UBaseType_t uiStackFree = uxTaskGetStackHighWaterMark(NULL); // Tarea actual (UI/Loop)
+
+    // Formateamos para mostrar: Heap Libre / Core de ejecución / Stack Libre (Tareas)
+    lv_label_set_text_fmt(ui_elementVal8, "H: %u/%u KB | C: %d | S: %u/%u", 
+                          freeHeap, totalHeap, xPortGetCoreID(), 
+                          (uint32_t)uiStackFree, (uint32_t)sensorStackFree);
+    
+    // Verificación por Serial también
+    static unsigned long lastLog = 0;
+    if (millis() - lastLog > 5000) {
+        Serial.printf("DEBUG: Heap: %uKB, Core: %d, UI_Stack_HWM: %u, Sensor_Stack_HWM: %u\n", 
+                      freeHeap, xPortGetCoreID(), (uint32_t)uiStackFree, (uint32_t)sensorStackFree);
+        lastLog = millis();
+    }
   }
 
   // ----------------------------------------------------
