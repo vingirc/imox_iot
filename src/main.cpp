@@ -26,7 +26,9 @@ float v_pf = 0.0;
 
 esp_mqtt_client_handle_t mqtt_client = NULL;
 bool mqtt_connected = false;
-unsigned long last_mqtt_sync_ms = 0; // Tiempo de la última sincronización Cloud exitosa
+RTC_DATA_ATTR bool mqtt_sync_ever_happened = false;
+RTC_DATA_ATTR unsigned long last_mqtt_sync_ms = 0; // Tiempo de la última sincronización Cloud exitosa
+unsigned long boot_time_offset_ms = 0; // Offset para manejar reinicios
 
 TaskHandle_t SensorTask; // Handle para la tarea del sensor
 
@@ -89,6 +91,7 @@ void sendTelemetry(float v, float i, float p, float e, float f, float pf) {
   if (msg_id != -1) {
     Serial.printf("MQTT: Telemetría enviada (ID: %d)\n", msg_id);
     last_mqtt_sync_ms = millis(); // Actualizar tiempo de última sincronización
+    mqtt_sync_ever_happened = true;
   } else {
     Serial.println("MQTT: Error al publicar");
   }
@@ -176,13 +179,24 @@ void setup() {
   Serial.begin(SERIAL_BAUD_RATE);
   delay(500);
 
-  // 0. Conexión WiFi (No bloqueante)
+  // 0. Conexión WiFi (No bloqueante pero con espera inicial para MQTT)
   Serial.print("Iniciando WiFi...");
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-  // Eliminamos el bucle while(WiFi.status() != WL_CONNECTED)
-  Serial.println(" WiFi iniciado en segundo plano.");
+  
+  Serial.print(" Esperando conexión...");
+  unsigned long start_wifi = millis();
+  while (WiFi.status() != WL_CONNECTED && millis() - start_wifi < 10000) {
+      delay(500);
+      Serial.print(".");
+  }
 
-  delay(2000); // Dar un momento extra para estabilizar red
+  if (WiFi.status() == WL_CONNECTED) {
+      Serial.println(" ¡Conectado!");
+      Serial.print("IP: ");
+      Serial.println(WiFi.localIP());
+  } else {
+      Serial.println(" Timeout (conectando en segundo plano)");
+  }
   
   // Configuración MQTT Nativa (WSS) - Estructura dinámica por versión
   esp_mqtt_client_config_t mqtt_cfg = {};
@@ -308,10 +322,12 @@ void updateUI() {
     }
   }
   if (ui_elementVal7) { // Last Sync (Cloud)
-    if (last_mqtt_sync_ms == 0) {
+    if (!mqtt_sync_ever_happened) {
         lv_label_set_text(ui_elementVal7, "NUNCA");
     } else {
-        uint32_t diff_s = (millis() - last_mqtt_sync_ms) / 1000;
+        unsigned long current_ms = millis();
+        uint32_t diff_s = (current_ms - last_mqtt_sync_ms) / 1000;
+
         if (diff_s < 5) {
             lv_label_set_text(ui_elementVal7, "AHORA");
         } else if (diff_s < 60) {
@@ -340,9 +356,9 @@ void updateUI() {
     UBaseType_t sensorStackFree = uxTaskGetStackHighWaterMark(SensorTask);
     UBaseType_t uiStackFree = uxTaskGetStackHighWaterMark(NULL); // Tarea actual (UI/Loop)
 
-    // Formateamos para mostrar: Heap Libre / Core de ejecución / Stack Libre (Tareas)
-    lv_label_set_text_fmt(ui_elementVal8, "H: %u/%u KB | C: %d | S: %u/%u", 
-                          freeHeap, totalHeap, xPortGetCoreID(), 
+    // Abreviado para evitar superposición: Heap | Core | Stacks
+    lv_label_set_text_fmt(ui_elementVal8, "H: %uK | C: %d | S: %u/%u", 
+                          freeHeap, xPortGetCoreID(), 
                           (uint32_t)uiStackFree, (uint32_t)sensorStackFree);
     
     // Verificación por Serial también
@@ -446,6 +462,16 @@ void hw_wifi_toggle(bool enable) {
 
 void hw_restart(void) {
   Serial.println("Reiniciando dispositivo...");
+  
+  // Guardamos el "tiempo transcurrido desde la última sincronización" en RTC
+  // para que al volver del reinicio, el contador continúe (asumiendo ~1s de reboot)
+  if (mqtt_sync_ever_happened) {
+      unsigned long elapsed = millis() - last_mqtt_sync_ms;
+      // Guardamos como un valor negativo para que al sumarle millis() (que será 0) 
+      // dé el tiempo relativo correcto. Sumamos 2000ms por el tiempo de boot.
+      last_mqtt_sync_ms = 0 - (elapsed + 2000); 
+  }
+
   delay(500); // Dar tiempo al serial
   ESP.restart();
 }
