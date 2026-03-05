@@ -5,8 +5,9 @@
 #include <LilyGo_AMOLED.h>
 #include <PZEM004Tv30.h>
 #include <WiFi.h>
-#include <PubSubClient.h>
 #include <ArduinoJson.h>
+#include "mqtt_client.h"
+#include "esp_tls.h"
 
 // Definición de pines para UART2 (PZEM) tomados de config.h
 #define PZEM_SERIAL Serial2
@@ -23,41 +24,43 @@ float v_energy = 0.0;
 float v_frequency = 0.0;
 float v_pf = 0.0;
 
-WiFiClient espClient;
-PubSubClient mqttClient(espClient);
+esp_mqtt_client_handle_t mqtt_client = NULL;
+bool mqtt_connected = false;
 
 TaskHandle_t SensorTask; // Handle para la tarea del sensor
 
 LilyGo_Class amoled;
 
 // --- Funciones MQTT ---
-void reconnectMQTT() {
-  while (!mqttClient.connected()) {
-    Serial.print("Intentando conexión MQTT...");
-    // Intentar conectar con ID de dispositivo
-    String clientId = "IMOX-Device-";
-    clientId += String(MQTT_IOT_ID);
-    
-    // Aquí podrías usar el deviceSecret como password si el broker lo requiere
-    if (mqttClient.connect(clientId.c_str())) {
-      Serial.println("conectado");
-      // Opcional: suscribirse a tópicos de comando si fuera necesario
-    } else {
-      Serial.print("falló, rc=");
-      Serial.print(mqttClient.state());
-      Serial.println(" intentando de nuevo en 5 segundos");
-      vTaskDelay(pdMS_TO_TICKS(5000));
+static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data) {
+    esp_mqtt_event_handle_t event = (esp_mqtt_event_handle_t)event_data;
+    switch ((esp_mqtt_event_id_t)event_id) {
+        case MQTT_EVENT_CONNECTED:
+            Serial.println("MQTT: Conectado al Broker (WSS)");
+            mqtt_connected = true;
+            break;
+        case MQTT_EVENT_DISCONNECTED:
+            Serial.println("MQTT: Desconectado");
+            mqtt_connected = false;
+            break;
+        case MQTT_EVENT_ERROR:
+            Serial.println("MQTT: Error detectado");
+            break;
+        default:
+            break;
     }
-  }
 }
 
 void sendTelemetry(float v, float i, float p, float e, float f, float pf) {
-  if (!mqttClient.connected()) {
+  if (!mqtt_connected || mqtt_client == NULL) {
     return;
   }
 
   JsonDocument doc;
   
+  doc["iot_id"] = MQTT_IOT_ID;
+  doc["user_id"] = MQTT_USER_ID;
+
   // Bloque eléctricas
   JsonObject electricas = doc["electricas"].to<JsonObject>();
   electricas["voltaje_v"] = v;
@@ -74,16 +77,18 @@ void sendTelemetry(float v, float i, float p, float e, float f, float pf) {
   diagnostico["pzem_status"] = isnan(v) ? "ERROR" : "OK";
   diagnostico["uptime_s"] = millis() / 1000;
 
-  // Opcional: timestamp si fuera necesario, el servidor lo pone si no
-  // doc["timestamp"] = "2026-03-05T..."
-
   char buffer[512];
   serializeJson(doc, buffer);
   
-  if (mqttClient.publish(MQTT_TOPIC_TELEMETRY, buffer)) {
-    Serial.println("MQTT: Telemetría enviada con éxito");
+  // Imprimir payload en Serial para depuración
+  Serial.print("MQTT: Enviando Payload: ");
+  Serial.println(buffer);
+  
+  int msg_id = esp_mqtt_client_publish(mqtt_client, MQTT_TOPIC_TELEMETRY, buffer, 0, 1, 0);
+  if (msg_id != -1) {
+    Serial.printf("MQTT: Telemetría enviada (ID: %d)\n", msg_id);
   } else {
-    Serial.println("MQTT: Error al enviar telemetría");
+    Serial.println("MQTT: Error al publicar");
   }
 }
 
@@ -108,9 +113,7 @@ void sensorTaskCode(void *pvParameters) {
     float pf = pzem.pf();
 
     if (!isnan(voltage)) {
-      // 1. Filtro de inicialización: Ignorar las primeras 2 lecturas REALES (no
-      // NAN) Estas son las que suelen traer picos tras la conexión física del
-      // sensor.
+      // 1. Filtro de inicialización
       if (startup_skip_count < MAX_STARTUP_SKIP) {
         startup_skip_count++;
         Serial.printf(
@@ -120,9 +123,7 @@ void sensorTaskCode(void *pvParameters) {
         continue;
       }
 
-      // 2. Filtro de rango (Outlier Filter): Ignorar picos imposibles
-      // Basado en límites físicos razonables para evitar errores en
-      // gráficas/históricos
+      // 2. Filtro de rango (Outlier Filter)
       bool is_valid = true;
       if (voltage > 450.0 || voltage < 0.0)
         is_valid = false;
@@ -184,8 +185,42 @@ void setup() {
   Serial.print("IP: ");
   Serial.println(WiFi.localIP());
 
-  // Configuración MQTT
-  mqttClient.setServer(MQTT_BROKER, MQTT_PORT);
+  delay(2000); // Dar un momento extra para estabilizar red
+  
+  // Configuración MQTT Nativa (WSS) - Estructura dinámica por versión
+  esp_mqtt_client_config_t mqtt_cfg = {};
+
+#if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
+  // SINTAXIS PARA NÚCLEOS ESP32 NUEVOS (Arduino v3.x / ESP-IDF 5)
+  mqtt_cfg.broker.address.uri = MQTT_WSS_URI; 
+  mqtt_cfg.credentials.username = "3";
+  mqtt_cfg.credentials.authentication.password = MQTT_DEVICE_SECRET;
+  mqtt_cfg.credentials.client_id = "IMOX-ESP32-3";
+  mqtt_cfg.broker.verification.certificate = LET_S_ENCRYPT_CA;
+  
+  // Tamaño de buffer
+  mqtt_cfg.task.stack_size = 12288;
+  mqtt_cfg.buffer.size = 4096;
+#else
+  // SINTAXIS PARA NÚCLEOS ESP32 CLÁSICOS (Arduino v2.x / ESP-IDF 4.x)
+  mqtt_cfg.uri = MQTT_WSS_URI;               
+  mqtt_cfg.client_id = "IMOX-ESP32-3";
+  mqtt_cfg.username = "3";
+  mqtt_cfg.password = MQTT_DEVICE_SECRET;
+  mqtt_cfg.cert_pem = LET_S_ENCRYPT_CA;
+  
+  // Tamaño de buffer
+  mqtt_cfg.task_stack = 12288;
+  mqtt_cfg.buffer_size = 4096;
+#endif
+
+  // Nota: Se omite intencionalmente skip_cert_common_name_check 
+  // para permitir que la validación SNI de Tailscale funcione.
+  
+  mqtt_client = esp_mqtt_client_init(&mqtt_cfg);
+  esp_mqtt_client_register_event(mqtt_client, (esp_mqtt_event_id_t)ESP_EVENT_ANY_ID, mqtt_event_handler, NULL);
+  esp_mqtt_client_start(mqtt_client);
+  Serial.println("MQTT: Cliente Iniciado");
 
   // 1. Inicia Hardware
   bool res = amoled.begin();
@@ -204,8 +239,6 @@ void setup() {
   Serial.println("System Ready - UI Running");
 
   // 4. Crear tarea para el Sensor en el Núcleo 0
-  // xTaskCreatePinnedToCore params:
-  // func, name, stack size, params, priority, handle, core_id
   xTaskCreatePinnedToCore(sensorTaskCode,       /* Función de la tarea */
                           PZEM_TASK_NAME,       /* Nombre de la tarea */
                           PZEM_TASK_STACK_SIZE, /* Tamaño del stack (bytes) */
@@ -322,12 +355,8 @@ void updateUI() {
 }
 
 void loop() {
-  // Asegurar conexión MQTT
-  if (!mqttClient.connected()) {
-    reconnectMQTT();
-  }
-  mqttClient.loop();
-
+  // El cliente nativo maneja su propia tarea y reconexión en segundo plano
+  
   // 5. Manejador LVGL (Corre en el Núcleo 1, el default de loop())
   lv_task_handler();
 
