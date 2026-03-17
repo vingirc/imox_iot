@@ -24,6 +24,12 @@ float v_energy = 0.0;
 float v_frequency = 0.0;
 float v_pf = 0.0;
 
+// Historial para Gráficas (7 puntos para semanal, 24 para diario)
+lv_coord_t history_voltage[7] = {0};
+lv_coord_t history_watts[7] = {0};
+lv_coord_t history_daily_24h[24] = {0};
+bool history_data_ready = false;
+
 esp_mqtt_client_handle_t mqtt_client = NULL;
 bool mqtt_connected = false;
 bool wifi_enabled_by_user = true; // Rastrea si el WiFi debería estar activo
@@ -42,11 +48,54 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
         case MQTT_EVENT_CONNECTED:
             Serial.println("MQTT: Conectado al Broker (WSS)");
             mqtt_connected = true;
+            // Suscribirse a tópicos de respuesta
+            esp_mqtt_client_subscribe(mqtt_client, MQTT_TOPIC_HISTORY_RES, 1);
+            Serial.println("MQTT: Suscrito a historia/response");
             break;
         case MQTT_EVENT_DISCONNECTED:
             Serial.println("MQTT: Desconectado");
             mqtt_connected = false;
             break;
+        case MQTT_EVENT_DATA: {
+            Serial.printf("MQTT: Datos recibidos en tópico: %.*s\n", event->topic_len, event->topic);
+            if (strncmp(event->topic, MQTT_TOPIC_HISTORY_RES, event->topic_len) == 0) {
+                JsonDocument doc;
+                DeserializationError error = deserializeJson(doc, event->data, event->data_len);
+                if (!error) {
+                    if (!doc["data"].isNull()) {
+                        JsonArray dataRows = doc["data"];
+                        JsonArray columns = doc["columns"];
+                        
+                        // Encontrar índices de columnas
+                        int idx_v = -1, idx_p = -1, idx_t = -1;
+                        for(int i=0; i<columns.size(); i++) {
+                            if(strcmp(columns[i], "voltaje") == 0) idx_v = i;
+                            if(strcmp(columns[i], "potencia") == 0) idx_p = i;
+                            if(strcmp(columns[i], "timestamp") == 0) idx_t = i;
+                        }
+
+                        // Llenar arrays (asumiendo que vienen en orden cronológico)
+                        int count = dataRows.size();
+                        for(int i=0; i < count; i++) {
+                            if (i < 7) {
+                              if(idx_v != -1) history_voltage[i] = (lv_coord_t)dataRows[i][idx_v].as<float>();
+                              if(idx_p != -1) history_watts[i] = (lv_coord_t)dataRows[i][idx_p].as<float>();
+                            }
+                            if (i < 24) {
+                              if(idx_p != -1) history_daily_24h[i] = (lv_coord_t)dataRows[i][idx_p].as<float>();
+                            }
+                        }
+                        history_data_ready = true;
+                        Serial.println("MQTT: Historial procesado correctamente");
+                    } else if (!doc["error"].isNull()) {
+                        Serial.printf("MQTT: Error de servidor: %s\n", doc["error"].as<const char*>());
+                    }
+                } else {
+                    Serial.println("MQTT: Error al parsear JSON de historial");
+                }
+            }
+            break;
+        }
         case MQTT_EVENT_ERROR:
             Serial.println("MQTT: Error detectado");
             break;
@@ -435,6 +484,31 @@ void updateUI() {
   if (ui_PotenciaValD) { // Factor de Potencia según análisis
     lv_label_set_text_fmt(ui_PotenciaValD, "%.2f", display_pf);
   }
+
+  // Actualizar gráficas si hay datos nuevos
+  if (history_data_ready) {
+    if (ui_voltageChart) lv_chart_refresh(ui_voltageChart);
+    if (ui_wattsChart) lv_chart_refresh(ui_wattsChart);
+    
+    // Actualizar paneles de Modo Diario (24h) si el objeto existe
+    if (ui_Modo_Diario_24hrs) {
+      lv_obj_t* panels[] = {ui_valoresPanel4, ui_valoresPanel5, ui_valoresPanel6, ui_valoresPanel7, ui_valoresPanel8, 
+                            ui_valoresPanel10, ui_valoresPanel11, ui_valoresPanel12, ui_valoresPanel13, ui_valoresPanel14};
+      // Nota: ui_Modo_Diario_24hrs.c tiene menos paneles que 24 horas, ajustamos a lo que hay
+      int num_panels = sizeof(panels) / sizeof(panels[0]);
+      for (int i=0; i < num_panels && i < 24; i++) {
+        if (panels[i]) {
+          // Ajustar altura basado en potencia (ej. max 60px)
+          int height = (int)((history_daily_24h[i] * 60) / 25000.0); // Asumiendo 25kW max o algo razonable
+          if (height < 2) height = 2;
+          if (height > 100) height = 100;
+          lv_obj_set_height(panels[i], height);
+        }
+      }
+    }
+    
+    history_data_ready = false;
+  }
 }
 
 void loop() {
@@ -506,6 +580,23 @@ void hw_restart(void) {
 void hw_turn_off_screen(void) {
   amoled.setBrightness(0);
   Serial.println("Pantalla apagada (Brillo 0)");
+}
+
+void hw_request_history(const char* startDate, const char* endDate) {
+  if (!mqtt_connected || mqtt_client == NULL) {
+    Serial.println("MQTT: No se puede pedir historial (no conectado)");
+    return;
+  }
+
+  JsonDocument doc;
+  doc["startDate"] = startDate;
+  doc["endDate"] = endDate;
+
+  char buffer[256];
+  serializeJson(doc, buffer);
+  
+  Serial.printf("MQTT: Pidiendo historial: %s\n", buffer);
+  esp_mqtt_client_publish(mqtt_client, MQTT_TOPIC_HISTORY_REQ, buffer, 0, 1, 0);
 }
 
 } // extern "C"

@@ -15,6 +15,8 @@ lv_obj_t *ui_wattsVal = NULL;
 lv_obj_t *ui_PotenciaLabel21 = NULL;
 lv_obj_t *ui_wattsChart = NULL;
 lv_obj_t *ui_navPanel3 = NULL;
+
+extern void ui_event_stats_load(lv_event_t *e);
 // event funtions
 void ui_event_statsWatts(lv_event_t *e) {
   lv_event_code_t event_code = lv_event_get_code(e);
@@ -202,10 +204,9 @@ void ui_statsWatts_screen_init(void) {
                          true, 25);
   lv_chart_series_t *ui_wattsChart_series_1 = lv_chart_add_series(
       ui_wattsChart, UI_COLOR_ACCENT, LV_CHART_AXIS_PRIMARY_Y);
-  static lv_coord_t ui_wattsChart_series_1_array[] = {0,  10, 20, 40, 80,
-                                                      80, 40, 20, 10, 0};
+  extern lv_coord_t history_watts[];
   lv_chart_set_ext_y_array(ui_wattsChart, ui_wattsChart_series_1,
-                           ui_wattsChart_series_1_array);
+                           history_watts);
   lv_obj_set_style_bg_color(ui_wattsChart, UI_COLOR_BG,
                             LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_bg_opa(ui_wattsChart, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -228,6 +229,7 @@ void ui_statsWatts_screen_init(void) {
       LV_PART_MAIN | LV_STATE_DEFAULT);
 
   lv_obj_add_event_cb(ui_statsWatts, ui_event_statsWatts, LV_EVENT_ALL, NULL);
+  lv_obj_add_event_cb(ui_statsWatts, ui_event_stats_load, LV_EVENT_SCREEN_LOADED, NULL);
 
   // Swipe Hints
   ui_swipe_hint_create(ui_statsWatts, true);  // ▼ abajo (para Config)

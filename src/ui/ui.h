@@ -48,6 +48,9 @@ extern "C" {
 // EVENTS
 
 extern lv_obj_t *ui____initial_actions0;
+extern lv_obj_t * ui_valoresPanel13;
+extern lv_obj_t * ui_valoresPanel14;
+extern lv_obj_t * ui_PotenciaLabel15;
 
 // FONTS
 LV_FONT_DECLARE(ui_font_Qualy12);

@@ -15,6 +15,8 @@ lv_obj_t *ui_voltageVal = NULL;
 lv_obj_t *ui_PotenciaLabel19 = NULL;
 lv_obj_t *ui_voltageChart = NULL;
 lv_obj_t *ui_navPanel6 = NULL;
+
+extern void ui_event_stats_load(lv_event_t *e);
 // event funtions
 void ui_event_voltageStats(lv_event_t *e) {
   lv_event_code_t event_code = lv_event_get_code(e);
@@ -204,10 +206,9 @@ void ui_voltageStats_screen_init(void) {
                          2, true, 25);
   lv_chart_series_t *ui_voltageChart_series_1 = lv_chart_add_series(
       ui_voltageChart, UI_COLOR_ACCENT, LV_CHART_AXIS_PRIMARY_Y);
-  static lv_coord_t ui_voltageChart_series_1_array[] = {0,  10, 20, 40, 80,
-                                                        80, 40, 20, 10, 0};
+  extern lv_coord_t history_voltage[];
   lv_chart_set_ext_y_array(ui_voltageChart, ui_voltageChart_series_1,
-                           ui_voltageChart_series_1_array);
+                           history_voltage);
   lv_obj_set_style_bg_color(ui_voltageChart, UI_COLOR_BG,
                             LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_bg_opa(ui_voltageChart, 255,
@@ -232,6 +233,7 @@ void ui_voltageStats_screen_init(void) {
 
   lv_obj_add_event_cb(ui_voltageStats, ui_event_voltageStats, LV_EVENT_ALL,
                       NULL);
+  lv_obj_add_event_cb(ui_voltageStats, ui_event_stats_load, LV_EVENT_SCREEN_LOADED, NULL);
 
   // Swipe Hints
   ui_swipe_hint_create(ui_voltageStats, true);  // ▼ abajo (para Config)

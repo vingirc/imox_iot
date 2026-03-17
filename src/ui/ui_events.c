@@ -24,6 +24,13 @@ bool is_wifi_enabled = true; // State for UI elements and screen rotation
 extern void hw_set_brightness(uint8_t val);
 extern void hw_wifi_toggle(bool enable);
 extern void hw_restart(void);
+extern void hw_request_history(const char* start, const char* end);
+
+void ui_event_stats_load(lv_event_t *e) {
+  // Por ahora pedimos un rango genérico como placeholder
+  // En el futuro, se puede calcular basado en la fecha actual (NTP)
+  hw_request_history("2026-03-01T00:00:00.000Z", "2026-03-07T23:59:59.000Z");
+}
 
 void onBrightnessChange(int32_t value) {
   // Clamp a uint8_t
@@ -75,4 +82,6 @@ void ui_event_stats_toggle(lv_obj_t *label, lv_obj_t *chart) {
   } else {
     lv_label_set_text(label, "Consumo semanal");
   }
+  // Al cambiar el toggle, pedimos datos de nuevo
+  ui_event_stats_load(NULL);
 }
