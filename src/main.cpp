@@ -181,6 +181,7 @@ void setup() {
 
   // 0. Conexión WiFi (No bloqueante pero con espera inicial para MQTT)
   Serial.print("Iniciando WiFi...");
+  WiFi.setAutoReconnect(true); // Permitir que el driver maneje reconexiones básicas
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   
   Serial.print(" Esperando conexión...");
@@ -436,6 +437,16 @@ void updateUI() {
 void loop() {
   // El cliente nativo maneja su propia tarea y reconexión en segundo plano
   
+  // --- Gestión de Reconexión WiFi en Segundo Plano ---
+  static unsigned long lastWifiCheck = 0;
+  if (millis() - lastWifiCheck > 30000) { // Revisar cada 30 segundos
+    if (WiFi.status() != WL_CONNECTED) {
+      Serial.println("WiFi: Conexión perdida, reintentando WiFi.begin()...");
+      WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+    }
+    lastWifiCheck = millis();
+  }
+
   // 5. Manejador LVGL (Corre en el Núcleo 1, el default de loop())
   lv_task_handler();
 
