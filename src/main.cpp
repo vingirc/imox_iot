@@ -26,6 +26,7 @@ float v_pf = 0.0;
 
 esp_mqtt_client_handle_t mqtt_client = NULL;
 bool mqtt_connected = false;
+bool wifi_enabled_by_user = true; // Rastrea si el WiFi debería estar activo
 RTC_DATA_ATTR bool mqtt_sync_ever_happened = false;
 RTC_DATA_ATTR unsigned long last_mqtt_sync_ms = 0; // Tiempo de la última sincronización Cloud exitosa
 unsigned long boot_time_offset_ms = 0; // Offset para manejar reinicios
@@ -300,7 +301,9 @@ void updateUI() {
 
   // --- NUEVO: Estado de Conexión WiFi ---
   if (ui_elementVal) { // IP Local
-    if (WiFi.status() == WL_CONNECTED) {
+    if (!wifi_enabled_by_user) {
+        lv_label_set_text(ui_elementVal, "APAGADO");
+    } else if (WiFi.status() == WL_CONNECTED) {
         lv_label_set_text(ui_elementVal, WiFi.localIP().toString().c_str());
     } else {
         lv_label_set_text(ui_elementVal, "DESCONECTADO");
@@ -439,7 +442,7 @@ void loop() {
   
   // --- Gestión de Reconexión WiFi en Segundo Plano ---
   static unsigned long lastWifiCheck = 0;
-  if (millis() - lastWifiCheck > 30000) { // Revisar cada 30 segundos
+  if (wifi_enabled_by_user && (millis() - lastWifiCheck > 15000)) { // Revisar cada 15 segundos si está habilitado
     if (WiFi.status() != WL_CONNECTED) {
       Serial.println("WiFi: Conexión perdida, reintentando WiFi.begin()...");
       WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
@@ -472,12 +475,15 @@ void hw_set_brightness(uint8_t val) {
 }
 
 void hw_wifi_toggle(bool enable) {
+  wifi_enabled_by_user = enable;
   if (enable) {
-    WiFi.reconnect();
-    Serial.println("WiFi: Reconectando...");
+    WiFi.mode(WIFI_STA);
+    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+    Serial.println("WiFi: Activado por el usuario");
   } else {
     WiFi.disconnect(true);
-    Serial.println("WiFi: Desconectado");
+    WiFi.mode(WIFI_OFF);
+    Serial.println("WiFi: Desactivado por el usuario (Radio APAGADA)");
   }
 }
 
