@@ -50,9 +50,15 @@ void ui_event_dashboard(lv_event_t *e) {
   if (event_code == LV_EVENT_GESTURE &&
       lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_LEFT) {
     lv_indev_wait_release(lv_indev_get_act());
-    _ui_screen_change(&ui_statsWatts, UI_ANIM_SWIPE_LEFT,
-                      UI_ANIM_SWIPE_DURATION, UI_ANIM_SWIPE_DELAY,
-                      &ui_statsWatts_screen_init);
+    if (is_wifi_enabled) {
+      _ui_screen_change(&ui_statsWatts, UI_ANIM_SWIPE_LEFT,
+                        UI_ANIM_SWIPE_DURATION, UI_ANIM_SWIPE_DELAY,
+                        &ui_statsWatts_screen_init);
+    } else {
+      _ui_screen_change(&ui_diagnostic, UI_ANIM_SWIPE_LEFT,
+                        UI_ANIM_SWIPE_DURATION, UI_ANIM_SWIPE_DELAY,
+                        &ui_diagnostic_screen_init);
+    }
   }
   if (event_code == LV_EVENT_GESTURE &&
       lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_BOTTOM) {

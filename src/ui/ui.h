@@ -67,6 +67,8 @@ LV_FONT_DECLARE(ui_font_Qualy90);
 // GLOBALS (configuración centralizada)
 #include "ui_globals.h"
 
+extern bool is_wifi_enabled;
+
 // UI INIT
 void ui_init(void);
 void ui_destroy(void);

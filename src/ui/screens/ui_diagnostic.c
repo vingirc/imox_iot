@@ -47,7 +47,11 @@ void ui_event_diagnostic(lv_event_t * e)
 
     if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT) {
         lv_indev_wait_release(lv_indev_get_act());
-        _ui_screen_change(&ui_voltageStats, UI_ANIM_SWIPE_RIGHT, UI_ANIM_SWIPE_DURATION, UI_ANIM_SWIPE_DELAY, &ui_voltageStats_screen_init);
+        if (is_wifi_enabled) {
+            _ui_screen_change(&ui_voltageStats, UI_ANIM_SWIPE_RIGHT, UI_ANIM_SWIPE_DURATION, UI_ANIM_SWIPE_DELAY, &ui_voltageStats_screen_init);
+        } else {
+            _ui_screen_change(&ui_dashboard, UI_ANIM_SWIPE_RIGHT, UI_ANIM_SWIPE_DURATION, UI_ANIM_SWIPE_DELAY, &ui_dashboard_screen_init);
+        }
     }
     if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_LEFT) {
         lv_indev_wait_release(lv_indev_get_act());

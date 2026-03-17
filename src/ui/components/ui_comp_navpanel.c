@@ -140,6 +140,11 @@ lv_obj_t * ui_navPanel_create(lv_obj_t * comp_parent)
     lv_obj_set_style_bg_color(cui_circle6, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_USER_4);
     lv_obj_set_style_bg_opa(cui_circle6, 255, LV_PART_MAIN | LV_STATE_USER_4);
 
+    if (!is_wifi_enabled) {
+        lv_obj_add_flag(cui_circle4, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_add_flag(cui_circle5, LV_OBJ_FLAG_HIDDEN);
+    }
+
     lv_obj_t ** children = lv_mem_alloc(sizeof(lv_obj_t *) * _UI_COMP_NAVPANEL_NUM);
     children[UI_COMP_NAVPANEL_NAVPANEL] = cui_navPanel;
     children[UI_COMP_NAVPANEL_CIRCLE1] = cui_circle1;

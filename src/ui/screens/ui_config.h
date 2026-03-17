@@ -24,6 +24,8 @@ extern lv_obj_t *ui_wifiBtnLabel;
 extern lv_obj_t *ui_restartBtn;
 extern lv_obj_t *ui_restartBtnIcon;
 extern lv_obj_t *ui_restartBtnLabel;
+extern lv_obj_t *ui_turnOffBtn;
+extern lv_obj_t *ui_turnOffLabel;
 
 #ifdef __cplusplus
 } /*extern "C"*/

@@ -333,7 +333,7 @@ void _ui_switch_theme(int val)
 
 // --- Config Navigation Helpers ---
 uint8_t ui_last_screen_index = 0; // Default a 0 (Voltaje)
-uint8_t ui_last_config_index = 0; // Default a 0 (Config principal)
+uint8_t ui_last_config_index = 1; // Default a 1 (Config brillo)
 
 void _ui_config_change_by_index(uint8_t index) {
   if (index == 1) {

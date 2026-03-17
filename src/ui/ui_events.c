@@ -19,6 +19,7 @@ void statsWattsChange(lv_event_t *e) {
 // CONFIG: Callbacks reales (conectados a hardware vía main.cpp)
 // ================================================================
 
+bool is_wifi_enabled = true; // State for UI elements and screen rotation
 // Funciones de hardware declaradas en main.cpp con C-linkage
 extern void hw_set_brightness(uint8_t val);
 extern void hw_wifi_toggle(bool enable);
@@ -30,8 +31,10 @@ void onBrightnessChange(int32_t value) {
   hw_set_brightness(brightness);
 }
 
-void onWifiConfirm(bool enable) { hw_wifi_toggle(enable); }
-
+void onWifiConfirm(bool enable) { 
+  is_wifi_enabled = enable;
+  hw_wifi_toggle(enable); 
+}
 void onRestartConfirm(void) { hw_restart(); }
 
 // Necesitas agregar "extern void hw_turn_off_screen(void);" si lo haces por

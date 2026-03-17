@@ -50,6 +50,15 @@ void ui_event_config_brightness(lv_event_t *e) {
                       UI_ANIM_SWIPE_DELAY, &ui_config_screen_init);
   }
 
+  // Swipe LEFT: Ir a Config pág 1 (Ajustes) de forma cíclica
+  if (event_code == LV_EVENT_GESTURE &&
+      lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_LEFT) {
+    lv_indev_wait_release(lv_indev_get_act());
+    ui_last_config_index = 0;
+    _ui_screen_change(&ui_config, UI_ANIM_SWIPE_LEFT, UI_ANIM_SWIPE_DURATION,
+                      UI_ANIM_SWIPE_DELAY, &ui_config_screen_init);
+  }
+
   // Swipe UP (TOP): Regresar a la última pantalla vista
   if (event_code == LV_EVENT_GESTURE &&
       lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_TOP) {
@@ -79,6 +88,7 @@ void ui_config_brightness_screen_init(void) {
   lv_obj_set_y(ui_brightnessSlider, 80);
   lv_slider_set_range(ui_brightnessSlider, 20, 255);
   lv_slider_set_value(ui_brightnessSlider, UI_BRIGHTNESS_DEFAULT, LV_ANIM_OFF);
+  lv_obj_clear_flag(ui_brightnessSlider, LV_OBJ_FLAG_GESTURE_BUBBLE); // Evitar que el slider active el swipe de pantalla
   lv_obj_remove_style(ui_brightnessSlider, NULL,
                       LV_PART_INDICATOR); // Quitamos indicador default
 
@@ -148,9 +158,9 @@ void ui_config_brightness_screen_init(void) {
   lv_obj_add_event_cb(ui_config_brightness, ui_event_config_brightness,
                       LV_EVENT_ALL, NULL);
 
-  // Botón apagar pantalla
+  // Botón apagar pantalla (más corto y solo "Apagar")
   lv_obj_t *ui_turnOffBtn = lv_btn_create(ui_config_brightness);
-  lv_obj_set_width(ui_turnOffBtn, 240);
+  lv_obj_set_width(ui_turnOffBtn, 140);
   lv_obj_set_height(ui_turnOffBtn, 60);
   lv_obj_set_align(ui_turnOffBtn, LV_ALIGN_TOP_MID);
   lv_obj_set_y(ui_turnOffBtn, 140);
@@ -159,7 +169,7 @@ void ui_config_brightness_screen_init(void) {
   lv_obj_set_style_radius(ui_turnOffBtn, 15, LV_PART_MAIN | LV_STATE_DEFAULT);
 
   lv_obj_t *ui_turnOffLabel = lv_label_create(ui_turnOffBtn);
-  lv_label_set_text(ui_turnOffLabel, "Apagar Pantalla");
+  lv_label_set_text(ui_turnOffLabel, "Apagar");
   lv_obj_center(ui_turnOffLabel);
   lv_obj_set_style_text_font(ui_turnOffLabel, &ui_font_Qualy14,
                              LV_PART_MAIN | LV_STATE_DEFAULT);

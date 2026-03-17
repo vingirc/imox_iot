@@ -154,13 +154,56 @@ static void wifi_btn_cb(lv_event_t *e) {
   create_modal_buttons(card, modal_confirm_wifi_cb);
 }
 
+static void do_restart_timer_cb(lv_timer_t * timer) {
+    onRestartConfirm();
+}
+
 // Callback cuando se confirma el reinicio
-static void modal_confirm_restart_cb(lv_event_t *e) { onRestartConfirm(); }
+static void modal_confirm_restart_cb(lv_event_t *e) {
+    lv_obj_t * btn = lv_event_get_target(e);
+    lv_obj_t * btn_row = lv_obj_get_parent(btn);
+    lv_obj_t * card = lv_obj_get_parent(btn_row);
+    
+    // Obtenemos el title_label (índice 0 del card)
+    lv_obj_t * title_label = lv_obj_get_child(card, 0);
+    lv_label_set_text(title_label, "Reiniciando...");
+    
+    // Ocultar botones
+    lv_obj_add_flag(btn_row, LV_OBJ_FLAG_HIDDEN);
+    
+    // Llamar a reiniciar despues de 200 ms para permitir que LVGL dibuje el texto
+    lv_timer_create(do_restart_timer_cb, 200, NULL);
+}
 
 // Callback del botón de reiniciar
 static void restart_btn_cb(lv_event_t *e) {
   lv_obj_t *card = create_modal_card("Reiniciar Dispositivo");
-  create_modal_buttons(card, modal_confirm_restart_cb);
+  
+  lv_obj_t *btn_row = lv_obj_create(card);
+  lv_obj_set_width(btn_row, lv_pct(100));
+  lv_obj_set_height(btn_row, LV_SIZE_CONTENT);
+  lv_obj_set_flex_flow(btn_row, LV_FLEX_FLOW_ROW);
+  lv_obj_set_flex_align(btn_row, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+  lv_obj_set_style_bg_opa(btn_row, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_border_width(btn_row, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  // Botón Cancelar
+  lv_obj_t *btn_cancel = lv_btn_create(btn_row);
+  lv_obj_set_height(btn_cancel, 65);
+  lv_obj_set_style_bg_color(btn_cancel, lv_color_hex(0x666666), LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_t *label_cancel = lv_label_create(btn_cancel);
+  lv_obj_set_style_text_font(label_cancel, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_label_set_text(label_cancel, "Cancelar");
+  lv_obj_add_event_cb(btn_cancel, close_modal_cb, LV_EVENT_CLICKED, NULL);
+
+  // Botón Confirmar
+  lv_obj_t *btn_confirm = lv_btn_create(btn_row);
+  lv_obj_set_height(btn_confirm, 65);
+  lv_obj_set_style_bg_color(btn_confirm, UI_COLOR_ACCENT, LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_t *label_confirm = lv_label_create(btn_confirm);
+  lv_obj_set_style_text_font(label_confirm, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_label_set_text(label_confirm, "Confirmar");
+  lv_obj_add_event_cb(btn_confirm, modal_confirm_restart_cb, LV_EVENT_CLICKED, NULL);
 }
 
 // Eventos de la pantalla principal
@@ -173,6 +216,16 @@ void ui_event_config(lv_event_t *e) {
     lv_indev_wait_release(lv_indev_get_act());
     ui_last_config_index = 1;
     _ui_screen_change(&ui_config_brightness, UI_ANIM_SWIPE_LEFT,
+                      UI_ANIM_SWIPE_DURATION, UI_ANIM_SWIPE_DELAY,
+                      &ui_config_brightness_screen_init);
+  }
+
+  // Swipe RIGHT: Regresar a Config Brightness de forma cíclica (pág 2)
+  if (event_code == LV_EVENT_GESTURE &&
+      lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT) {
+    lv_indev_wait_release(lv_indev_get_act());
+    ui_last_config_index = 1;
+    _ui_screen_change(&ui_config_brightness, UI_ANIM_SWIPE_RIGHT,
                       UI_ANIM_SWIPE_DURATION, UI_ANIM_SWIPE_DELAY,
                       &ui_config_brightness_screen_init);
   }
@@ -221,7 +274,15 @@ void ui_config_screen_init(void) {
   lv_obj_set_style_pad_column(ui_wifiBtn, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
 
   ui_wifiBtnLabel = lv_label_create(ui_wifiBtn);
-  lv_label_set_text(ui_wifiBtnLabel, "WiFi: INACTIVO");
+  if (is_wifi_enabled) {
+    lv_label_set_text(ui_wifiBtnLabel, "WiFi: ACTIVO");
+    lv_obj_set_style_bg_color(ui_wifiBtn, lv_color_hex(0x2E7D32),
+                              LV_PART_MAIN | LV_STATE_DEFAULT);
+  } else {
+    lv_label_set_text(ui_wifiBtnLabel, "WiFi: INACTIVO");
+    lv_obj_set_style_bg_color(ui_wifiBtn, lv_color_hex(0xC62828),
+                              LV_PART_MAIN | LV_STATE_DEFAULT);
+  }
   lv_obj_set_style_text_font(ui_wifiBtnLabel, &ui_font_Qualy24,
                              LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_add_event_cb(ui_wifiBtn, wifi_btn_cb, LV_EVENT_CLICKED, NULL);
