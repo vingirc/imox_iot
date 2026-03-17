@@ -7,6 +7,21 @@
 
 // COMPONENT navPanel
 
+static void nav_panel_screen_load_cb(lv_event_t * e)
+{
+    lv_obj_t * cui_navPanel = lv_event_get_user_data(e);
+    lv_obj_t * circle4 = ui_comp_get_child(cui_navPanel, UI_COMP_NAVPANEL_CIRCLE4);
+    lv_obj_t * circle5 = ui_comp_get_child(cui_navPanel, UI_COMP_NAVPANEL_CIRCLE5);
+
+    if(is_wifi_enabled) {
+        lv_obj_clear_flag(circle4, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_clear_flag(circle5, LV_OBJ_FLAG_HIDDEN);
+    } else {
+        lv_obj_add_flag(circle4, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_add_flag(circle5, LV_OBJ_FLAG_HIDDEN);
+    }
+}
+
 lv_obj_t * ui_navPanel_create(lv_obj_t * comp_parent)
 {
 
@@ -155,6 +170,11 @@ lv_obj_t * ui_navPanel_create(lv_obj_t * comp_parent)
     children[UI_COMP_NAVPANEL_CIRCLE6] = cui_circle6;
     lv_obj_add_event_cb(cui_navPanel, get_component_child_event_cb, LV_EVENT_GET_COMP_CHILD, children);
     lv_obj_add_event_cb(cui_navPanel, del_component_child_event_cb, LV_EVENT_DELETE, children);
+    
+    // Al cargar la pantalla vinculada, refrescar visibilidad de puntos 4 y 5
+    lv_obj_add_event_cb(comp_parent, nav_panel_screen_load_cb, LV_EVENT_SCREEN_LOAD_START, cui_navPanel);
+    lv_obj_add_event_cb(comp_parent, nav_panel_screen_load_cb, LV_EVENT_SCREEN_LOADED, cui_navPanel);
+    
     ui_comp_navPanel_create_hook(cui_navPanel);
     return cui_navPanel;
 }

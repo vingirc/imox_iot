@@ -137,6 +137,11 @@ static void modal_confirm_wifi_cb(lv_event_t *e) {
     lv_label_set_text(ui_wifiBtnLabel, "WiFi: INACTIVO");
     lv_obj_set_style_bg_color(ui_wifiBtn, lv_color_hex(0xC62828),
                               LV_PART_MAIN | LV_STATE_DEFAULT); // Rojo oscuro
+    
+    // Si la última vista fue una gráfica, redirigir a la tercera (Dashboard - index 2)
+    if (ui_last_screen_index == 3 || ui_last_screen_index == 4) {
+      ui_last_screen_index = 2;
+    }
   }
 }
 
