@@ -106,4 +106,25 @@ const char* LET_S_ENCRYPT_CA =
 // ============================================================================
 #define SERIAL_BAUD_RATE 115200     // Baudrate del monitor serial
 
+// ============================================================================
+// CONFIGURACIÓN BLE (Bluetooth Low Energy) - Provisioning
+// ============================================================================
+#define BLE_DEVICE_PREFIX     "IMOX"
+// UUIDs del servicio y características BLE
+#define BLE_SERVICE_UUID      "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
+#define BLE_CHAR_WRITE_UUID   "beb5483e-36e1-4688-b7f5-ea07361b26a8"  // App -> IoT (escritura)
+#define BLE_CHAR_NOTIFY_UUID  "1c95d5e3-d8f7-413a-bf3d-7a2e5d7be87e"  // IoT -> App (notificaciones)
+
+// Task de Provisioning (Core 0, junto al sensor)
+#define PROV_TASK_NAME        "ProvTask"
+#define PROV_TASK_STACK_SIZE  10240
+#define PROV_TASK_PRIORITY    1
+#define PROV_TASK_CORE        0
+
+// ============================================================================
+// CONFIGURACIÓN API CLOUD - Vinculación de Dispositivos
+// ============================================================================
+// Endpoint público POST /iot/link - AJUSTAR A TU DOMINIO REAL
+#define API_LINK_URL          "https://dietpi.tail02564c.ts.net/iot/link"
+
 #endif // CONFIG_H

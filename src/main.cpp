@@ -5,7 +5,11 @@
 #include <LilyGo_AMOLED.h>
 #include <PZEM004Tv30.h>
 #include <WiFi.h>
+#include <WiFiClientSecure.h>
+#include <HTTPClient.h>
 #include <ArduinoJson.h>
+#include <Preferences.h>
+#include <NimBLEDevice.h>
 #include "mqtt_client.h"
 #include "esp_tls.h"
 
@@ -36,10 +40,35 @@ bool wifi_enabled_by_user = true; // Rastrea si el WiFi debería estar activo
 RTC_DATA_ATTR bool mqtt_sync_ever_happened = false;
 RTC_DATA_ATTR unsigned long last_mqtt_sync_ms = 0; // Tiempo de la última sincronización Cloud exitosa
 unsigned long boot_time_offset_ms = 0; // Offset para manejar reinicios
+unsigned long last_activity_ms = 0;    // Rastrea el último toque en pantalla
+uint32_t dim_timeout_s = 30;           // Tiempo para atenuar (default 30s)
+uint32_t off_timeout_s = 60;           // Tiempo para apagar (default 60s)
+bool burnout_enabled = true;           // Switch maestro de protección
+bool is_dimmed = false;
+bool is_screen_off = false;
+uint8_t user_brightness = UI_BRIGHTNESS_DEFAULT; // Brillo elegido por el usuario
 
 TaskHandle_t SensorTask; // Handle para la tarea del sensor
+TaskHandle_t ProvisionTask; // Handle para la tarea de provisioning BLE
 
 LilyGo_Class amoled;
+
+// --- WiFi Activo (cargado desde NVS o config.h) ---
+String active_wifi_ssid = WIFI_SSID;
+String active_wifi_pass = WIFI_PASSWORD;
+
+// --- BLE Globals ---
+NimBLEServer* pBLEServer = nullptr;
+NimBLECharacteristic* pNotifyChar = nullptr;
+bool ble_client_connected = false;
+
+// Estructura para comunicación BLE -> Provisioning Task (via FreeRTOS Queue)
+struct ProvisioningRequest {
+  char ssid[64];
+  char password[64];
+  int userId;
+};
+QueueHandle_t provQueue = NULL; // Cola de 1 elemento
 
 // --- Funciones MQTT ---
 static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data) {
@@ -225,14 +254,222 @@ void sensorTaskCode(void *pvParameters) {
   }
 }
 
+// ================================================================
+// BLE: Funciones y Callbacks
+// ================================================================
+
+// Envía una notificación JSON al cliente BLE (App Móvil)
+void sendBLENotification(const char* status, const char* message) {
+  if (!pNotifyChar || !ble_client_connected) return;
+  JsonDocument doc;
+  doc["status"] = status;
+  doc["message"] = message;
+  char buf[256];
+  serializeJson(doc, buf);
+  pNotifyChar->setValue((uint8_t*)buf, strlen(buf));
+  pNotifyChar->notify();
+  Serial.printf("BLE: Notificación -> %s\n", buf);
+}
+
+// Callbacks del servidor BLE
+class BLEServerCB : public NimBLEServerCallbacks {
+  void onConnect(NimBLEServer* server) override {
+    ble_client_connected = true;
+    Serial.println("BLE: Cliente conectado");
+  }
+  void onDisconnect(NimBLEServer* server) override {
+    ble_client_connected = false;
+    Serial.println("BLE: Cliente desconectado");
+    NimBLEDevice::startAdvertising(); // Re-habilitar advertising
+  }
+};
+
+// Callback cuando la App escribe datos en la característica BLE
+// Espera JSON: {"ssid": "...", "password": "...", "userId": 1}
+class BLEWriteCB : public NimBLECharacteristicCallbacks {
+  void onWrite(NimBLECharacteristic* pChar) override {
+    std::string val = pChar->getValue();
+    Serial.printf("BLE: Recibidos %d bytes\n", val.length());
+
+    JsonDocument doc;
+    DeserializationError err = deserializeJson(doc, val.c_str());
+    if (err) {
+      Serial.printf("BLE: Error JSON: %s\n", err.c_str());
+      sendBLENotification("error", "JSON invalido");
+      return;
+    }
+
+    ProvisioningRequest req;
+    strlcpy(req.ssid, doc["ssid"] | "", sizeof(req.ssid));
+    strlcpy(req.password, doc["password"] | "", sizeof(req.password));
+    req.userId = doc["userId"] | 0;
+
+    // Validar campos requeridos
+    if (strlen(req.ssid) == 0 || req.userId == 0) {
+      sendBLENotification("error", "Campos ssid y userId son requeridos");
+      return;
+    }
+
+    // Enviar a la cola (no bloqueante)
+    if (xQueueSend(provQueue, &req, 0) != pdTRUE) {
+      sendBLENotification("error", "Provisioning en progreso, espere");
+      return;
+    }
+
+    Serial.printf("BLE: Provisioning solicitado - SSID: %s, UserID: %d\n",
+                  req.ssid, req.userId);
+    sendBLENotification("progress", "Solicitud recibida, procesando...");
+  }
+};
+
+// Inicialización del servidor BLE
+void setupBLE() {
+  // Nombre único: IMOX-XXXX (últimos 4 hex del MAC del chip)
+  uint64_t mac = ESP.getEfuseMac();
+  char bleName[16];
+  snprintf(bleName, sizeof(bleName), "%s-%04X", BLE_DEVICE_PREFIX, (uint16_t)(mac & 0xFFFF));
+
+  NimBLEDevice::init(bleName);
+  NimBLEDevice::setPower(ESP_PWR_LVL_P9); // Potencia máxima BLE
+
+  pBLEServer = NimBLEDevice::createServer();
+  pBLEServer->setCallbacks(new BLEServerCB());
+
+  NimBLEService* pService = pBLEServer->createService(BLE_SERVICE_UUID);
+
+  // Característica de escritura: App -> IoT (recibe credenciales)
+  NimBLECharacteristic* pWriteChar = pService->createCharacteristic(
+    BLE_CHAR_WRITE_UUID,
+    NIMBLE_PROPERTY::WRITE
+  );
+  pWriteChar->setCallbacks(new BLEWriteCB());
+
+  // Característica de notificación: IoT -> App (envía estado)
+  pNotifyChar = pService->createCharacteristic(
+    BLE_CHAR_NOTIFY_UUID,
+    NIMBLE_PROPERTY::NOTIFY | NIMBLE_PROPERTY::READ
+  );
+
+  pService->start();
+
+  // Configurar advertising
+  NimBLEAdvertising* pAdv = NimBLEDevice::getAdvertising();
+  pAdv->addServiceUUID(pService->getUUID());
+  pAdv->setScanResponse(true);
+  pAdv->start();
+
+  Serial.printf("BLE: Servidor '%s' iniciado y anunciando\n", bleName);
+}
+
+// ================================================================
+// PROVISIONING TASK (Core 0) - Maneja vinculación WiFi + API
+// ================================================================
+void provisioningTaskCode(void* pvParameters) {
+  Serial.printf("ProvisioningTask corriendo en núcleo: %d\n", xPortGetCoreID());
+
+  ProvisioningRequest req;
+
+  for (;;) {
+    // Esperar hasta que llegue una solicitud por la cola (bloquea hasta 500ms)
+    if (xQueueReceive(provQueue, &req, pdMS_TO_TICKS(500)) == pdTRUE) {
+      Serial.printf("Provisioning: Iniciando - SSID: %s, UserID: %d\n", req.ssid, req.userId);
+      sendBLENotification("progress", "Conectando al WiFi...");
+
+      // --- PASO 1: Conectar al WiFi proporcionado ---
+      WiFi.disconnect(true);
+      vTaskDelay(pdMS_TO_TICKS(1000));
+      WiFi.begin(req.ssid, req.password);
+
+      unsigned long startMs = millis();
+      while (WiFi.status() != WL_CONNECTED && millis() - startMs < 15000) {
+        vTaskDelay(pdMS_TO_TICKS(500));
+        Serial.print(".");
+      }
+      Serial.println();
+
+      if (WiFi.status() != WL_CONNECTED) {
+        Serial.println("Provisioning: WiFi FALLÓ - timeout");
+        sendBLENotification("error", "No se pudo conectar al WiFi");
+        // Reconectar al WiFi anterior
+        WiFi.begin(active_wifi_ssid.c_str(), active_wifi_pass.c_str());
+        continue;
+      }
+
+      Serial.printf("Provisioning: WiFi OK - IP: %s\n", WiFi.localIP().toString().c_str());
+      sendBLENotification("progress", "Registrando dispositivo en la nube...");
+
+      // --- PASO 2: POST /iot/link ---
+      WiFiClientSecure secureClient;
+      secureClient.setCACert(LET_S_ENCRYPT_CA);
+
+      HTTPClient http;
+      http.begin(secureClient, API_LINK_URL);
+      http.addHeader("Content-Type", "application/json");
+      http.setTimeout(10000);
+
+      // Construir payload: {macAddress, deviceSecret, userId}
+      JsonDocument linkDoc;
+      linkDoc["macAddress"] = WiFi.macAddress();
+      linkDoc["deviceSecret"] = MQTT_DEVICE_SECRET;
+      linkDoc["userId"] = req.userId;
+
+      char payload[256];
+      serializeJson(linkDoc, payload);
+      Serial.printf("Provisioning: POST %s -> %s\n", API_LINK_URL, payload);
+
+      int httpCode = http.POST(payload);
+      String response = http.getString();
+      http.end();
+
+      Serial.printf("Provisioning: HTTP %d - %s\n", httpCode, response.c_str());
+
+      if (httpCode == 200) {
+        // --- ÉXITO: Guardar credenciales en NVS ---
+        sendBLENotification("success", "Dispositivo vinculado correctamente");
+
+        active_wifi_ssid = String(req.ssid);
+        active_wifi_pass = String(req.password);
+
+        Preferences prefs;
+        prefs.begin("wifi", false);
+        prefs.putString("ssid", active_wifi_ssid);
+        prefs.putString("pass", active_wifi_pass);
+        prefs.end();
+        Serial.println("Provisioning: Credenciales WiFi guardadas en NVS");
+        // MQTT se reconectará automáticamente al detectar WiFi activo
+      } else {
+        // --- ERROR: Informar y reconectar WiFi anterior ---
+        char errMsg[128];
+        snprintf(errMsg, sizeof(errMsg), "Error del servidor: HTTP %d", httpCode);
+        sendBLENotification("error", errMsg);
+        WiFi.begin(active_wifi_ssid.c_str(), active_wifi_pass.c_str());
+      }
+    }
+  }
+}
+
 void setup() {
   Serial.begin(SERIAL_BAUD_RATE);
   delay(500);
 
-  // 0. Conexión WiFi (No bloqueante pero con espera inicial para MQTT)
+  // 0. Cargar credenciales WiFi desde NVS (si fueron provisionadas previamente)
+  {
+    Preferences prefs;
+    prefs.begin("wifi", true); // Solo lectura
+    if (prefs.isKey("ssid")) {
+      active_wifi_ssid = prefs.getString("ssid", WIFI_SSID);
+      active_wifi_pass = prefs.getString("pass", WIFI_PASSWORD);
+      Serial.println("WiFi: Credenciales cargadas desde NVS");
+    } else {
+      Serial.println("WiFi: Usando credenciales por defecto (config.h)");
+    }
+    prefs.end();
+  }
+
+  // 1. Conexión WiFi (No bloqueante pero con espera inicial para MQTT)
   Serial.print("Iniciando WiFi...");
-  WiFi.setAutoReconnect(true); // Permitir que el driver maneje reconexiones básicas
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  WiFi.setAutoReconnect(true);
+  WiFi.begin(active_wifi_ssid.c_str(), active_wifi_pass.c_str());
   
   Serial.print(" Esperando conexión...");
   unsigned long start_wifi = millis();
@@ -308,6 +545,22 @@ void setup() {
                           PZEM_TASK_PRIORITY,   /* Prioridad */
                           &SensorTask,          /* Handle de la tarea */
                           PZEM_TASK_CORE);      /* Núcleo pinned (0) */
+
+  // 5. Inicializar BLE Server (Provisioning)
+  provQueue = xQueueCreate(1, sizeof(ProvisioningRequest));
+  setupBLE();
+
+  // 6. Crear tarea de Provisioning en Core 0
+  xTaskCreatePinnedToCore(provisioningTaskCode,
+                          PROV_TASK_NAME,
+                          PROV_TASK_STACK_SIZE,
+                          NULL,
+                          PROV_TASK_PRIORITY,
+                          &ProvisionTask,
+                          PROV_TASK_CORE);
+
+  // 7. Inicializar temporizador de actividad
+  last_activity_ms = millis();
 }
 
 void updateUI() {
@@ -512,6 +765,36 @@ void updateUI() {
 }
 
 void loop() {
+  // --- Detección de Actividad (User Interaction) ---
+  lv_indev_t *indev = lv_indev_get_act();
+  if (indev && indev->proc.state == LV_INDEV_STATE_PR) {
+    last_activity_ms = millis();
+    if (is_screen_off) {
+      // De lo restante se encarga el wake_layer en ui_events.c
+      // pero actualizamos el estado aquí por seguridad
+      is_screen_off = false;
+    }
+    if (is_dimmed) {
+      hw_set_brightness(user_brightness);
+      is_dimmed = false;
+    }
+  }
+
+  // --- Lógica de Burnout (Auto-dim / Auto-off) ---
+  if (burnout_enabled && !is_screen_off) {
+    unsigned long inactive_time = (millis() - last_activity_ms) / 1000;
+    
+    if (inactive_time >= off_timeout_s) {
+      onTurnOffScreen(); // Llama a la lógica de UI y hardware (apaga)
+      is_screen_off = true;
+    } 
+    else if (inactive_time >= dim_timeout_s && !is_dimmed) {
+      hw_set_brightness(20); // Atenuación extrema (20/255)
+      is_dimmed = true;
+      Serial.println("Burnout: Pantalla atenuada por inactividad");
+    }
+  }
+
   // El cliente nativo maneja su propia tarea y reconexión en segundo plano
   
   // --- Gestión de Reconexión WiFi en Segundo Plano ---
@@ -519,7 +802,7 @@ void loop() {
   if (wifi_enabled_by_user && (millis() - lastWifiCheck > 15000)) { // Revisar cada 15 segundos si está habilitado
     if (WiFi.status() != WL_CONNECTED) {
       Serial.println("WiFi: Conexión perdida, reintentando WiFi.begin()...");
-      WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+      WiFi.begin(active_wifi_ssid.c_str(), active_wifi_pass.c_str());
     }
     lastWifiCheck = millis();
   }
@@ -542,8 +825,24 @@ void loop() {
 // HARDWARE BRIDGE: Funciones llamadas desde UI (C-linkage)
 // ================================================================
 extern "C" {
+void hw_burnout_setup(bool enable, uint32_t dim_s, uint32_t off_s) {
+  burnout_enabled = enable;
+  dim_timeout_s = dim_s;
+  off_timeout_s = off_s;
+  last_activity_ms = millis(); // Reset al cambiar config
+  Serial.printf("Burnout Config: %s, Dim: %ds, Off: %ds\n", 
+                enable ? "ON" : "OFF", dim_s, off_s);
+}
+
+void hw_reset_activity(void) {
+  last_activity_ms = millis();
+}
+}
 
 void hw_set_brightness(uint8_t val) {
+  if (!is_dimmed && !is_screen_off) {
+      user_brightness = val; // Guardar el brillo deseado por el usuario
+  }
   amoled.setBrightness(val);
   Serial.printf("Brillo ajustado a: %d\n", val);
 }
@@ -552,7 +851,7 @@ void hw_wifi_toggle(bool enable) {
   wifi_enabled_by_user = enable;
   if (enable) {
     WiFi.mode(WIFI_STA);
-    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+    WiFi.begin(active_wifi_ssid.c_str(), active_wifi_pass.c_str());
     Serial.println("WiFi: Activado por el usuario");
   } else {
     WiFi.disconnect(true);
