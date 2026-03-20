@@ -464,6 +464,15 @@ void setup() {
       Serial.println("WiFi: Usando credenciales por defecto (config.h)");
     }
     prefs.end();
+
+    // Cargar Burnout settings
+    prefs.begin("burnout", true);
+    burnout_enabled = prefs.getBool("enabled", true);
+    dim_timeout_s = prefs.getUInt("dim_s", 30);
+    off_timeout_s = prefs.getUInt("off_s", 60);
+    user_brightness = prefs.getUChar("bright", UI_BRIGHTNESS_DEFAULT);
+    prefs.end();
+    Serial.println("Burnout: Configuración cargada desde NVS");
   }
 
   // 1. Conexión WiFi (No bloqueante pero con espera inicial para MQTT)
@@ -764,6 +773,9 @@ void updateUI() {
   }
 }
 
+extern "C" void hw_set_brightness(uint8_t val);
+extern void onTurnOffScreen(void);
+
 void loop() {
   // --- Detección de Actividad (User Interaction) ---
   lv_indev_t *indev = lv_indev_get_act();
@@ -830,18 +842,30 @@ void hw_burnout_setup(bool enable, uint32_t dim_s, uint32_t off_s) {
   dim_timeout_s = dim_s;
   off_timeout_s = off_s;
   last_activity_ms = millis(); // Reset al cambiar config
-  Serial.printf("Burnout Config: %s, Dim: %ds, Off: %ds\n", 
+  
+  // Persistir
+  Preferences prefs;
+  prefs.begin("burnout", false);
+  prefs.putBool("enabled", enable);
+  prefs.putUInt("dim_s", dim_s);
+  prefs.putUInt("off_s", off_s);
+  prefs.end();
+
+  Serial.printf("Burnout Config: %s, Dim: %ds, Off: %ds (Persistido)\n", 
                 enable ? "ON" : "OFF", dim_s, off_s);
 }
 
 void hw_reset_activity(void) {
   last_activity_ms = millis();
 }
-}
 
 void hw_set_brightness(uint8_t val) {
   if (!is_dimmed && !is_screen_off) {
       user_brightness = val; // Guardar el brillo deseado por el usuario
+      Preferences prefs;
+      prefs.begin("burnout", false);
+      prefs.putUChar("bright", val);
+      prefs.end();
   }
   amoled.setBrightness(val);
   Serial.printf("Brillo ajustado a: %d\n", val);

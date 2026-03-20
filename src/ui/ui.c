@@ -5,6 +5,9 @@
 
 #include "ui.h"
 #include "ui_helpers.h"
+#include "screens/ui_config.h"
+#include "screens/ui_config_brightness.h"
+#include "screens/ui_burnout.h"
 
 ///////////////////// VARIABLES ////////////////////
 
@@ -43,6 +46,7 @@ void ui_init(void) {
   ui_statsWatts_screen_init();
   ui_config_screen_init();
   ui_config_brightness_screen_init();
+  ui_burnout_screen_init();
   ui_voltaje_screen_init();
   ui____initial_actions0 = lv_obj_create(NULL);
   lv_disp_load_scr(ui_voltaje);
@@ -57,5 +61,6 @@ void ui_destroy(void) {
   ui_statsWatts_screen_destroy();
   ui_config_screen_destroy();
   ui_config_brightness_screen_destroy();
+  ui_burnout_screen_destroy();
   ui_voltaje_screen_destroy();
 }

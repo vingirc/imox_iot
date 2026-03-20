@@ -50,13 +50,13 @@ void ui_event_config_brightness(lv_event_t *e) {
                       UI_ANIM_SWIPE_DELAY, &ui_config_screen_init);
   }
 
-  // Swipe LEFT: Ir a Config pág 1 (Ajustes) de forma cíclica
+  // Swipe LEFT: Ir a la siguiente pág (Burnout - pág 3)
   if (event_code == LV_EVENT_GESTURE &&
       lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_LEFT) {
     lv_indev_wait_release(lv_indev_get_act());
-    ui_last_config_index = 0;
-    _ui_screen_change(&ui_config, UI_ANIM_SWIPE_LEFT, UI_ANIM_SWIPE_DURATION,
-                      UI_ANIM_SWIPE_DELAY, &ui_config_screen_init);
+    ui_last_config_index = 2;
+    _ui_screen_change(&ui_burnout, UI_ANIM_SWIPE_LEFT, UI_ANIM_SWIPE_DURATION,
+                      UI_ANIM_SWIPE_DELAY, &ui_burnout_screen_init);
   }
 
   // Swipe UP (TOP): Regresar a la última pantalla vista
@@ -77,8 +77,8 @@ void ui_config_brightness_screen_init(void) {
   lv_obj_set_style_bg_opa(ui_config_brightness, 255,
                           LV_PART_MAIN | LV_STATE_DEFAULT);
 
-  // NavDots (2 dots, estamos en el segundo - index 1)
-  ui_navDots_create(ui_config_brightness, 2, 1);
+  // NavDots (3 dots, estamos en el segundo - index 1)
+  ui_navDots_create(ui_config_brightness, 3, 1);
 
   // Slider de brillo, muy grueso y centrado
   ui_brightnessSlider = lv_slider_create(ui_config_brightness);

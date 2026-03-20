@@ -35,6 +35,7 @@ extern "C" {
 #include "screens/ui_Modo_Diario_24hrs.h"
 #include "screens/ui_config.h"
 #include "screens/ui_config_brightness.h"
+#include "screens/ui_burnout.h"
 #include "screens/ui_corriente.h"
 #include "screens/ui_dashboard.h"
 #include "screens/ui_diagnostic.h"

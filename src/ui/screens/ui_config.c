@@ -225,14 +225,14 @@ void ui_event_config(lv_event_t *e) {
                       &ui_config_brightness_screen_init);
   }
 
-  // Swipe RIGHT: Regresar a Config Brightness de forma cíclica (pág 2)
+  // Swipe RIGHT: Ir a la última pág (Burnout - pág 3)
   if (event_code == LV_EVENT_GESTURE &&
       lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT) {
     lv_indev_wait_release(lv_indev_get_act());
-    ui_last_config_index = 1;
-    _ui_screen_change(&ui_config_brightness, UI_ANIM_SWIPE_RIGHT,
+    ui_last_config_index = 2;
+    _ui_screen_change(&ui_burnout, UI_ANIM_SWIPE_RIGHT,
                       UI_ANIM_SWIPE_DURATION, UI_ANIM_SWIPE_DELAY,
-                      &ui_config_brightness_screen_init);
+                      &ui_burnout_screen_init);
   }
 
   // Swipe UP (TOP): regresar a la última pantalla
@@ -250,7 +250,7 @@ void ui_config_screen_init(void) {
                             LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_bg_opa(ui_config, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-  ui_navDots_create(ui_config, 2, 0); // 2 dots, estamos en el primero (index 0)
+  ui_navDots_create(ui_config, 3, 0); // 3 dots, estamos en el primero (index 0)
 
   // Contenedor layout para centrar los botones
   lv_obj_t *main_container = lv_obj_create(ui_config);
