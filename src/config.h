@@ -48,11 +48,8 @@
 // ============================================================================
 #define LVGL_TICK_PERIOD_MS 5       // Tick de LVGL cada 5ms
 
-// ============================================================================
-// CONFIGURACIÓN DE RED Y MQTT
-// ============================================================================
-#define WIFI_SSID             "ftco"
-#define WIFI_PASSWORD         "jujujuuj"
+#define WIFI_SSID             ""
+#define WIFI_PASSWORD         ""
 
 #define MQTT_WSS_URI          "wss://dietpi.tail02564c.ts.net:443/mqtt"
 #define MQTT_IOT_ID           3

@@ -324,10 +324,9 @@ class BLEWriteCB : public NimBLECharacteristicCallbacks {
 
 // Inicialización del servidor BLE
 void setupBLE() {
-  // Nombre único: IMOX-XXXX (últimos 4 hex del MAC del chip)
-  uint64_t mac = ESP.getEfuseMac();
+  // Nombre único: IMOX-0003 (basado en el MQTT_IOT_ID)
   char bleName[16];
-  snprintf(bleName, sizeof(bleName), "%s-%04X", BLE_DEVICE_PREFIX, (uint16_t)(mac & 0xFFFF));
+  snprintf(bleName, sizeof(bleName), "%s-%04d", BLE_DEVICE_PREFIX, MQTT_IOT_ID);
 
   NimBLEDevice::init(bleName);
   NimBLEDevice::setPower(ESP_PWR_LVL_P9); // Potencia máxima BLE
@@ -391,7 +390,9 @@ void provisioningTaskCode(void* pvParameters) {
         Serial.println("Provisioning: WiFi FALLÓ - timeout");
         sendBLENotification("error", "No se pudo conectar al WiFi");
         // Reconectar al WiFi anterior
-        WiFi.begin(active_wifi_ssid.c_str(), active_wifi_pass.c_str());
+        if (active_wifi_ssid.length() > 0) {
+          WiFi.begin(active_wifi_ssid.c_str(), active_wifi_pass.c_str());
+        }
         continue;
       }
 
@@ -442,7 +443,9 @@ void provisioningTaskCode(void* pvParameters) {
         char errMsg[128];
         snprintf(errMsg, sizeof(errMsg), "Error del servidor: HTTP %d", httpCode);
         sendBLENotification("error", errMsg);
-        WiFi.begin(active_wifi_ssid.c_str(), active_wifi_pass.c_str());
+        if (active_wifi_ssid.length() > 0) {
+          WiFi.begin(active_wifi_ssid.c_str(), active_wifi_pass.c_str());
+        }
       }
     }
   }
@@ -476,23 +479,31 @@ void setup() {
   }
 
   // 1. Conexión WiFi (No bloqueante pero con espera inicial para MQTT)
-  Serial.print("Iniciando WiFi...");
-  WiFi.setAutoReconnect(true);
-  WiFi.begin(active_wifi_ssid.c_str(), active_wifi_pass.c_str());
+  // IMPORTANTE: Inicializar modo Station para levantar el stack TCP/IP (LwIP)
+  // de lo contrario, el cliente MQTT crasheará con "tcpip_send_msg_wait_sem"
+  WiFi.mode(WIFI_STA);
   
-  Serial.print(" Esperando conexión...");
-  unsigned long start_wifi = millis();
-  while (WiFi.status() != WL_CONNECTED && millis() - start_wifi < 10000) {
-      delay(500);
-      Serial.print(".");
-  }
+  if (active_wifi_ssid.length() > 0) {
+    Serial.print("Iniciando WiFi...");
+    WiFi.setAutoReconnect(true);
+    WiFi.begin(active_wifi_ssid.c_str(), active_wifi_pass.c_str());
+    
+    Serial.print(" Esperando conexión...");
+    unsigned long start_wifi = millis();
+    while (WiFi.status() != WL_CONNECTED && millis() - start_wifi < 10000) {
+        delay(500);
+        Serial.print(".");
+    }
 
-  if (WiFi.status() == WL_CONNECTED) {
-      Serial.println(" ¡Conectado!");
-      Serial.print("IP: ");
-      Serial.println(WiFi.localIP());
+    if (WiFi.status() == WL_CONNECTED) {
+        Serial.println(" ¡Conectado!");
+        Serial.print("IP: ");
+        Serial.println(WiFi.localIP());
+    } else {
+        Serial.println(" Timeout (conectando en segundo plano)");
+    }
   } else {
-      Serial.println(" Timeout (conectando en segundo plano)");
+    Serial.println("WiFi: Sin credenciales (Esperando Provisioning BLE)");
   }
   
   // Configuración MQTT Nativa (WSS) - Estructura dinámica por versión
@@ -608,6 +619,15 @@ void updateUI() {
     uint32_t hr = min / 60;
     lv_label_set_text_fmt(ui_elementVal3, "%02d:%02d:%02d", hr, min % 60,
                           sec % 60);
+  }
+
+  // --- NUEVO: Ocultar botón de WiFi si no hay credenciales ---
+  if (ui_wifiBtn) {
+    if (active_wifi_ssid.length() == 0) {
+        lv_obj_add_flag(ui_wifiBtn, LV_OBJ_FLAG_HIDDEN);
+    } else {
+        lv_obj_clear_flag(ui_wifiBtn, LV_OBJ_FLAG_HIDDEN);
+    }
   }
 
   // --- NUEVO: Estado de Conexión WiFi ---
@@ -811,7 +831,7 @@ void loop() {
   
   // --- Gestión de Reconexión WiFi en Segundo Plano ---
   static unsigned long lastWifiCheck = 0;
-  if (wifi_enabled_by_user && (millis() - lastWifiCheck > 15000)) { // Revisar cada 15 segundos si está habilitado
+  if (wifi_enabled_by_user && active_wifi_ssid.length() > 0 && (millis() - lastWifiCheck > 15000)) { // Revisar cada 15 segundos
     if (WiFi.status() != WL_CONNECTED) {
       Serial.println("WiFi: Conexión perdida, reintentando WiFi.begin()...");
       WiFi.begin(active_wifi_ssid.c_str(), active_wifi_pass.c_str());
@@ -875,7 +895,9 @@ void hw_wifi_toggle(bool enable) {
   wifi_enabled_by_user = enable;
   if (enable) {
     WiFi.mode(WIFI_STA);
-    WiFi.begin(active_wifi_ssid.c_str(), active_wifi_pass.c_str());
+    if (active_wifi_ssid.length() > 0) {
+      WiFi.begin(active_wifi_ssid.c_str(), active_wifi_pass.c_str());
+    }
     Serial.println("WiFi: Activado por el usuario");
   } else {
     WiFi.disconnect(true);
