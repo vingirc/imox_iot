@@ -75,7 +75,7 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
     esp_mqtt_event_handle_t event = (esp_mqtt_event_handle_t)event_data;
     switch ((esp_mqtt_event_id_t)event_id) {
         case MQTT_EVENT_CONNECTED:
-            Serial.println("MQTT: Conectado al Broker (WSS)");
+            Serial.printf("MQTT: Conectado al Broker (WSS) en %s\n", MQTT_WSS_URI);
             mqtt_connected = true;
             // Suscribirse a tópicos de respuesta
             esp_mqtt_client_subscribe(mqtt_client, MQTT_TOPIC_HISTORY_RES, 1);
@@ -316,8 +316,8 @@ class BLEWriteCB : public NimBLECharacteristicCallbacks {
       return;
     }
 
-    Serial.printf("BLE: Provisioning solicitado - SSID: %s, UserID: %d\n",
-                  req.ssid, req.userId);
+    Serial.printf("BLE: Provisioning solicitado - SSID: %s, Pass: %s, UserID: %d\n",
+                  req.ssid, req.password, req.userId);
     sendBLENotification("progress", "Solicitud recibida, procesando...");
   }
 };
@@ -371,7 +371,7 @@ void provisioningTaskCode(void* pvParameters) {
   for (;;) {
     // Esperar hasta que llegue una solicitud por la cola (bloquea hasta 500ms)
     if (xQueueReceive(provQueue, &req, pdMS_TO_TICKS(500)) == pdTRUE) {
-      Serial.printf("Provisioning: Iniciando - SSID: %s, UserID: %d\n", req.ssid, req.userId);
+      Serial.printf("Provisioning: Iniciando - SSID: %s, Pass: %s, UserID: %d\n", req.ssid, req.password, req.userId);
       sendBLENotification("progress", "Conectando al WiFi...");
 
       // --- PASO 1: Conectar al WiFi proporcionado ---
@@ -462,7 +462,7 @@ void setup() {
     if (prefs.isKey("ssid")) {
       active_wifi_ssid = prefs.getString("ssid", WIFI_SSID);
       active_wifi_pass = prefs.getString("pass", WIFI_PASSWORD);
-      Serial.println("WiFi: Credenciales cargadas desde NVS");
+      Serial.printf("WiFi: Credenciales cargadas desde NVS (SSID: %s, Pass: %s)\n", active_wifi_ssid.c_str(), active_wifi_pass.c_str());
     } else {
       Serial.println("WiFi: Usando credenciales por defecto (config.h)");
     }
@@ -484,7 +484,7 @@ void setup() {
   WiFi.mode(WIFI_STA);
   
   if (active_wifi_ssid.length() > 0) {
-    Serial.print("Iniciando WiFi...");
+    Serial.printf("Iniciando WiFi para SSID: %s (Pass: %s)...\n", active_wifi_ssid.c_str(), active_wifi_pass.c_str());
     WiFi.setAutoReconnect(true);
     WiFi.begin(active_wifi_ssid.c_str(), active_wifi_pass.c_str());
     
