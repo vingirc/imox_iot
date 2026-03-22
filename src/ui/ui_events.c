@@ -50,11 +50,13 @@ extern void hw_turn_off_screen(void);
 
 static lv_obj_t *wake_layer = NULL;
 
+extern void hw_restore_brightness(void);
+
 static void wake_layer_cb(lv_event_t *e) {
   if (wake_layer) {
     lv_obj_del(wake_layer);
     wake_layer = NULL;
-    hw_set_brightness(128); // Brillo medio al despertar
+    hw_restore_brightness();
   }
 }
 

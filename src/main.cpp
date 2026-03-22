@@ -791,24 +791,51 @@ void updateUI() {
     
     history_data_ready = false;
   }
+
+  // --- Lógica: Pixel Shifting (Anti Burn-in) ---
+  if (burnout_enabled) {
+    static unsigned long lastShiftMs = 0;
+    static int shift_pos = 0;
+    // Patrón de movimiento en píxeles (círculo pequeño)
+    static const int shifts[][2] = {{0,0}, {1,1}, {2,2}, {1,-1}, {0,-2}, {-1,-1}, {-2,-2}, {-1,1}};
+
+    // Cambiar la posición de desplazamiento cada minuto (60,000 ms)
+    if (millis() - lastShiftMs > 60000) {
+      lastShiftMs = millis();
+      shift_pos = (shift_pos + 1) % 8;
+    }
+
+    // Aplicar continuamente el desplazamiento actual a los hijos de la pantalla activa
+    lv_obj_t * scr = lv_scr_act();
+    if (scr != NULL) {
+      uint32_t children = lv_obj_get_child_cnt(scr);
+      for(uint32_t i = 0; i < children; i++) {
+        lv_obj_t * child = lv_obj_get_child(scr, i);
+        lv_obj_set_style_translate_x(child, shifts[shift_pos][0], 0);
+        lv_obj_set_style_translate_y(child, shifts[shift_pos][1], 0);
+      }
+    }
+  }
 }
 
 extern "C" void hw_set_brightness(uint8_t val);
+extern "C" void hw_restore_brightness(void);
 extern void onTurnOffScreen(void);
 
 void loop() {
   // --- Detección de Actividad (User Interaction) ---
-  lv_indev_t *indev = lv_indev_get_act();
-  if (indev && indev->proc.state == LV_INDEV_STATE_PR) {
-    last_activity_ms = millis();
-    if (is_screen_off) {
-      // De lo restante se encarga el wake_layer en ui_events.c
-      // pero actualizamos el estado aquí por seguridad
-      is_screen_off = false;
-    }
-    if (is_dimmed) {
-      hw_set_brightness(user_brightness);
-      is_dimmed = false;
+  lv_indev_t *indev = lv_indev_get_next(NULL); // Obtener el primer dispositivo de entrada
+  if (indev != NULL) {
+    lv_indev_data_t data;
+    _lv_indev_read(indev, &data);
+    if (data.state == LV_INDEV_STATE_PR) {
+      last_activity_ms = millis();
+      if (is_screen_off) {
+        is_screen_off = false;
+      }
+      if (is_dimmed) {
+        hw_restore_brightness();
+      }
     }
   }
 
@@ -821,8 +848,8 @@ void loop() {
       is_screen_off = true;
     } 
     else if (inactive_time >= dim_timeout_s && !is_dimmed) {
-      hw_set_brightness(20); // Atenuación extrema (20/255)
       is_dimmed = true;
+      hw_set_brightness(20); // Atenuación extrema (20/255)
       Serial.println("Burnout: Pantalla atenuada por inactividad");
     }
   }
@@ -889,6 +916,13 @@ void hw_set_brightness(uint8_t val) {
   }
   amoled.setBrightness(val);
   Serial.printf("Brillo ajustado a: %d\n", val);
+}
+
+void hw_restore_brightness(void) {
+  is_dimmed = false;
+  is_screen_off = false;
+  hw_set_brightness(user_brightness);
+  Serial.printf("Brillo RESTAURADO a: %d\n", user_brightness);
 }
 
 void hw_wifi_toggle(bool enable) {
