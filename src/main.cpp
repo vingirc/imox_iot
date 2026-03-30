@@ -694,6 +694,19 @@ void setup() {
   Serial.begin(SERIAL_BAUD_RATE);
   delay(500);
 
+  // === INICIALIZACIÓN PARALELA DEL SENSOR ===
+  // Lanzamos la tarea del sensor ANTES de la pantalla de carga (Splash Screen).
+  // De esta manera, los 1.5s de estabilización y las 2 lecturas de descarte (~4s)
+  // ocurren en segundo plano MIENTRAS el usuario ve los logos. 
+  // Al terminar el splash, las lecturas ya serán 100% reales e instantáneas.
+  xTaskCreatePinnedToCore(sensorTaskCode,       /* Función de la tarea */
+                          PZEM_TASK_NAME,       /* Nombre de la tarea */
+                          PZEM_TASK_STACK_SIZE, /* Tamaño del stack (bytes) */
+                          NULL,                 /* Parámetros */
+                          PZEM_TASK_PRIORITY,   /* Prioridad */
+                          &SensorTask,          /* Handle de la tarea */
+                          PZEM_TASK_CORE);      /* Núcleo pinned (0) */
+
   // 0. Cargar credenciales WiFi desde NVS (si fueron provisionadas previamente)
   {
     Preferences prefs;
@@ -804,15 +817,6 @@ void setup() {
   ui_init();
 
   Serial.println("System Ready - UI Running");
-
-  // 4. Crear tarea para el Sensor en el Núcleo 0
-  xTaskCreatePinnedToCore(sensorTaskCode,       /* Función de la tarea */
-                          PZEM_TASK_NAME,       /* Nombre de la tarea */
-                          PZEM_TASK_STACK_SIZE, /* Tamaño del stack (bytes) */
-                          NULL,                 /* Parámetros */
-                          PZEM_TASK_PRIORITY,   /* Prioridad */
-                          &SensorTask,          /* Handle de la tarea */
-                          PZEM_TASK_CORE);      /* Núcleo pinned (0) */
 
   // 5. Inicializar BLE Server (Provisioning)
   provQueue = xQueueCreate(1, sizeof(ProvisioningRequest));
