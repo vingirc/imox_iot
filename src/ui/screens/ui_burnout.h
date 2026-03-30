@@ -22,6 +22,8 @@ extern lv_obj_t *ui_dimSlider;
 extern lv_obj_t *ui_offSlider;
 extern lv_obj_t *ui_dimTimeLabel;
 extern lv_obj_t *ui_offTimeLabel;
+extern lv_obj_t *ui_dimTitleLabel;
+extern lv_obj_t *ui_offTitleLabel;
 
 #ifdef __cplusplus
 } /*extern "C"*/

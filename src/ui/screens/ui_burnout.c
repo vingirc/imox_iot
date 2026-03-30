@@ -14,6 +14,8 @@ lv_obj_t *ui_dimSlider = NULL;
 lv_obj_t *ui_offSlider = NULL;
 lv_obj_t *ui_dimTimeLabel = NULL;
 lv_obj_t *ui_offTimeLabel = NULL;
+lv_obj_t *ui_dimTitleLabel = NULL;
+lv_obj_t *ui_offTitleLabel = NULL;
 
 // Callbacks de hardware declarados en main.cpp
 extern void hw_burnout_setup(bool enable, uint32_t dim_s, uint32_t off_s);
@@ -22,8 +24,58 @@ extern uint32_t dim_timeout_s;
 extern uint32_t off_timeout_s;
 
 /**
- * Callback para los sliders (actualiza labels y hardware)
+ * Actualiza el estado visual (habilitado/deshabilitado) de los controles
+ * según el estado de la protección.
  */
+static void ui_burnout_update_state(void) {
+  if (burnout_enabled) {
+    lv_label_set_text(ui_burnoutBtnLabel, "Proteccion: ON");
+    lv_obj_set_style_bg_color(ui_burnoutBtn, lv_color_hex(0x2E7D32),
+                              LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    // Habilitar sliders y labels
+    lv_obj_clear_state(ui_dimSlider, LV_STATE_DISABLED);
+    lv_obj_clear_state(ui_offSlider, LV_STATE_DISABLED);
+
+    lv_obj_set_style_text_color(ui_dimTitleLabel, UI_COLOR_TEXT_ACTIVE,
+                                LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui_offTitleLabel, UI_COLOR_TEXT_ACTIVE,
+                                LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    lv_obj_set_style_text_color(ui_dimTimeLabel, UI_COLOR_ACCENT,
+                                LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui_offTimeLabel, UI_COLOR_ACCENT,
+                                LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    // Restaurar opacidad de sliders
+    lv_obj_set_style_opa(ui_dimSlider, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_opa(ui_offSlider, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+  } else {
+    lv_label_set_text(ui_burnoutBtnLabel, "Proteccion: OFF");
+    lv_obj_set_style_bg_color(ui_burnoutBtn, lv_color_hex(0xC62828),
+                              LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    // Deshabilitar sliders
+    lv_obj_add_state(ui_dimSlider, LV_STATE_DISABLED);
+    lv_obj_add_state(ui_offSlider, LV_STATE_DISABLED);
+
+    // Todo en gris
+    lv_obj_set_style_text_color(ui_dimTitleLabel, UI_COLOR_TEXT_INFO,
+                                LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui_offTitleLabel, UI_COLOR_TEXT_INFO,
+                                LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    lv_obj_set_style_text_color(ui_dimTimeLabel, UI_COLOR_TEXT_INFO,
+                                LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui_offTimeLabel, UI_COLOR_TEXT_INFO,
+                                LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    // Bajar opacidad para indicar bloqueo
+    lv_obj_set_style_opa(ui_dimSlider, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_opa(ui_offSlider, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+  }
+}
+
 static void burnout_config_update_cb(lv_event_t *e) {
   uint32_t dim = lv_slider_get_value(ui_dimSlider);
   uint32_t off = lv_slider_get_value(ui_offSlider);
@@ -41,22 +93,9 @@ static void burnout_config_update_cb(lv_event_t *e) {
   hw_burnout_setup(burnout_enabled, dim, off);
 }
 
-/**
- * Callback para el botón principal de Toggle
- */
 static void burnout_toggle_btn_cb(lv_event_t *e) {
   burnout_enabled = !burnout_enabled;
-
-  if (burnout_enabled) {
-    lv_label_set_text(ui_burnoutBtnLabel, "Proteccion: ON");
-    lv_obj_set_style_bg_color(ui_burnoutBtn, lv_color_hex(0x2E7D32),
-                              LV_PART_MAIN | LV_STATE_DEFAULT);
-  } else {
-    lv_label_set_text(ui_burnoutBtnLabel, "Proteccion: OFF");
-    lv_obj_set_style_bg_color(ui_burnoutBtn, lv_color_hex(0xC62828),
-                              LV_PART_MAIN | LV_STATE_DEFAULT);
-  }
-
+  ui_burnout_update_state();
   hw_burnout_setup(burnout_enabled, dim_timeout_s, off_timeout_s);
 }
 
@@ -102,7 +141,7 @@ void ui_burnout_screen_init(void) {
 
   lv_obj_t *main_container = lv_obj_create(ui_burnout);
   lv_obj_set_width(main_container, lv_pct(85));
-  lv_obj_set_height(main_container, lv_pct(80));
+  lv_obj_set_height(main_container, lv_pct(78));
   lv_obj_set_align(main_container, LV_ALIGN_CENTER);
   lv_obj_set_flex_flow(main_container, LV_FLEX_FLOW_COLUMN);
   lv_obj_set_flex_align(main_container, LV_FLEX_ALIGN_CENTER,
@@ -122,16 +161,6 @@ void ui_burnout_screen_init(void) {
   lv_obj_center(ui_burnoutBtnLabel);
   lv_obj_set_style_text_font(ui_burnoutBtnLabel, &ui_font_Qualy24,
                              LV_PART_MAIN | LV_STATE_DEFAULT);
-
-  if (burnout_enabled) {
-    lv_label_set_text(ui_burnoutBtnLabel, "Proteccion: ON");
-    lv_obj_set_style_bg_color(ui_burnoutBtn, lv_color_hex(0x2E7D32),
-                              LV_PART_MAIN | LV_STATE_DEFAULT);
-  } else {
-    lv_label_set_text(ui_burnoutBtnLabel, "Proteccion: OFF");
-    lv_obj_set_style_bg_color(ui_burnoutBtn, lv_color_hex(0xC62828),
-                              LV_PART_MAIN | LV_STATE_DEFAULT);
-  }
   lv_obj_add_event_cb(ui_burnoutBtn, burnout_toggle_btn_cb, LV_EVENT_CLICKED,
                       NULL);
 
@@ -144,8 +173,6 @@ void ui_burnout_screen_init(void) {
   lv_obj_set_style_bg_opa(row_sliders, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_border_width(row_sliders, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_pad_all(row_sliders, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_pad_left(row_sliders, 15, 0); // Espacio para el knob izquierdo
-  lv_obj_set_style_pad_right(row_sliders, 15, 0); // Espacio para el knob derecho
   lv_obj_clear_flag(row_sliders, LV_OBJ_FLAG_SCROLLABLE);
 
   // --- COL. IZQ: Atenuar ---
@@ -156,38 +183,42 @@ void ui_burnout_screen_init(void) {
                         LV_FLEX_ALIGN_CENTER);
   lv_obj_set_style_bg_opa(col_dim, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_border_width(col_dim, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_pad_gap(col_dim, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_pad_gap(col_dim, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_clear_flag(col_dim, LV_OBJ_FLAG_SCROLLABLE);
 
-  lv_obj_t *lbl_dim_title = lv_label_create(col_dim);
-  lv_label_set_text(lbl_dim_title, "Atenuar");
-  lv_obj_set_style_text_font(lbl_dim_title, &ui_font_Qualy24,
-                             LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_text_color(lbl_dim_title, UI_COLOR_TEXT_ACTIVE,
-                              LV_PART_MAIN | LV_STATE_DEFAULT);
+  // Cabecera: Titulo + Valor
+  lv_obj_t *row_header_dim = lv_obj_create(col_dim);
+  lv_obj_set_size(row_header_dim, lv_pct(100), LV_SIZE_CONTENT);
+  lv_obj_set_flex_flow(row_header_dim, LV_FLEX_FLOW_ROW);
+  lv_obj_set_flex_align(row_header_dim, LV_FLEX_ALIGN_SPACE_BETWEEN,
+                        LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+  lv_obj_set_style_bg_opa(row_header_dim, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_border_width(row_header_dim, 0,
+                                LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_pad_all(row_header_dim, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-  ui_dimTimeLabel = lv_label_create(col_dim);
+  ui_dimTitleLabel = lv_label_create(row_header_dim);
+  lv_label_set_text(ui_dimTitleLabel, "Atenuar");
+  lv_obj_set_style_text_font(ui_dimTitleLabel, &ui_font_Qualy24,
+                             LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  ui_dimTimeLabel = lv_label_create(row_header_dim);
   char buf[16];
   snprintf(buf, sizeof(buf), "%us", dim_timeout_s);
   lv_label_set_text(ui_dimTimeLabel, buf);
   lv_obj_set_style_text_font(ui_dimTimeLabel, &ui_font_Qualy14,
                              LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_text_color(ui_dimTimeLabel, UI_COLOR_TEXT_INFO,
-                              LV_PART_MAIN | LV_STATE_DEFAULT);
 
   ui_dimSlider = lv_slider_create(col_dim);
-  lv_obj_set_size(ui_dimSlider, lv_pct(100), 20);
+  lv_obj_set_size(ui_dimSlider, lv_pct(85), 20); // Ancho reducido
   lv_slider_set_range(ui_dimSlider, 10, 300);
   lv_slider_set_value(ui_dimSlider, dim_timeout_s, LV_ANIM_OFF);
   lv_obj_clear_flag(ui_dimSlider, LV_OBJ_FLAG_GESTURE_BUBBLE);
-
-  // Estilo Sliders (Match Brillo - Círculo Gris)
   lv_obj_set_style_bg_color(ui_dimSlider, UI_COLOR_SLIDER_TRACK,
                             LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_bg_color(ui_dimSlider, UI_COLOR_ACCENT,
                             LV_PART_INDICATOR | LV_STATE_DEFAULT);
   lv_obj_set_style_radius(ui_dimSlider, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
-  // Knob gris con borde (igual que brillo)
   lv_obj_set_style_bg_color(ui_dimSlider, UI_COLOR_CARD_BG,
                             LV_PART_KNOB | LV_STATE_DEFAULT);
   lv_obj_set_style_border_color(ui_dimSlider, UI_COLOR_TEXT_INFO,
@@ -206,37 +237,41 @@ void ui_burnout_screen_init(void) {
                         LV_FLEX_ALIGN_CENTER);
   lv_obj_set_style_bg_opa(col_off, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_border_width(col_off, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_pad_gap(col_off, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_pad_gap(col_off, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_clear_flag(col_off, LV_OBJ_FLAG_SCROLLABLE);
 
-  lv_obj_t *lbl_off_title = lv_label_create(col_off);
-  lv_label_set_text(lbl_off_title, "Apagar");
-  lv_obj_set_style_text_font(lbl_off_title, &ui_font_Qualy24,
-                             LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_text_color(lbl_off_title, UI_COLOR_TEXT_ACTIVE,
-                              LV_PART_MAIN | LV_STATE_DEFAULT);
+  // Cabecera: Titulo + Valor
+  lv_obj_t *row_header_off = lv_obj_create(col_off);
+  lv_obj_set_size(row_header_off, lv_pct(100), LV_SIZE_CONTENT);
+  lv_obj_set_flex_flow(row_header_off, LV_FLEX_FLOW_ROW);
+  lv_obj_set_flex_align(row_header_off, LV_FLEX_ALIGN_SPACE_BETWEEN,
+                        LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+  lv_obj_set_style_bg_opa(row_header_off, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_border_width(row_header_off, 0,
+                                LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_pad_all(row_header_off, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-  ui_offTimeLabel = lv_label_create(col_off);
+  ui_offTitleLabel = lv_label_create(row_header_off);
+  lv_label_set_text(ui_offTitleLabel, "Apagar");
+  lv_obj_set_style_text_font(ui_offTitleLabel, &ui_font_Qualy24,
+                             LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  ui_offTimeLabel = lv_label_create(row_header_off);
   snprintf(buf, sizeof(buf), "%us", off_timeout_s);
   lv_label_set_text(ui_offTimeLabel, buf);
   lv_obj_set_style_text_font(ui_offTimeLabel, &ui_font_Qualy14,
                              LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_text_color(ui_offTimeLabel, UI_COLOR_TEXT_INFO,
-                              LV_PART_MAIN | LV_STATE_DEFAULT);
 
   ui_offSlider = lv_slider_create(col_off);
-  lv_obj_set_size(ui_offSlider, lv_pct(100), 20);
+  lv_obj_set_size(ui_offSlider, lv_pct(85), 20);
   lv_slider_set_range(ui_offSlider, 30, 600);
   lv_slider_set_value(ui_offSlider, off_timeout_s, LV_ANIM_OFF);
   lv_obj_clear_flag(ui_offSlider, LV_OBJ_FLAG_GESTURE_BUBBLE);
-
-  // Estilo Sliders
   lv_obj_set_style_bg_color(ui_offSlider, UI_COLOR_SLIDER_TRACK,
                             LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_bg_color(ui_offSlider, UI_COLOR_ACCENT,
                             LV_PART_INDICATOR | LV_STATE_DEFAULT);
   lv_obj_set_style_radius(ui_offSlider, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
-  // Knob gris con borde
   lv_obj_set_style_bg_color(ui_offSlider, UI_COLOR_CARD_BG,
                             LV_PART_KNOB | LV_STATE_DEFAULT);
   lv_obj_set_style_border_color(ui_offSlider, UI_COLOR_TEXT_INFO,
@@ -246,6 +281,9 @@ void ui_burnout_screen_init(void) {
   lv_obj_set_style_pad_all(ui_offSlider, 15, LV_PART_KNOB | LV_STATE_DEFAULT);
   lv_obj_add_event_cb(ui_offSlider, burnout_config_update_cb,
                       LV_EVENT_VALUE_CHANGED, NULL);
+
+  // Sincronizar estado inicial
+  ui_burnout_update_state();
 
   lv_obj_add_event_cb(ui_burnout, ui_event_burnout, LV_EVENT_ALL, NULL);
 
