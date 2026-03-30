@@ -19,7 +19,7 @@
 // Definición de pines para UART2 (PZEM) tomados de config.h
 #define PZEM_SERIAL Serial2
 
-PZEM004Tv30 pzem(PZEM_SERIAL, PZEM_RX_PIN, PZEM_TX_PIN);
+PZEM004Tv30* pzem = nullptr;
 
 // Variables Globales para compartir datos entre núcleos
 // (En el futuro, usa Semáforos/Mutex para protegerlas si hay conflictos de
@@ -403,20 +403,37 @@ void sensorTaskCode(void *pvParameters) {
   Serial.print("SensorTask corriendo en el núcleo: ");
   Serial.println(xPortGetCoreID());
 
+  // Esperar a que el módulo AC interno del PZEM arranque 
+  vTaskDelay(pdMS_TO_TICKS(1500));
+  
+  // Instanciar el driver
+  pzem = new PZEM004Tv30(PZEM_SERIAL, PZEM_RX_PIN, PZEM_TX_PIN);
+  
+  // IMPORTANTE: Activar resistencia Pull-Up interna DESPUÉS de que Serial2 se inicialice.
+  // El UART_begin del ESP32 desactiva las resistencias. Si la línea RX del PZEM 
+  // queda flotando durante el arranque en frío, generará ruido y basura eléctrica.
+  pinMode(PZEM_RX_PIN, INPUT_PULLUP);
+
   uint8_t startup_skip_count = 0;
   const uint8_t MAX_STARTUP_SKIP =
       2; // Primeras 2 lecturas ignoradas, pues se generan picos falsos al
          // recien conectarse el sensor
 
   for (;;) {
-    // Lee los datos del sensor (esto puede ser bloqueante o tardado, pero no
-    // afecta la UI)
-    float voltage = pzem.voltage();
-    float current = pzem.current();
-    float power = pzem.power();
-    float energy = pzem.energy();
-    float frequency = pzem.frequency();
-    float pf = pzem.pf();
+    // === VACIAR BASURA ELÉCTRICA DEL BUFFER ===
+    // Si hubo ruido en la línea durante el encendido físico (corte de alimentación),
+    // el buffer del puerto Serial2 estará lleno de "datos basura".
+    while (PZEM_SERIAL.available() > 0) {
+      PZEM_SERIAL.read();
+    }
+
+    // Lee los datos del sensor
+    float voltage = pzem->voltage();
+    float current = pzem->current();
+    float power = pzem->power();
+    float energy = pzem->energy();
+    float frequency = pzem->frequency();
+    float pf = pzem->pf();
 
     if (!isnan(voltage)) {
       // 1. Filtro de inicialización

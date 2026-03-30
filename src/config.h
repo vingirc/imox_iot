@@ -22,8 +22,8 @@
 // CONFIGURACIÓN DE HARDWARE - PZEM-004T
 // ============================================================================
 // Pines definidos para T-Display S3 (conector Qwiic/Extra)
-#define PZEM_RX_PIN 44         // ESP32 RX (conectado a PZEM TX)
-#define PZEM_TX_PIN 43         // ESP32 TX (conectado a PZEM RX)
+#define PZEM_RX_PIN 43         // ESP32 RX (conectado a PZEM TX)
+#define PZEM_TX_PIN 44         // ESP32 TX (conectado a PZEM RX)
 #define PZEM_BAUD   9600       // Baudrate fijo del PZEM-004T
 #define PZEM_ADDRESS 0x01      // Dirección Modbus del PZEM
 
