@@ -700,18 +700,40 @@ void setup() {
     Serial.println("Burnout: Configuración cargada desde NVS");
   }
 
-  // 1. Conexión WiFi (No bloqueante pero con espera inicial para MQTT)
+  // 1. Inicia Hardware
+  bool res = amoled.begin();
+  if (!res) {
+    Serial.println("Display error!");
+    while (1)
+      delay(1000);
+  }
+
+  // 2. Inicia LVGL
+  beginLvglHelper(amoled);
+
+  // 3. Inicia conexión WiFi en segundo plano
   // IMPORTANTE: Inicializar modo Station para levantar el stack TCP/IP (LwIP)
   // de lo contrario, el cliente MQTT crasheará con "tcpip_send_msg_wait_sem"
   WiFi.mode(WIFI_STA);
   
+  unsigned long start_wifi = 0;
   if (active_wifi_ssid.length() > 0) {
     Serial.printf("Iniciando WiFi para SSID: %s (Pass: %s)...\n", active_wifi_ssid.c_str(), active_wifi_pass.c_str());
     WiFi.setAutoReconnect(true);
     WiFi.begin(active_wifi_ssid.c_str(), active_wifi_pass.c_str());
-    
-    Serial.print(" Esperando conexión...");
-    unsigned long start_wifi = millis();
+    start_wifi = millis();
+    Serial.println("WiFi: Conectando en segundo plano...");
+  } else {
+    Serial.println("WiFi: Sin credenciales (Esperando Provisioning BLE)");
+  }
+
+  // 4. Pantalla de Inicio (Splash)
+  // ¡Mientras la animación ocurre, el WiFi se conecta en segundo plano!
+  ui_splash_run();
+
+  // 5. Esperar la conexión WiFi (por si no terminó durante la splash screen)
+  if (active_wifi_ssid.length() > 0) {
+    Serial.print("WiFi: Esperando conexión final...");
     while (WiFi.status() != WL_CONNECTED && millis() - start_wifi < 10000) {
         delay(500);
         Serial.print(".");
@@ -724,11 +746,9 @@ void setup() {
     } else {
         Serial.println(" Timeout (conectando en segundo plano)");
     }
-  } else {
-    Serial.println("WiFi: Sin credenciales (Esperando Provisioning BLE)");
   }
   
-  // Configuración MQTT Nativa (WSS) - Estructura dinámica por versión
+  // 6. Configuración MQTT Nativa (WSS) - Estructura dinámica por versión
   esp_mqtt_client_config_t mqtt_cfg = {};
 
 #if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
@@ -763,23 +783,7 @@ void setup() {
   esp_mqtt_client_start(mqtt_client);
   Serial.println("MQTT: Cliente Iniciado");
 
-  // 1. Inicia Hardware
-  bool res = amoled.begin();
-  if (!res) {
-    Serial.println("Display error!");
-    while (1)
-      delay(1000);
-  }
-
-  // 2. Inicia LVGL
-  beginLvglHelper(amoled);
-
-  // 2.5 Pantalla de Inicio (Splash) - Replica la animación del proyecto legacy
-  //     Logo Yex Acoustics → Fade-in lento → Pausa → Fade-out
-  //     Modelo "IMOX-XX"   → Fade-in       → Pausa → Fade-out
-  ui_splash_run();
-
-  // 3. Inicia UI de SquareLine
+  // 7. Inicia UI de SquareLine
   ui_init();
 
   Serial.println("System Ready - UI Running");
