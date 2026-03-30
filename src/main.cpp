@@ -33,6 +33,7 @@ float v_pf = 0.0;
 // Historial para Gráficas (31 puntos para cubrir mensual, 24 para diario)
 lv_coord_t history_voltage[31] = {0};
 lv_coord_t history_watts[31] = {0};
+char history_timestamps[31][24] = {0};
 lv_coord_t history_daily_24h[24] = {0};
 bool history_data_ready = false;
 lv_coord_t history_max_voltage = 0;
@@ -136,8 +137,9 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
                             if (i < 31) {
                               if(idx_v != -1) history_voltage[i] = (lv_coord_t)dataRows[i][idx_v].as<float>();
                               if(idx_p != -1) history_watts[i] = (lv_coord_t)dataRows[i][idx_p].as<float>();
+                              if(idx_t != -1) strncpy(history_timestamps[i], dataRows[i][idx_t].as<const char*>(), 23);
                               if (i < 7) {
-                                Serial.printf("  history[%d]: voltage=%d, watts=%d\n", i, history_voltage[i], history_watts[i]);
+                                Serial.printf("  history[%d]: voltage=%d, watts=%d, time=%s\n", i, history_voltage[i], history_watts[i], history_timestamps[i]);
                               }
                             }
                             if (i < 24) {
@@ -149,6 +151,7 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
                         for(int i = history_count; i < 31; i++) {
                           history_voltage[i] = 0;
                           history_watts[i] = 0;
+                          history_timestamps[i][0] = '\0';
                         }
                         // Calcular máximos para auto-rango de las gráficas
                         history_max_voltage = 0;

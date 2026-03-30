@@ -4,6 +4,9 @@
 // Project name: SquareLine_Project
 
 #include "ui.h"
+#include <stdio.h>
+#include <string.h>
+#include <time.h>
 
 void voltageStatsChange(lv_event_t *e) {
   _ui_screen_change(&ui_statsWatts, UI_ANIM_SWIPE_UP, UI_ANIM_SWIPE_DURATION,
@@ -125,7 +128,73 @@ void ui_event_stats_toggle(lv_obj_t *label, lv_obj_t *chart) {
 
 extern lv_coord_t history_voltage[];
 extern lv_coord_t history_watts[];
+extern char history_timestamps[31][24];
 extern int history_count;
+
+// Helper para formatear ISO date a texto legible local (-06:00)
+// "2026-03-30T00:00:00Z" -> "29 Mar, 18:00"
+static void format_timestamp(const char* iso, char* out, size_t out_len) {
+    if (strlen(iso) < 16) {
+        strlcpy(out, iso, out_len);
+        return;
+    }
+
+    struct tm t = {0};
+    // Format: 2026-03-21T12:00:00Z
+    if (sscanf(iso, "%d-%d-%dT%d:%d", &t.tm_year, &t.tm_mon, &t.tm_mday, &t.tm_hour, &t.tm_min) < 5) {
+        strlcpy(out, iso, out_len);
+        return;
+    }
+    
+    t.tm_year -= 1900; 
+    t.tm_mon -= 1;     
+    
+    // Ajustar -6 horas (UTC -> Local CST)
+    t.tm_hour -= 6;
+    
+    // mktime normaliza el struct tm (si t.tm_hour se vuelve negativo, resta un día, etc)
+    // Usamos mktime y luego gmtime para evitar que el timezone del chip interfiera
+    time_t rawtime = mktime(&t);
+    struct tm *local = gmtime(&rawtime); 
+    
+    if (!local) {
+        strlcpy(out, iso, out_len);
+        return;
+    }
+
+    const char* months[] = {"Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"};
+    snprintf(out, out_len, "%02d %s, %02d:%02d", 
+             local->tm_mday, months[local->tm_mon], 
+             local->tm_hour, local->tm_min);
+}
+
+// Restaura los labels al promedio global y el título al modo actual
+void restore_chart_defaults(lv_obj_t *screen) {
+  if (history_count <= 0) return;
+  
+  if (screen == ui_voltageStats) {
+      if (ui_PotenciaLabel17) lv_label_set_text(ui_PotenciaLabel17, stats_mode_voltage_monthly ? "Consumo mensual" : "Consumo semanal");
+      int sum = 0;
+      for (int i=0; i<history_count; i++) sum += history_voltage[i];
+      if (ui_voltageVal) {
+          lv_label_set_text_fmt(ui_voltageVal, "%d", sum / history_count);
+          lv_obj_set_style_text_color(ui_voltageVal, UI_COLOR_TEXT_LABEL, LV_PART_MAIN | LV_STATE_DEFAULT);
+      }
+  } else if (screen == ui_statsWatts) {
+      if (ui_PotenciaLabel16) lv_label_set_text(ui_PotenciaLabel16, stats_mode_watts_monthly ? "Consumo mensual" : "Consumo semanal");
+      int sum = 0;
+      for (int i=0; i<history_count; i++) sum += history_watts[i];
+      if (ui_wattsVal) {
+          lv_label_set_text_fmt(ui_wattsVal, "%d", sum / history_count);
+          lv_obj_set_style_text_color(ui_wattsVal, UI_COLOR_TEXT_LABEL, LV_PART_MAIN | LV_STATE_DEFAULT);
+      }
+  }
+}
+
+// Callback para cuando se toca el fondo de la pantalla (fuera de la gráfica)
+void ui_screen_clicked_cb(lv_event_t *e) {
+  restore_chart_defaults(lv_event_get_target(e));
+}
 
 void ui_chart_draw_event_cb(lv_event_t *e) {
   lv_obj_draw_part_dsc_t *dsc = lv_event_get_draw_part_dsc(e);
@@ -153,7 +222,14 @@ void ui_chart_draw_event_cb(lv_event_t *e) {
 void ui_chart_pressed_event_cb(lv_event_t *e) {
   lv_obj_t *chart = lv_event_get_target(e);
   uint32_t id = lv_chart_get_pressed_point(chart);
-  if (id == LV_CHART_POINT_NONE) return;
+  if (id == LV_CHART_POINT_NONE) {
+    // Si se toca el fondo de la gráfica (no una barra), restaurar promedios
+    restore_chart_defaults(lv_scr_act());
+    return;
+  }
+
+  char formatted_time[32];
+  format_timestamp(history_timestamps[id], formatted_time, sizeof(formatted_time));
 
   if (chart == ui_voltageChart && id < 31) {
     if (ui_voltageVal) {
@@ -162,12 +238,18 @@ void ui_chart_pressed_event_cb(lv_event_t *e) {
       lv_obj_set_style_text_color(ui_voltageVal, UI_COLOR_ACCENT,
                                   LV_PART_MAIN | LV_STATE_DEFAULT);
     }
+    if (ui_PotenciaLabel17) {
+      lv_label_set_text(ui_PotenciaLabel17, formatted_time);
+    }
   } else if (chart == ui_wattsChart && id < 31) {
     if (ui_wattsVal) {
       lv_label_set_text_fmt(ui_wattsVal, "%d", (int)history_watts[id]);
       // Color de acento para indicar valor seleccionado
       lv_obj_set_style_text_color(ui_wattsVal, UI_COLOR_ACCENT,
                                   LV_PART_MAIN | LV_STATE_DEFAULT);
+    }
+    if (ui_PotenciaLabel16) {
+      lv_label_set_text(ui_PotenciaLabel16, formatted_time);
     }
   }
 }

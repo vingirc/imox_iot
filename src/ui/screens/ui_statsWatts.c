@@ -231,6 +231,7 @@ void ui_statsWatts_screen_init(void) {
   lv_obj_add_event_cb(ui_wattsChart, ui_chart_draw_event_cb, LV_EVENT_DRAW_PART_BEGIN, NULL);
   lv_obj_add_event_cb(ui_wattsChart, ui_chart_pressed_event_cb, LV_EVENT_VALUE_CHANGED, NULL);
 
+  lv_obj_add_event_cb(ui_statsWatts, ui_screen_clicked_cb, LV_EVENT_CLICKED, NULL);
   lv_obj_add_event_cb(ui_statsWatts, ui_event_statsWatts, LV_EVENT_ALL, NULL);
   lv_obj_add_event_cb(ui_statsWatts, ui_event_stats_load, LV_EVENT_SCREEN_LOADED, NULL);
 

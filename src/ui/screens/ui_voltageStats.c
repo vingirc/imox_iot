@@ -234,6 +234,7 @@ void ui_voltageStats_screen_init(void) {
   lv_obj_add_event_cb(ui_voltageChart, ui_chart_draw_event_cb, LV_EVENT_DRAW_PART_BEGIN, NULL);
   lv_obj_add_event_cb(ui_voltageChart, ui_chart_pressed_event_cb, LV_EVENT_VALUE_CHANGED, NULL);
 
+  lv_obj_add_event_cb(ui_voltageStats, ui_screen_clicked_cb, LV_EVENT_CLICKED, NULL);
   lv_obj_add_event_cb(ui_voltageStats, ui_event_voltageStats, LV_EVENT_ALL,
                       NULL);
   lv_obj_add_event_cb(ui_voltageStats, ui_event_stats_load, LV_EVENT_SCREEN_LOADED, NULL);
