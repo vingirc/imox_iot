@@ -40,6 +40,7 @@ void ui_event_corriente(lv_event_t *e) {
       lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_BOTTOM) {
     lv_indev_wait_release(lv_indev_get_act());
     ui_last_screen_index = 1;
+    ui_last_config_index = 1; // Siempre entrar por brillo
     _ui_config_change_by_index(ui_last_config_index);
   }
 }
