@@ -1,4 +1,4 @@
-// Pantalla de Configuración 3 – Burnout Protection
+// Pantalla de Configuración 3 – Burnout Proteccion
 // LVGL version: 8.3.11
 
 #ifndef UI_BURNOUT_H
@@ -16,7 +16,8 @@ extern void ui_burnout_screen_destroy(void);
 extern void ui_event_burnout(lv_event_t *e);
 
 extern lv_obj_t *ui_burnout;
-extern lv_obj_t *ui_burnoutEnableSwitch;
+extern lv_obj_t *ui_burnoutBtn;
+extern lv_obj_t *ui_burnoutBtnLabel;
 extern lv_obj_t *ui_dimSlider;
 extern lv_obj_t *ui_offSlider;
 extern lv_obj_t *ui_dimTimeLabel;
