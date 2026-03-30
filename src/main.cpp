@@ -10,6 +10,8 @@
 #include <ArduinoJson.h>
 #include <Preferences.h>
 #include <NimBLEDevice.h>
+#include <Update.h>
+#include <mbedtls/md.h>
 #include "mqtt_client.h"
 #include "esp_tls.h"
 
@@ -70,6 +72,21 @@ struct ProvisioningRequest {
 };
 QueueHandle_t provQueue = NULL; // Cola de 1 elemento
 
+// --- OTA Globals ---
+struct OtaRequest {
+  char job_id[64];
+  char url[256];
+  char hash[65];
+  char version[32];
+};
+OtaRequest currentOtaJob;
+TaskHandle_t OtaTask = NULL;
+bool ota_in_progress = false;
+
+// Helpers OTA
+void reportOTAStatus(const char* status, const char* step, const char* error = nullptr);
+void otaTaskCode(void *pvParameters);
+
 // --- Funciones MQTT ---
 static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data) {
     esp_mqtt_event_handle_t event = (esp_mqtt_event_handle_t)event_data;
@@ -79,7 +96,8 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
             mqtt_connected = true;
             // Suscribirse a tópicos de respuesta
             esp_mqtt_client_subscribe(mqtt_client, MQTT_TOPIC_HISTORY_RES, 1);
-            Serial.println("MQTT: Suscrito a historia/response");
+            esp_mqtt_client_subscribe(mqtt_client, MQTT_TOPIC_OTA_COMMAND, 1);
+            Serial.println("MQTT: Suscrito a historia/response y ota/command");
             break;
         case MQTT_EVENT_DISCONNECTED:
             Serial.println("MQTT: Desconectado");
@@ -121,6 +139,31 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
                     }
                 } else {
                     Serial.println("MQTT: Error al parsear JSON de historial");
+                }
+            } else if (strncmp(event->topic, MQTT_TOPIC_OTA_COMMAND, event->topic_len) == 0) {
+                if (ota_in_progress) {
+                    Serial.println("MQTT: Comando OTA ignorado por actualizacion en progreso.");
+                    // Return early so we don't start it again
+                    break;
+                }
+                JsonDocument doc;
+                DeserializationError error = deserializeJson(doc, event->data, event->data_len);
+                if (!error) {
+                    const char* ver = doc["version"];
+                    if (ver && strcmp(ver, FIRMWARE_VERSION) != 0) {
+                        strlcpy(currentOtaJob.job_id, doc["job_id"] | "", sizeof(currentOtaJob.job_id));
+                        strlcpy(currentOtaJob.url, doc["url"] | "", sizeof(currentOtaJob.url));
+                        strlcpy(currentOtaJob.hash, doc["hash"] | "", sizeof(currentOtaJob.hash));
+                        strlcpy(currentOtaJob.version, ver, sizeof(currentOtaJob.version));
+                        
+                        ota_in_progress = true;
+                        xTaskCreatePinnedToCore(otaTaskCode, "OtaTask", 10240, NULL, 5, &OtaTask, 0);
+                        Serial.printf("MQTT: Comando OTA recibido (version: %s), iniciando tarea...\n", ver);
+                    } else {
+                        Serial.println("MQTT: Comando OTA ignorado por versión igual a la actual o version faltante");
+                    }
+                } else {
+                    Serial.println("MQTT: Error al parsear JSON OTA command");
                 }
             }
             break;
@@ -174,6 +217,150 @@ void sendTelemetry(float v, float i, float p, float e, float f, float pf) {
   } else {
     Serial.println("MQTT: Error al publicar");
   }
+}
+
+// ================================================================
+// TAREA OTA: Descarga y Verificación MbedTLS
+// ================================================================
+
+void reportOTAStatus(const char* status, const char* step, const char* error) {
+  if (!mqtt_connected || mqtt_client == NULL) return;
+
+  JsonDocument doc;
+  doc["job_id"] = currentOtaJob.job_id;
+  doc["status"] = status;
+  if (step) doc["step"] = step;
+  if (error) doc["error"] = error;
+  else doc["error"] = (char*)nullptr;
+
+  char buffer[512];
+  serializeJson(doc, buffer);
+  
+  esp_mqtt_client_publish(mqtt_client, MQTT_TOPIC_OTA_STATUS, buffer, 0, 1, 0); // retain = 0
+  Serial.printf("OTA Status: %s - %s\n", status, step ? step : "");
+}
+
+void otaTaskCode(void *pvParameters) {
+  Serial.println("OTA: Iniciando proceso...");
+  reportOTAStatus("PENDING", "Iniciando proceso de actualización", nullptr);
+
+  WiFiClient *client = nullptr;
+  WiFiClientSecure secureClient;
+  WiFiClient plainClient;
+
+  if (strncmp(currentOtaJob.url, "https", 5) == 0) {
+      secureClient.setCACert(LET_S_ENCRYPT_CA);
+      // secureClient.setInsecure(); // opcional en caso de fallar con Let's Encrypt CA
+      client = &secureClient;
+  } else {
+      client = &plainClient;
+  }
+  
+  HTTPClient http;
+  if (!http.begin(*client, currentOtaJob.url)) {
+      reportOTAStatus("FAILED", "Error HTTP begin", "URL invalida o error de conexion");
+      ota_in_progress = false;
+      vTaskDelete(NULL);
+      return;
+  }
+  
+  reportOTAStatus("DOWNLOADING", "Conectando al servidor HTTP", nullptr);
+  
+  int httpCode = http.GET();
+  if (httpCode != HTTP_CODE_OK) {
+      char emsg[64];
+      snprintf(emsg, sizeof(emsg), "HTTP GET error: %d", httpCode);
+      reportOTAStatus("FAILED", "Error de conexión HTTP", emsg);
+      http.end();
+      ota_in_progress = false;
+      vTaskDelete(NULL);
+      return;
+  }
+  
+  int contentLength = http.getSize();
+  if (contentLength <= 0) {
+      reportOTAStatus("FAILED", "Error de archivo", "Content-Length invalido o 0");
+      http.end();
+      ota_in_progress = false;
+      vTaskDelete(NULL);
+      return;
+  }
+  
+  bool canBegin = Update.begin(contentLength, U_FLASH);
+  if (!canBegin) {
+      reportOTAStatus("FAILED", "Error de Update", "No hay espacio OTA suficiente");
+      http.end();
+      ota_in_progress = false;
+      vTaskDelete(NULL);
+      return;
+  }
+  
+  // Setup SHA256 context
+  mbedtls_md_context_t ctx;
+  mbedtls_md_init(&ctx);
+  mbedtls_md_setup(&ctx, mbedtls_md_info_from_type(MBEDTLS_MD_SHA256), 0);
+  mbedtls_md_starts(&ctx);
+  
+  WiFiClient *stream = http.getStreamPtr();
+  size_t written = 0;
+  uint8_t buff[2048] = { 0 };
+  unsigned long last_report = millis();
+  
+  while (http.connected() && (written < contentLength)) {
+      size_t size = stream->available();
+      if (size) {
+          int c = stream->readBytes(buff, ((size > sizeof(buff)) ? sizeof(buff) : size));
+          Update.write(buff, c);
+          mbedtls_md_update(&ctx, buff, c);
+          written += c;
+          
+          if (millis() - last_report > 2000) {
+              char step_msg[64];
+              snprintf(step_msg, sizeof(step_msg), "Descargando bloque %d/%d bytes", written, contentLength);
+              reportOTAStatus("DOWNLOADING", step_msg, nullptr);
+              last_report = millis();
+          }
+      }
+      delay(1);
+  }
+  
+  reportOTAStatus("VERIFYING", "Descarga completa, verificando SHA256", nullptr);
+  
+  uint8_t shaResult[32];
+  mbedtls_md_finish(&ctx, shaResult);
+  mbedtls_md_free(&ctx);
+  
+  char hashHex[65];
+  for(int i = 0; i < 32; i++) {
+      sprintf(hashHex + (i * 2), "%02x", shaResult[i]);
+  }
+  
+  http.end();
+  
+  // Convert currentOtaJob.hash to lowercase to ensure match
+  for(int i=0; currentOtaJob.hash[i]; i++) {
+      currentOtaJob.hash[i] = tolower(currentOtaJob.hash[i]);
+  }
+  
+  if (strcmp(hashHex, currentOtaJob.hash) == 0) {
+      if (Update.end(true)) {
+          reportOTAStatus("APPLYING", "Hash comprobado, aplicando firmware", nullptr);
+          delay(2000);
+          reportOTAStatus("COMPLETED", "Firmware instalado, reiniciando", nullptr);
+          delay(1000);
+          ESP.restart();
+      } else {
+          char err_msg[64];
+          snprintf(err_msg, sizeof(err_msg), "Error Update.end(): %d", Update.getError());
+          reportOTAStatus("FAILED", "Fallo al aplicar", err_msg);
+      }
+  } else {
+      reportOTAStatus("FAILED", "Fallo de validacion", "Hash SHA256 no coincide");
+      Update.abort();
+  }
+  
+  ota_in_progress = false;
+  vTaskDelete(NULL);
 }
 
 // --- Tarea del Sensor (Core 0) ---

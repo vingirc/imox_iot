@@ -94,6 +94,8 @@ const char* LET_S_ENCRYPT_CA =
 #define MQTT_TOPIC_TELEMETRY    "imox/devices/3/telemetry"
 #define MQTT_TOPIC_HISTORY_REQ  "imox/devices/3/history/request"
 #define MQTT_TOPIC_HISTORY_RES  "imox/devices/3/history/response"
+#define MQTT_TOPIC_OTA_COMMAND  "imox/devices/3/ota/command"
+#define MQTT_TOPIC_OTA_STATUS   "imox/devices/3/ota/status"
 
 // Intervalo de envío de telemetría (1.5 segundos)
 #define TELEMETRY_SEND_INTERVAL_MS 1500
