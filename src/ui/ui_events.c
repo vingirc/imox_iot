@@ -27,19 +27,31 @@ extern void hw_restart(void);
 extern void hw_request_history(const char* start, const char* end);
 
 // false = semanal (últimos ~7 días), true = mensual (últimos ~30 días)
-static bool stats_mode_monthly = false;
+static bool stats_mode_voltage_monthly = false;
+static bool stats_mode_watts_monthly = false;
 
 void ui_event_stats_load(lv_event_t *e) {
-  // Mostrar estado de carga
-  if (ui_voltageVal) lv_label_set_text(ui_voltageVal, "...");
-  if (ui_wattsVal) lv_label_set_text(ui_wattsVal, "...");
+  lv_obj_t * target = (e != NULL) ? lv_event_get_target(e) : lv_scr_act();
+  bool is_monthly = false;
+
+  // Sincronizar UI y obtener el modo correcto según la pantalla
+  if (target == ui_voltageStats) {
+    if (ui_voltageVal) lv_label_set_text(ui_voltageVal, "...");
+    is_monthly = stats_mode_voltage_monthly;
+    if (ui_PotenciaLabel17) lv_label_set_text(ui_PotenciaLabel17, is_monthly ? "Consumo mensual" : "Consumo semanal");
+    if (ui_voltageChart) lv_chart_set_point_count(ui_voltageChart, is_monthly ? 30 : 7);
+  } 
+  else if (target == ui_statsWatts) {
+    if (ui_wattsVal) lv_label_set_text(ui_wattsVal, "...");
+    is_monthly = stats_mode_watts_monthly;
+    if (ui_PotenciaLabel16) lv_label_set_text(ui_PotenciaLabel16, is_monthly ? "Consumo mensual" : "Consumo semanal");
+    if (ui_wattsChart) lv_chart_set_point_count(ui_wattsChart, is_monthly ? 30 : 7);
+  }
 
   // Pedir rango según el modo actual
-  // Sin NTP, usamos rangos amplios que el servidor filtrará
-  if (stats_mode_monthly) {
+  if (is_monthly) {
     hw_request_history("2026-01-01T00:00:00.000Z", "2026-12-31T23:59:59.000Z");
   } else {
-    // Semanal: solo últimos 7 días (rango más estrecho)
     hw_request_history("2026-03-23T00:00:00.000Z", "2026-12-31T23:59:59.000Z");
   }
 }
@@ -91,13 +103,18 @@ void ui_event_stats_toggle(lv_obj_t *label, lv_obj_t *chart) {
   if (!label)
     return;
   const char *current_text = lv_label_get_text(label);
-  if (strcmp(current_text, "Consumo semanal") == 0) {
+  bool turning_monthly = (strcmp(current_text, "Consumo semanal") == 0);
+  
+  if (turning_monthly) {
     lv_label_set_text(label, "Consumo mensual");
-    stats_mode_monthly = true;
   } else {
     lv_label_set_text(label, "Consumo semanal");
-    stats_mode_monthly = false;
   }
+
+  // Guardar flag independiente
+  if (chart == ui_voltageChart) stats_mode_voltage_monthly = turning_monthly;
+  else if (chart == ui_wattsChart) stats_mode_watts_monthly = turning_monthly;
+
   // Al cambiar el toggle, pedimos datos con el nuevo rango
   ui_event_stats_load(NULL);
 }
@@ -120,10 +137,10 @@ void ui_chart_draw_event_cb(lv_event_t *e) {
 
   bool is_danger = false;
 
-  if (chart == ui_voltageChart && idx < 7) {
+  if (chart == ui_voltageChart && idx < 31) {
     lv_coord_t val = history_voltage[idx];
     is_danger = (val > 0 && (val < UI_VOLTAGE_WARN_LOW || val > UI_VOLTAGE_WARN_HIGH));
-  } else if (chart == ui_wattsChart && idx < 7) {
+  } else if (chart == ui_wattsChart && idx < 31) {
     lv_coord_t val = history_watts[idx];
     is_danger = (val > UI_WATTS_WARN_HIGH);
   }
@@ -138,14 +155,14 @@ void ui_chart_pressed_event_cb(lv_event_t *e) {
   uint32_t id = lv_chart_get_pressed_point(chart);
   if (id == LV_CHART_POINT_NONE) return;
 
-  if (chart == ui_voltageChart && id < 7) {
+  if (chart == ui_voltageChart && id < 31) {
     if (ui_voltageVal) {
       lv_label_set_text_fmt(ui_voltageVal, "%d", (int)history_voltage[id]);
       // Color de acento para indicar valor seleccionado
       lv_obj_set_style_text_color(ui_voltageVal, UI_COLOR_ACCENT,
                                   LV_PART_MAIN | LV_STATE_DEFAULT);
     }
-  } else if (chart == ui_wattsChart && id < 7) {
+  } else if (chart == ui_wattsChart && id < 31) {
     if (ui_wattsVal) {
       lv_label_set_text_fmt(ui_wattsVal, "%d", (int)history_watts[id]);
       // Color de acento para indicar valor seleccionado

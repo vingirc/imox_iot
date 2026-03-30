@@ -30,9 +30,9 @@ float v_energy = 0.0;
 float v_frequency = 0.0;
 float v_pf = 0.0;
 
-// Historial para Gráficas (7 puntos para semanal, 24 para diario)
-lv_coord_t history_voltage[7] = {0};
-lv_coord_t history_watts[7] = {0};
+// Historial para Gráficas (31 puntos para cubrir mensual, 24 para diario)
+lv_coord_t history_voltage[31] = {0};
+lv_coord_t history_watts[31] = {0};
 lv_coord_t history_daily_24h[24] = {0};
 bool history_data_ready = false;
 lv_coord_t history_max_voltage = 0;
@@ -131,12 +131,14 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
 
                         // Llenar arrays (asumiendo que vienen en orden cronológico)
                         int count = dataRows.size();
-                        history_count = count < 7 ? count : 7;
+                        history_count = count < 31 ? count : 31;
                         for(int i=0; i < count; i++) {
-                            if (i < 7) {
+                            if (i < 31) {
                               if(idx_v != -1) history_voltage[i] = (lv_coord_t)dataRows[i][idx_v].as<float>();
                               if(idx_p != -1) history_watts[i] = (lv_coord_t)dataRows[i][idx_p].as<float>();
-                              Serial.printf("  history[%d]: voltage=%d, watts=%d\n", i, history_voltage[i], history_watts[i]);
+                              if (i < 7) {
+                                Serial.printf("  history[%d]: voltage=%d, watts=%d\n", i, history_voltage[i], history_watts[i]);
+                              }
                             }
                             if (i < 24) {
                               if(idx_p != -1) history_daily_24h[i] = (lv_coord_t)dataRows[i][idx_p].as<float>();
@@ -144,14 +146,14 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
                         }
                         history_data_ready = true;
                         // Limpiar posiciones no usadas del array
-                        for(int i = history_count; i < 7; i++) {
+                        for(int i = history_count; i < 31; i++) {
                           history_voltage[i] = 0;
                           history_watts[i] = 0;
                         }
                         // Calcular máximos para auto-rango de las gráficas
                         history_max_voltage = 0;
                         history_max_watts = 0;
-                        for(int i=0; i < (count < 7 ? count : 7); i++) {
+                        for(int i=0; i < history_count; i++) {
                           if(history_voltage[i] > history_max_voltage) history_max_voltage = history_voltage[i];
                           if(history_watts[i] > history_max_watts) history_max_watts = history_watts[i];
                         }
