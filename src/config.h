@@ -57,7 +57,7 @@
 #define MQTT_DEVICE_SECRET    "b67a81fa475cacdc6a036c2e1395e8399b893764883a8c1b"
 
 // ISRG Root X1 (Let's Encrypt) - Intacto y verificado
-const char* LET_S_ENCRYPT_CA = 
+static const char* LET_S_ENCRYPT_CA = 
 "-----BEGIN CERTIFICATE-----\n"
 "MIIFazCCA1OgAwIBAgIRAIIQz7DSQONZRGPgu2OCiwAwDQYJKoZIhvcNAQELBQAw\n"
 "TzELMAkGA1UEBhMCVVMxKTAnBgNVBAoTIEludGVybmV0IFNlY3VyaXR5IFJlc2Vh\n"
@@ -99,6 +99,14 @@ const char* LET_S_ENCRYPT_CA =
 
 // Intervalo de envío de telemetría (1.5 segundos)
 #define TELEMETRY_SEND_INTERVAL_MS 1500
+
+// ============================================================================
+// CONFIGURACIÓN DE SPLASH SCREEN (Pantalla de Inicio)
+// ============================================================================
+// Color de fondo de la pantalla del logo al arrancar:
+//   true  = fondo BLANCO (para logos con texto negro, como el actual)
+//   false = fondo NEGRO  (para logos con texto blanco o claro)
+#define UI_SPLASH_BG_WHITE  true
 
 // ============================================================================
 // CONFIGURACIÓN DE DEBUGGING

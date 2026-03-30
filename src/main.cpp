@@ -1,5 +1,6 @@
 #include "config.h"
 #include "ui/ui.h"
+#include "ui/ui_splash.h"
 #include <Arduino.h>
 #include <LV_Helper.h> // Necesario si usas la versión de la librería que requiere helper
 #include <LilyGo_AMOLED.h>
@@ -772,6 +773,11 @@ void setup() {
 
   // 2. Inicia LVGL
   beginLvglHelper(amoled);
+
+  // 2.5 Pantalla de Inicio (Splash) - Replica la animación del proyecto legacy
+  //     Logo Yex Acoustics → Fade-in lento → Pausa → Fade-out
+  //     Modelo "IMOX-XX"   → Fade-in       → Pausa → Fade-out
+  ui_splash_run();
 
   // 3. Inicia UI de SquareLine
   ui_init();
