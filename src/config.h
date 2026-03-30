@@ -107,6 +107,8 @@ static const char* LET_S_ENCRYPT_CA =
 //   true  = fondo BLANCO (para logos con texto negro, como el actual)
 //   false = fondo NEGRO  (para logos con texto blanco o claro)
 #define UI_SPLASH_BG_WHITE  true
+#define UI_SPLASH_TIME_LOGO_MS 2000
+#define UI_SPLASH_TIME_MODEL_MS 2000
 
 // ============================================================================
 // CONFIGURACIÓN DE DEBUGGING

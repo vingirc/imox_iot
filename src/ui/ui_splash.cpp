@@ -102,7 +102,7 @@ void ui_splash_run(void) {
     // --- PASO 3: Animación de logo (igual que el proyecto antiguo) ---
     delay(500);
     splash_fade_in_logo(120);  // Fade-in lento (~1.4s)
-    delay(4000);               // Logo visible 4 segundos
+    delay(UI_SPLASH_TIME_LOGO_MS); // Logo visible
     splash_fade_out(120);      // Fade-out
 
     // --- PASO 4: Pantalla de modelo "IMOX-XX" ---
@@ -124,7 +124,7 @@ void ui_splash_run(void) {
 
     // Fade-in del modelo
     splash_fade_in(120);
-    delay(4000);              // Modelo visible 4 segundos  
+    delay(UI_SPLASH_TIME_MODEL_MS); // Modelo visible
     splash_fade_out(120);     // Fade-out
 
     // --- PASO 5: Limpieza ---
