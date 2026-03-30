@@ -997,15 +997,23 @@ void updateUI() {
       lv_chart_refresh(ui_wattsChart);
     }
     
-    // Actualizar etiquetas de valor promedio
+    // Actualizar etiquetas de valor promedio y restaurar color normal
     if (history_count > 0) {
       int sum_v = 0, sum_w = 0;
       for (int i = 0; i < history_count; i++) {
         sum_v += history_voltage[i];
         sum_w += history_watts[i];
       }
-      if (ui_voltageVal) lv_label_set_text_fmt(ui_voltageVal, "%d", sum_v / history_count);
-      if (ui_wattsVal) lv_label_set_text_fmt(ui_wattsVal, "%d", sum_w / history_count);
+      if (ui_voltageVal) {
+        lv_label_set_text_fmt(ui_voltageVal, "%d", sum_v / history_count);
+        lv_obj_set_style_text_color(ui_voltageVal, UI_COLOR_TEXT_LABEL,
+                                    LV_PART_MAIN | LV_STATE_DEFAULT);
+      }
+      if (ui_wattsVal) {
+        lv_label_set_text_fmt(ui_wattsVal, "%d", sum_w / history_count);
+        lv_obj_set_style_text_color(ui_wattsVal, UI_COLOR_TEXT_LABEL,
+                                    LV_PART_MAIN | LV_STATE_DEFAULT);
+      }
     }
     
     // Actualizar paneles de Modo Diario (24h) si el objeto existe

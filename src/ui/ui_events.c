@@ -30,6 +30,10 @@ extern void hw_request_history(const char* start, const char* end);
 static bool stats_mode_monthly = false;
 
 void ui_event_stats_load(lv_event_t *e) {
+  // Mostrar estado de carga
+  if (ui_voltageVal) lv_label_set_text(ui_voltageVal, "...");
+  if (ui_wattsVal) lv_label_set_text(ui_wattsVal, "...");
+
   // Pedir rango según el modo actual
   // Sin NTP, usamos rangos amplios que el servidor filtrará
   if (stats_mode_monthly) {
@@ -137,10 +141,16 @@ void ui_chart_pressed_event_cb(lv_event_t *e) {
   if (chart == ui_voltageChart && id < 7) {
     if (ui_voltageVal) {
       lv_label_set_text_fmt(ui_voltageVal, "%d", (int)history_voltage[id]);
+      // Color de acento para indicar valor seleccionado
+      lv_obj_set_style_text_color(ui_voltageVal, UI_COLOR_ACCENT,
+                                  LV_PART_MAIN | LV_STATE_DEFAULT);
     }
   } else if (chart == ui_wattsChart && id < 7) {
     if (ui_wattsVal) {
       lv_label_set_text_fmt(ui_wattsVal, "%d", (int)history_watts[id]);
+      // Color de acento para indicar valor seleccionado
+      lv_obj_set_style_text_color(ui_wattsVal, UI_COLOR_ACCENT,
+                                  LV_PART_MAIN | LV_STATE_DEFAULT);
     }
   }
 }
