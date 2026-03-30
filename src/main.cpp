@@ -35,6 +35,9 @@ lv_coord_t history_voltage[7] = {0};
 lv_coord_t history_watts[7] = {0};
 lv_coord_t history_daily_24h[24] = {0};
 bool history_data_ready = false;
+lv_coord_t history_max_voltage = 0;
+lv_coord_t history_max_watts = 0;
+int history_count = 0;
 
 esp_mqtt_client_handle_t mqtt_client = NULL;
 bool mqtt_connected = false;
@@ -106,6 +109,8 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
         case MQTT_EVENT_DATA: {
             Serial.printf("MQTT: Datos recibidos en tópico: %.*s\n", event->topic_len, event->topic);
             if (strncmp(event->topic, MQTT_TOPIC_HISTORY_RES, event->topic_len) == 0) {
+                // DEBUG: Imprimir datos crudos recibidos
+                Serial.printf("MQTT History RAW (%d bytes): %.*s\n", event->data_len, event->data_len > 500 ? 500 : event->data_len, event->data);
                 JsonDocument doc;
                 DeserializationError error = deserializeJson(doc, event->data, event->data_len);
                 if (!error) {
@@ -113,26 +118,50 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
                         JsonArray dataRows = doc["data"];
                         JsonArray columns = doc["columns"];
                         
-                        // Encontrar índices de columnas
+                        // Encontrar índices de columnas (aceptar ambas convenciones de nombres)
                         int idx_v = -1, idx_p = -1, idx_t = -1;
                         for(int i=0; i<columns.size(); i++) {
-                            if(strcmp(columns[i], "voltaje") == 0) idx_v = i;
-                            if(strcmp(columns[i], "potencia") == 0) idx_p = i;
-                            if(strcmp(columns[i], "timestamp") == 0) idx_t = i;
+                            const char* col = columns[i].as<const char*>();
+                            Serial.printf("  columna[%d] = '%s'\n", i, col);
+                            if(strcmp(col, "voltaje") == 0 || strcmp(col, "voltaje_v") == 0) idx_v = i;
+                            if(strcmp(col, "potencia") == 0 || strcmp(col, "potencia_w") == 0) idx_p = i;
+                            if(strcmp(col, "timestamp") == 0) idx_t = i;
                         }
+                        Serial.printf("MQTT History: idx_v=%d, idx_p=%d, idx_t=%d, rows=%d\n", idx_v, idx_p, idx_t, dataRows.size());
 
                         // Llenar arrays (asumiendo que vienen en orden cronológico)
                         int count = dataRows.size();
+                        history_count = count < 7 ? count : 7;
                         for(int i=0; i < count; i++) {
                             if (i < 7) {
                               if(idx_v != -1) history_voltage[i] = (lv_coord_t)dataRows[i][idx_v].as<float>();
                               if(idx_p != -1) history_watts[i] = (lv_coord_t)dataRows[i][idx_p].as<float>();
+                              Serial.printf("  history[%d]: voltage=%d, watts=%d\n", i, history_voltage[i], history_watts[i]);
                             }
                             if (i < 24) {
                               if(idx_p != -1) history_daily_24h[i] = (lv_coord_t)dataRows[i][idx_p].as<float>();
                             }
                         }
                         history_data_ready = true;
+                        // Limpiar posiciones no usadas del array
+                        for(int i = history_count; i < 7; i++) {
+                          history_voltage[i] = 0;
+                          history_watts[i] = 0;
+                        }
+                        // Calcular máximos para auto-rango de las gráficas
+                        history_max_voltage = 0;
+                        history_max_watts = 0;
+                        for(int i=0; i < (count < 7 ? count : 7); i++) {
+                          if(history_voltage[i] > history_max_voltage) history_max_voltage = history_voltage[i];
+                          if(history_watts[i] > history_max_watts) history_max_watts = history_watts[i];
+                        }
+                        // Agregar 20% de margen
+                        if(history_max_voltage > 0) history_max_voltage = history_max_voltage * 12 / 10;
+                        if(history_max_watts > 0) history_max_watts = history_max_watts * 12 / 10;
+                        // Mínimo razonable para evitar rango de 0
+                        if(history_max_voltage < 10) history_max_voltage = 150;
+                        if(history_max_watts < 2) history_max_watts = 20;
+                        Serial.printf("MQTT History: max_v=%d, max_w=%d\n", history_max_voltage, history_max_watts);
                         Serial.println("MQTT: Historial procesado correctamente");
                     } else if (!doc["error"].isNull()) {
                         Serial.printf("MQTT: Error de servidor: %s\n", doc["error"].as<const char*>());
@@ -956,8 +985,28 @@ void updateUI() {
 
   // Actualizar gráficas si hay datos nuevos
   if (history_data_ready) {
-    if (ui_voltageChart) lv_chart_refresh(ui_voltageChart);
-    if (ui_wattsChart) lv_chart_refresh(ui_wattsChart);
+    int pt_count = history_count > 0 ? history_count : 1;
+    if (ui_voltageChart) {
+      lv_chart_set_point_count(ui_voltageChart, pt_count);
+      lv_chart_set_range(ui_voltageChart, LV_CHART_AXIS_PRIMARY_Y, 0, history_max_voltage);
+      lv_chart_refresh(ui_voltageChart);
+    }
+    if (ui_wattsChart) {
+      lv_chart_set_point_count(ui_wattsChart, pt_count);
+      lv_chart_set_range(ui_wattsChart, LV_CHART_AXIS_PRIMARY_Y, 0, history_max_watts);
+      lv_chart_refresh(ui_wattsChart);
+    }
+    
+    // Actualizar etiquetas de valor promedio
+    if (history_count > 0) {
+      int sum_v = 0, sum_w = 0;
+      for (int i = 0; i < history_count; i++) {
+        sum_v += history_voltage[i];
+        sum_w += history_watts[i];
+      }
+      if (ui_voltageVal) lv_label_set_text_fmt(ui_voltageVal, "%d", sum_v / history_count);
+      if (ui_wattsVal) lv_label_set_text_fmt(ui_wattsVal, "%d", sum_w / history_count);
+    }
     
     // Actualizar paneles de Modo Diario (24h) si el objeto existe
     if (ui_Modo_Diario_24hrs) {

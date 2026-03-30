@@ -135,6 +135,16 @@
 /** Color de las barras de la serie */
 #define UI_CHART_SERIES_COLOR lv_color_hex(0xB388FF)
 
+/** Color de barras en estado peligroso */
+#define UI_CHART_DANGER_COLOR lv_color_hex(0xFF4444)
+
+/** Umbrales de peligro para voltaje (rango seguro: 110-130V) */
+#define UI_VOLTAGE_WARN_LOW   110
+#define UI_VOLTAGE_WARN_HIGH  132
+
+/** Umbral de peligro para potencia (watts) */
+#define UI_WATTS_WARN_HIGH    1500
+
 /* ============================================================
  * CONFIG SCREEN (pantalla de configuración)
  * ============================================================ */

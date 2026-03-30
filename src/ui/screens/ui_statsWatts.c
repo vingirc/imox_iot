@@ -200,8 +200,8 @@ void ui_statsWatts_screen_init(void) {
                          true, 50);
   lv_chart_set_axis_tick(ui_wattsChart, LV_CHART_AXIS_PRIMARY_Y, 10, 5, 5, 2,
                          true, 50);
-  lv_chart_set_axis_tick(ui_wattsChart, LV_CHART_AXIS_SECONDARY_Y, 10, 5, 5, 2,
-                         true, 25);
+  lv_chart_set_axis_tick(ui_wattsChart, LV_CHART_AXIS_SECONDARY_Y, 0, 0, 0, 0,
+                         false, 0);
   lv_chart_series_t *ui_wattsChart_series_1 = lv_chart_add_series(
       ui_wattsChart, UI_COLOR_ACCENT, LV_CHART_AXIS_PRIMARY_Y);
   extern lv_coord_t history_watts[];
@@ -227,6 +227,9 @@ void ui_statsWatts_screen_init(void) {
   lv_obj_set_style_bg_opa(
       ui_comp_get_child(ui_navPanel3, UI_COMP_NAVPANEL_CIRCLE4), 255,
       LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  lv_obj_add_event_cb(ui_wattsChart, ui_chart_draw_event_cb, LV_EVENT_DRAW_PART_BEGIN, NULL);
+  lv_obj_add_event_cb(ui_wattsChart, ui_chart_pressed_event_cb, LV_EVENT_VALUE_CHANGED, NULL);
 
   lv_obj_add_event_cb(ui_statsWatts, ui_event_statsWatts, LV_EVENT_ALL, NULL);
   lv_obj_add_event_cb(ui_statsWatts, ui_event_stats_load, LV_EVENT_SCREEN_LOADED, NULL);

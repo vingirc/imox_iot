@@ -26,10 +26,18 @@ extern void hw_wifi_toggle(bool enable);
 extern void hw_restart(void);
 extern void hw_request_history(const char* start, const char* end);
 
+// false = semanal (últimos ~7 días), true = mensual (últimos ~30 días)
+static bool stats_mode_monthly = false;
+
 void ui_event_stats_load(lv_event_t *e) {
-  // Por ahora pedimos un rango genérico como placeholder
-  // En el futuro, se puede calcular basado en la fecha actual (NTP)
-  hw_request_history("2026-03-01T00:00:00.000Z", "2026-03-07T23:59:59.000Z");
+  // Pedir rango según el modo actual
+  // Sin NTP, usamos rangos amplios que el servidor filtrará
+  if (stats_mode_monthly) {
+    hw_request_history("2026-01-01T00:00:00.000Z", "2026-12-31T23:59:59.000Z");
+  } else {
+    // Semanal: solo últimos 7 días (rango más estrecho)
+    hw_request_history("2026-03-23T00:00:00.000Z", "2026-12-31T23:59:59.000Z");
+  }
 }
 
 void onBrightnessChange(int32_t value) {
@@ -81,9 +89,59 @@ void ui_event_stats_toggle(lv_obj_t *label, lv_obj_t *chart) {
   const char *current_text = lv_label_get_text(label);
   if (strcmp(current_text, "Consumo semanal") == 0) {
     lv_label_set_text(label, "Consumo mensual");
+    stats_mode_monthly = true;
   } else {
     lv_label_set_text(label, "Consumo semanal");
+    stats_mode_monthly = false;
   }
-  // Al cambiar el toggle, pedimos datos de nuevo
+  // Al cambiar el toggle, pedimos datos con el nuevo rango
   ui_event_stats_load(NULL);
 }
+
+// ================================================================
+// CHART CALLBACKS: Coloring peligroso + Click para ver valor exacto
+// ================================================================
+
+extern lv_coord_t history_voltage[];
+extern lv_coord_t history_watts[];
+extern int history_count;
+
+void ui_chart_draw_event_cb(lv_event_t *e) {
+  lv_obj_draw_part_dsc_t *dsc = lv_event_get_draw_part_dsc(e);
+  if (dsc->part != LV_PART_ITEMS) return;
+  if (!dsc->rect_dsc) return;
+
+  lv_obj_t *chart = lv_event_get_target(e);
+  uint32_t idx = dsc->id;
+
+  bool is_danger = false;
+
+  if (chart == ui_voltageChart && idx < 7) {
+    lv_coord_t val = history_voltage[idx];
+    is_danger = (val > 0 && (val < UI_VOLTAGE_WARN_LOW || val > UI_VOLTAGE_WARN_HIGH));
+  } else if (chart == ui_wattsChart && idx < 7) {
+    lv_coord_t val = history_watts[idx];
+    is_danger = (val > UI_WATTS_WARN_HIGH);
+  }
+
+  if (is_danger) {
+    dsc->rect_dsc->bg_color = UI_CHART_DANGER_COLOR;
+  }
+}
+
+void ui_chart_pressed_event_cb(lv_event_t *e) {
+  lv_obj_t *chart = lv_event_get_target(e);
+  uint32_t id = lv_chart_get_pressed_point(chart);
+  if (id == LV_CHART_POINT_NONE) return;
+
+  if (chart == ui_voltageChart && id < 7) {
+    if (ui_voltageVal) {
+      lv_label_set_text_fmt(ui_voltageVal, "%d", (int)history_voltage[id]);
+    }
+  } else if (chart == ui_wattsChart && id < 7) {
+    if (ui_wattsVal) {
+      lv_label_set_text_fmt(ui_wattsVal, "%d", (int)history_watts[id]);
+    }
+  }
+}
+
