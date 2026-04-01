@@ -48,8 +48,8 @@
 // ============================================================================
 #define LVGL_TICK_PERIOD_MS 5       // Tick de LVGL cada 5ms
 
-#define WIFI_SSID             ""
-#define WIFI_PASSWORD         ""
+// WiFi credentials are managed exclusively via NVS (provisioned by BLE).
+// New devices start with no credentials → BLE provisioning mode.
 
 #define MQTT_WSS_URI          "wss://dietpi.tail02564c.ts.net:443/mqtt"
 #define MQTT_IOT_ID           3

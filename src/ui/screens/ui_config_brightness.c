@@ -87,7 +87,9 @@ void ui_config_brightness_screen_init(void) {
   lv_obj_set_align(ui_brightnessSlider, LV_ALIGN_TOP_MID);
   lv_obj_set_y(ui_brightnessSlider, 80);
   lv_slider_set_range(ui_brightnessSlider, 20, 255);
-  lv_slider_set_value(ui_brightnessSlider, UI_BRIGHTNESS_DEFAULT, LV_ANIM_OFF);
+  // Usar el brillo real almacenado en NVS (no el default de compilación)
+  uint8_t current_brightness = hw_get_brightness();
+  lv_slider_set_value(ui_brightnessSlider, current_brightness, LV_ANIM_OFF);
   lv_obj_clear_flag(ui_brightnessSlider, LV_OBJ_FLAG_GESTURE_BUBBLE); // Evitar que el slider active el swipe de pantalla
   lv_obj_remove_style(ui_brightnessSlider, NULL,
                       LV_PART_INDICATOR); // Quitamos indicador default
@@ -143,10 +145,12 @@ void ui_config_brightness_screen_init(void) {
   ui_brightnessValLabel = lv_label_create(ui_config_brightness);
   lv_obj_align_to(ui_brightnessValLabel, ui_brightnessSlider,
                   LV_ALIGN_OUT_RIGHT_MID, 20, 0);
-  int pct = (UI_BRIGHTNESS_DEFAULT * 100) / 255;
-  char buf[16];
-  snprintf(buf, sizeof(buf), "%d%%", pct);
-  lv_label_set_text(ui_brightnessValLabel, buf);
+  {
+    int pct = (current_brightness * 100) / 255;
+    char buf[16];
+    snprintf(buf, sizeof(buf), "%d%%", pct);
+    lv_label_set_text(ui_brightnessValLabel, buf);
+  }
   lv_obj_set_style_text_color(ui_brightnessValLabel, UI_COLOR_TEXT_ACTIVE,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_text_font(ui_brightnessValLabel, &ui_font_Qualy24,

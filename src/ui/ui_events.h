@@ -20,6 +20,11 @@ void onBrightnessChange(int32_t value);
 void onTurnOffScreen(void);
 void ui_event_stats_toggle(lv_obj_t * label, lv_obj_t * chart);
 
+// Hardware bridge functions (implementadas en main.cpp)
+extern void hw_factory_reset(void);
+extern bool hw_has_wifi_credentials(void);
+extern uint8_t hw_get_brightness(void);
+
 // Chart interaction callbacks
 void ui_chart_draw_event_cb(lv_event_t *e);
 void ui_chart_pressed_event_cb(lv_event_t *e);

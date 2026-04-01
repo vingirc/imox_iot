@@ -174,4 +174,32 @@
 /** Separador visual entre secciones */
 #define UI_COLOR_SEPARATOR lv_color_hex(0x2A2A2A)
 
+/* ============================================================
+ * FACTORY RESET MODAL (colores de peligro)
+ * ============================================================ */
+
+/** Color rojo principal de alerta */
+#define UI_COLOR_DANGER lv_color_hex(0xFF1744)
+
+/** Rojo oscuro para fondos de botones peligrosos */
+#define UI_COLOR_DANGER_DARK lv_color_hex(0xB71C1C)
+
+/** Fondo del card de factory reset (casi negro con tinte rojo) */
+#define UI_COLOR_DANGER_BG lv_color_hex(0x1A0000)
+
+/** Overlay con tinte rojizo */
+#define UI_COLOR_DANGER_OVERLAY lv_color_hex(0x500000)
+
+/** Borde rojo del modal de peligro */
+#define UI_COLOR_DANGER_BORDER lv_color_hex(0xFF1744)
+
+/** Color del botón "Cancelar" resaltado (verde seguro) */
+#define UI_COLOR_SAFE_BTN lv_color_hex(0x2E7D32)
+
+/** Color del botón WiFi deshabilitado */
+#define UI_COLOR_BTN_DISABLED lv_color_hex(0x2A2A2A)
+
+/** Tiempo de long-press para factory reset (ms) */
+#define UI_FACTORY_RESET_LONG_PRESS_MS 3000
+
 #endif /* UI_GLOBALS_H */

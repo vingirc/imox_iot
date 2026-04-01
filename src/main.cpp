@@ -60,9 +60,10 @@ TaskHandle_t ProvisionTask; // Handle para la tarea de provisioning BLE
 
 LilyGo_Class amoled;
 
-// --- WiFi Activo (cargado desde NVS o config.h) ---
-String active_wifi_ssid = WIFI_SSID;
-String active_wifi_pass = WIFI_PASSWORD;
+// --- WiFi Activo (cargado exclusivamente desde NVS) ---
+String active_wifi_ssid = "";
+String active_wifi_pass = "";
+bool ble_advertising_active = false; // Rastrea si BLE está anunciando
 
 // --- BLE Globals ---
 NimBLEServer* pBLEServer = nullptr;
@@ -561,7 +562,7 @@ class BLEWriteCB : public NimBLECharacteristicCallbacks {
   }
 };
 
-// Inicialización del servidor BLE
+// Inicialización del servidor BLE (sin iniciar advertising)
 void setupBLE() {
   // Nombre único: IMOX-0003 (basado en el MQTT_IOT_ID)
   char bleName[16];
@@ -590,13 +591,29 @@ void setupBLE() {
 
   pService->start();
 
-  // Configurar advertising
+  // Configurar advertising (pero NO iniciar — se controla dinámicamente)
   NimBLEAdvertising* pAdv = NimBLEDevice::getAdvertising();
   pAdv->addServiceUUID(pService->getUUID());
   pAdv->setScanResponse(true);
-  pAdv->start();
+  // NO llamar pAdv->start() aquí
 
-  Serial.printf("BLE: Servidor '%s' iniciado y anunciando\n", bleName);
+  Serial.printf("BLE: Servidor '%s' inicializado (sin advertising)\n", bleName);
+}
+
+// Inicia BLE advertising (modo sincronización)
+void startBLEAdvertising() {
+  if (ble_advertising_active) return;
+  NimBLEDevice::getAdvertising()->start();
+  ble_advertising_active = true;
+  Serial.println("BLE: Advertising ACTIVADO (esperando sincronización)");
+}
+
+// Detiene BLE advertising
+void stopBLEAdvertising() {
+  if (!ble_advertising_active) return;
+  NimBLEDevice::getAdvertising()->stop();
+  ble_advertising_active = false;
+  Serial.println("BLE: Advertising DETENIDO");
 }
 
 // ================================================================
@@ -676,6 +693,10 @@ void provisioningTaskCode(void* pvParameters) {
         prefs.putString("pass", active_wifi_pass);
         prefs.end();
         Serial.println("Provisioning: Credenciales WiFi guardadas en NVS");
+
+        // WiFi conectado exitosamente → Apagar BLE advertising
+        wifi_enabled_by_user = true;
+        stopBLEAdvertising();
         // MQTT se reconectará automáticamente al detectar WiFi activo
       } else {
         // --- ERROR: Informar y reconectar WiFi anterior ---
@@ -712,11 +733,11 @@ void setup() {
     Preferences prefs;
     prefs.begin("wifi", true); // Solo lectura
     if (prefs.isKey("ssid")) {
-      active_wifi_ssid = prefs.getString("ssid", WIFI_SSID);
-      active_wifi_pass = prefs.getString("pass", WIFI_PASSWORD);
-      Serial.printf("WiFi: Credenciales cargadas desde NVS (SSID: %s, Pass: %s)\n", active_wifi_ssid.c_str(), active_wifi_pass.c_str());
+      active_wifi_ssid = prefs.getString("ssid", "");
+      active_wifi_pass = prefs.getString("pass", "");
+      Serial.printf("WiFi: Credenciales cargadas desde NVS (SSID: %s)\n", active_wifi_ssid.c_str());
     } else {
-      Serial.println("WiFi: Usando credenciales por defecto (config.h)");
+      Serial.println("WiFi: Sin credenciales en NVS (dispositivo nuevo)");
     }
     prefs.end();
 
@@ -741,20 +762,22 @@ void setup() {
   // 2. Inicia LVGL
   beginLvglHelper(amoled);
 
-  // 3. Inicia conexión WiFi en segundo plano
-  // IMPORTANTE: Inicializar modo Station para levantar el stack TCP/IP (LwIP)
-  // de lo contrario, el cliente MQTT crasheará con "tcpip_send_msg_wait_sem"
-  WiFi.mode(WIFI_STA);
-  
+  // 3. Inicia conexión WiFi O modo BLE según credenciales
   unsigned long start_wifi = 0;
   if (active_wifi_ssid.length() > 0) {
-    Serial.printf("Iniciando WiFi para SSID: %s (Pass: %s)...\n", active_wifi_ssid.c_str(), active_wifi_pass.c_str());
+    // Hay credenciales → WiFi ON, BLE OFF
+    WiFi.mode(WIFI_STA);
+    Serial.printf("Iniciando WiFi para SSID: %s...\n", active_wifi_ssid.c_str());
     WiFi.setAutoReconnect(true);
     WiFi.begin(active_wifi_ssid.c_str(), active_wifi_pass.c_str());
     start_wifi = millis();
+    wifi_enabled_by_user = true;
     Serial.println("WiFi: Conectando en segundo plano...");
   } else {
-    Serial.println("WiFi: Sin credenciales (Esperando Provisioning BLE)");
+    // Sin credenciales → WiFi OFF, BLE ON (provisioning)
+    WiFi.mode(WIFI_OFF);
+    wifi_enabled_by_user = false;
+    Serial.println("WiFi: Sin credenciales → Radio APAGADA (modo BLE)");
   }
 
   // 4. Pantalla de Inicio (Splash)
@@ -778,40 +801,44 @@ void setup() {
     }
   }
   
-  // 6. Configuración MQTT Nativa (WSS) - Estructura dinámica por versión
-  esp_mqtt_client_config_t mqtt_cfg = {};
+  // 6. Configuración MQTT Nativa (WSS) - Solo si hay credenciales WiFi
+  if (active_wifi_ssid.length() > 0) {
+    esp_mqtt_client_config_t mqtt_cfg = {};
 
 #if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
-  // SINTAXIS PARA NÚCLEOS ESP32 NUEVOS (Arduino v3.x / ESP-IDF 5)
-  mqtt_cfg.broker.address.uri = MQTT_WSS_URI; 
-  mqtt_cfg.credentials.username = "3";
-  mqtt_cfg.credentials.authentication.password = MQTT_DEVICE_SECRET;
-  mqtt_cfg.credentials.client_id = "IMOX-ESP32-3";
-  mqtt_cfg.broker.verification.certificate = LET_S_ENCRYPT_CA;
-  
-  // Tamaño de buffer
-  mqtt_cfg.task.stack_size = 12288;
-  mqtt_cfg.buffer.size = 4096;
+    // SINTAXIS PARA NÚCLEOS ESP32 NUEVOS (Arduino v3.x / ESP-IDF 5)
+    mqtt_cfg.broker.address.uri = MQTT_WSS_URI; 
+    mqtt_cfg.credentials.username = "3";
+    mqtt_cfg.credentials.authentication.password = MQTT_DEVICE_SECRET;
+    mqtt_cfg.credentials.client_id = "IMOX-ESP32-3";
+    mqtt_cfg.broker.verification.certificate = LET_S_ENCRYPT_CA;
+    
+    // Tamaño de buffer
+    mqtt_cfg.task.stack_size = 12288;
+    mqtt_cfg.buffer.size = 4096;
 #else
-  // SINTAXIS PARA NÚCLEOS ESP32 CLÁSICOS (Arduino v2.x / ESP-IDF 4.x)
-  mqtt_cfg.uri = MQTT_WSS_URI;               
-  mqtt_cfg.client_id = "IMOX-ESP32-3";
-  mqtt_cfg.username = "3";
-  mqtt_cfg.password = MQTT_DEVICE_SECRET;
-  mqtt_cfg.cert_pem = LET_S_ENCRYPT_CA;
-  
-  // Tamaño de buffer
-  mqtt_cfg.task_stack = 12288;
-  mqtt_cfg.buffer_size = 4096;
+    // SINTAXIS PARA NÚCLEOS ESP32 CLÁSICOS (Arduino v2.x / ESP-IDF 4.x)
+    mqtt_cfg.uri = MQTT_WSS_URI;               
+    mqtt_cfg.client_id = "IMOX-ESP32-3";
+    mqtt_cfg.username = "3";
+    mqtt_cfg.password = MQTT_DEVICE_SECRET;
+    mqtt_cfg.cert_pem = LET_S_ENCRYPT_CA;
+    
+    // Tamaño de buffer
+    mqtt_cfg.task_stack = 12288;
+    mqtt_cfg.buffer_size = 4096;
 #endif
 
-  // Nota: Se omite intencionalmente skip_cert_common_name_check 
-  // para permitir que la validación SNI de Tailscale funcione.
-  
-  mqtt_client = esp_mqtt_client_init(&mqtt_cfg);
-  esp_mqtt_client_register_event(mqtt_client, (esp_mqtt_event_id_t)ESP_EVENT_ANY_ID, mqtt_event_handler, NULL);
-  esp_mqtt_client_start(mqtt_client);
-  Serial.println("MQTT: Cliente Iniciado");
+    // Nota: Se omite intencionalmente skip_cert_common_name_check 
+    // para permitir que la validación SNI de Tailscale funcione.
+    
+    mqtt_client = esp_mqtt_client_init(&mqtt_cfg);
+    esp_mqtt_client_register_event(mqtt_client, (esp_mqtt_event_id_t)ESP_EVENT_ANY_ID, mqtt_event_handler, NULL);
+    esp_mqtt_client_start(mqtt_client);
+    Serial.println("MQTT: Cliente Iniciado");
+  } else {
+    Serial.println("MQTT: Omitido (sin credenciales WiFi)");
+  }
 
   // 7. Inicia UI de SquareLine
   ui_init();
@@ -830,6 +857,11 @@ void setup() {
                           PROV_TASK_PRIORITY,
                           &ProvisionTask,
                           PROV_TASK_CORE);
+
+  // 7b. Activar BLE si WiFi está apagado (sin credenciales o desactivado)
+  if (!wifi_enabled_by_user) {
+    startBLEAdvertising();
+  }
 
   // 7. Inicializar temporizador de actividad
   last_activity_ms = millis();
@@ -873,12 +905,26 @@ void updateUI() {
                           sec % 60);
   }
 
-  // --- NUEVO: Ocultar botón de WiFi si no hay credenciales ---
-  if (ui_wifiBtn) {
+  // --- Actualizar estado del botón WiFi dinámicamente ---
+  if (ui_wifiBtn && ui_wifiBtnLabel) {
     if (active_wifi_ssid.length() == 0) {
-        lv_obj_add_flag(ui_wifiBtn, LV_OBJ_FLAG_HIDDEN);
+        // Sin credenciales → Deshabilitado
+        lv_obj_add_state(ui_wifiBtn, LV_STATE_DISABLED);
+        lv_label_set_text(ui_wifiBtnLabel, "WiFi: SIN CONFIG");
+        lv_obj_set_style_bg_color(ui_wifiBtn, UI_COLOR_BTN_DISABLED,
+                                  LV_PART_MAIN | LV_STATE_DEFAULT);
     } else {
-        lv_obj_clear_flag(ui_wifiBtn, LV_OBJ_FLAG_HIDDEN);
+        // Con credenciales → Habilitado
+        lv_obj_clear_state(ui_wifiBtn, LV_STATE_DISABLED);
+        if (wifi_enabled_by_user) {
+            lv_label_set_text(ui_wifiBtnLabel, "WiFi: ACTIVO");
+            lv_obj_set_style_bg_color(ui_wifiBtn, lv_color_hex(0x2E7D32),
+                                      LV_PART_MAIN | LV_STATE_DEFAULT);
+        } else {
+            lv_label_set_text(ui_wifiBtnLabel, "WiFi: INACTIVO");
+            lv_obj_set_style_bg_color(ui_wifiBtn, lv_color_hex(0xC62828),
+                                      LV_PART_MAIN | LV_STATE_DEFAULT);
+        }
     }
   }
 
@@ -1205,6 +1251,10 @@ void hw_restore_brightness(void) {
   Serial.printf("Brillo RESTAURADO a: %d\n", user_brightness);
 }
 
+uint8_t hw_get_brightness(void) {
+  return user_brightness;
+}
+
 void hw_wifi_toggle(bool enable) {
   wifi_enabled_by_user = enable;
   if (enable) {
@@ -1212,12 +1262,20 @@ void hw_wifi_toggle(bool enable) {
     if (active_wifi_ssid.length() > 0) {
       WiFi.begin(active_wifi_ssid.c_str(), active_wifi_pass.c_str());
     }
+    // WiFi ON → BLE OFF
+    stopBLEAdvertising();
     Serial.println("WiFi: Activado por el usuario");
   } else {
     WiFi.disconnect(true);
     WiFi.mode(WIFI_OFF);
-    Serial.println("WiFi: Desactivado por el usuario (Radio APAGADA)");
+    // WiFi OFF → BLE ON (espera sincronización)
+    startBLEAdvertising();
+    Serial.println("WiFi: Desactivado por el usuario (Radio APAGADA, BLE activo)");
   }
+}
+
+bool hw_has_wifi_credentials(void) {
+  return active_wifi_ssid.length() > 0;
 }
 
 void hw_restart(void) {
@@ -1233,6 +1291,33 @@ void hw_restart(void) {
   }
 
   delay(500); // Dar tiempo al serial
+  ESP.restart();
+}
+
+void hw_factory_reset(void) {
+  Serial.println("=== FACTORY RESET: Borrando toda la configuración ===");
+  
+  // Borrar namespace de WiFi
+  Preferences prefs;
+  prefs.begin("wifi", false);
+  prefs.clear();
+  prefs.end();
+  Serial.println("Factory Reset: Namespace 'wifi' borrado");
+  
+  // Borrar namespace de Burnout/Brillo
+  prefs.begin("burnout", false);
+  prefs.clear();
+  prefs.end();
+  Serial.println("Factory Reset: Namespace 'burnout' borrado");
+  
+  // Limpiar variables en RAM
+  active_wifi_ssid = "";
+  active_wifi_pass = "";
+  mqtt_sync_ever_happened = false;
+  last_mqtt_sync_ms = 0;
+  
+  Serial.println("Factory Reset: Reiniciando dispositivo...");
+  delay(500);
   ESP.restart();
 }
 
