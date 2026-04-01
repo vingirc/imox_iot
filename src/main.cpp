@@ -627,32 +627,61 @@ void provisioningTaskCode(void* pvParameters) {
   for (;;) {
     // Esperar hasta que llegue una solicitud por la cola (bloquea hasta 500ms)
     if (xQueueReceive(provQueue, &req, pdMS_TO_TICKS(500)) == pdTRUE) {
-      Serial.printf("Provisioning: Iniciando - SSID: %s, Pass: %s, UserID: %d\n", req.ssid, req.password, req.userId);
+      Serial.println("============================================");
+      Serial.println("PROVISIONING: === NUEVA SOLICITUD ===");
+      Serial.printf("  SSID: '%s'\n", req.ssid);
+      Serial.printf("  Pass: '%s' (%d chars)\n", req.password, strlen(req.password));
+      Serial.printf("  UserID: %d\n", req.userId);
+      Serial.println("============================================");
       sendBLENotification("progress", "Conectando al WiFi...");
 
       // --- PASO 1: Conectar al WiFi proporcionado ---
       WiFi.disconnect(true);
       vTaskDelay(pdMS_TO_TICKS(1000));
+      Serial.printf("PROVISIONING: WiFi.begin('%s', '%s')...\n", req.ssid, req.password);
       WiFi.begin(req.ssid, req.password);
 
       unsigned long startMs = millis();
+      int attempt = 0;
       while (WiFi.status() != WL_CONNECTED && millis() - startMs < 15000) {
         vTaskDelay(pdMS_TO_TICKS(500));
-        Serial.print(".");
+        attempt++;
+        Serial.printf("  WiFi intento %d - status: %d (elapsed: %lu ms)\n",
+                      attempt, WiFi.status(), millis() - startMs);
       }
-      Serial.println();
 
       if (WiFi.status() != WL_CONNECTED) {
-        Serial.println("Provisioning: WiFi FALLÓ - timeout");
-        sendBLENotification("error", "No se pudo conectar al WiFi");
+        int wifiStatus = WiFi.status();
+        const char* reason = "desconocido";
+        switch (wifiStatus) {
+          case WL_NO_SSID_AVAIL: reason = "SSID no encontrado"; break;
+          case WL_CONNECT_FAILED: reason = "Contraseña incorrecta o fallo de conexion"; break;
+          case WL_DISCONNECTED: reason = "Desconectado (sin respuesta del AP)"; break;
+          case WL_IDLE_STATUS: reason = "Idle (no se inicio la conexion)"; break;
+          default: reason = "Error desconocido"; break;
+        }
+        Serial.println("--------------------------------------------");
+        Serial.printf("PROVISIONING: WiFi FALLÓ - status: %d (%s)\n", wifiStatus, reason);
+        Serial.println("--------------------------------------------");
+
+        char bleMsg[128];
+        snprintf(bleMsg, sizeof(bleMsg), "WiFi falló: %s (code %d)", reason, wifiStatus);
+        sendBLENotification("error", bleMsg);
+
         // Reconectar al WiFi anterior
         if (active_wifi_ssid.length() > 0) {
+          Serial.printf("PROVISIONING: Reconectando al WiFi anterior: '%s'\n", active_wifi_ssid.c_str());
           WiFi.begin(active_wifi_ssid.c_str(), active_wifi_pass.c_str());
         }
         continue;
       }
 
-      Serial.printf("Provisioning: WiFi OK - IP: %s\n", WiFi.localIP().toString().c_str());
+      Serial.println("--------------------------------------------");
+      Serial.printf("PROVISIONING: WiFi CONECTADO OK\n");
+      Serial.printf("  IP: %s\n", WiFi.localIP().toString().c_str());
+      Serial.printf("  RSSI: %d dBm\n", WiFi.RSSI());
+      Serial.printf("  Gateway: %s\n", WiFi.gatewayIP().toString().c_str());
+      Serial.println("--------------------------------------------");
       sendBLENotification("progress", "Registrando dispositivo en la nube...");
 
       // --- PASO 2: POST /iot/link ---
@@ -660,6 +689,7 @@ void provisioningTaskCode(void* pvParameters) {
       secureClient.setCACert(LET_S_ENCRYPT_CA);
 
       HTTPClient http;
+      Serial.printf("PROVISIONING: Conectando a API: %s\n", API_LINK_URL);
       http.begin(secureClient, API_LINK_URL);
       http.addHeader("Content-Type", "application/json");
       http.setTimeout(10000);
@@ -672,17 +702,26 @@ void provisioningTaskCode(void* pvParameters) {
 
       char payload[256];
       serializeJson(linkDoc, payload);
-      Serial.printf("Provisioning: POST %s -> %s\n", API_LINK_URL, payload);
+      Serial.printf("PROVISIONING: POST payload -> %s\n", payload);
 
       int httpCode = http.POST(payload);
       String response = http.getString();
       http.end();
 
-      Serial.printf("Provisioning: HTTP %d - %s\n", httpCode, response.c_str());
+      Serial.println("--------------------------------------------");
+      Serial.printf("PROVISIONING: API Respuesta HTTP %d\n", httpCode);
+      Serial.printf("  Body: %s\n", response.c_str());
+      Serial.println("--------------------------------------------");
 
       if (httpCode == 200) {
         // --- ÉXITO: Guardar credenciales en NVS ---
+        Serial.println("PROVISIONING: === ÉXITO - Dispositivo vinculado ===");
         sendBLENotification("success", "Dispositivo vinculado correctamente");
+
+        // IMPORTANTE: Darle tiempo al procesador y al radio Bluetooth para 
+        // evacuar el mensaje y enviarlo al celular ANTES de que el 
+        // chip se ponga a escribir en la memoria flash.
+        vTaskDelay(pdMS_TO_TICKS(1000));
 
         active_wifi_ssid = String(req.ssid);
         active_wifi_pass = String(req.password);
@@ -692,21 +731,36 @@ void provisioningTaskCode(void* pvParameters) {
         prefs.putString("ssid", active_wifi_ssid);
         prefs.putString("pass", active_wifi_pass);
         prefs.end();
-        Serial.println("Provisioning: Credenciales WiFi guardadas en NVS");
+        Serial.println("PROVISIONING: Credenciales WiFi guardadas en NVS");
 
         // WiFi conectado exitosamente → Apagar BLE advertising
         wifi_enabled_by_user = true;
         stopBLEAdvertising();
+        
+        // Forzar desconexión física del cliente BLE para que la App Móvil libere su promesa/espera
+        if (ble_client_connected && pBLEServer != nullptr) {
+          std::vector<uint16_t> peers = pBLEServer->getPeerDevices();
+          for(size_t i = 0; i < peers.size(); i++) {
+             pBLEServer->disconnect(peers[i]);
+          }
+          Serial.println("PROVISIONING: Cliente BLE desconectado limpiamente.");
+        }
+
+        Serial.println("PROVISIONING: BLE advertising detenido, MQTT se reconectará");
         // MQTT se reconectará automáticamente al detectar WiFi activo
       } else {
         // --- ERROR: Informar y reconectar WiFi anterior ---
+        Serial.printf("PROVISIONING: === ERROR - HTTP %d ===\n", httpCode);
         char errMsg[128];
-        snprintf(errMsg, sizeof(errMsg), "Error del servidor: HTTP %d", httpCode);
+        snprintf(errMsg, sizeof(errMsg), "Error del servidor: HTTP %d - %s",
+                 httpCode, response.length() > 80 ? response.substring(0, 80).c_str() : response.c_str());
         sendBLENotification("error", errMsg);
         if (active_wifi_ssid.length() > 0) {
+          Serial.printf("PROVISIONING: Reconectando al WiFi anterior: '%s'\n", active_wifi_ssid.c_str());
           WiFi.begin(active_wifi_ssid.c_str(), active_wifi_pass.c_str());
         }
       }
+      Serial.println("============================================\n");
     }
   }
 }
@@ -840,7 +894,14 @@ void setup() {
     Serial.println("MQTT: Omitido (sin credenciales WiFi)");
   }
 
-  // 7. Inicia UI de SquareLine
+  // 7. Sincronizar estado WiFi del UI con el estado real ANTES de crear pantallas
+  //    is_wifi_enabled (UI) se inicializa a true, pero después de factory reset
+  //    wifi_enabled_by_user es false. Sin este sync, las gráficas se muestran
+  //    aunque el WiFi esté apagado.
+  is_wifi_enabled = wifi_enabled_by_user;
+  Serial.printf("UI: is_wifi_enabled sincronizado a %s\n", is_wifi_enabled ? "true" : "false");
+
+  // 8. Inicia UI de SquareLine
   ui_init();
 
   Serial.println("System Ready - UI Running");

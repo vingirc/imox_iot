@@ -100,10 +100,14 @@ static void modal_confirm_wifi_cb(lv_event_t *e) {
     lv_label_set_text(ui_wifiBtnLabel, "WiFi: ACTIVO");
     lv_obj_set_style_bg_color(ui_wifiBtn, lv_color_hex(0x2E7D32),
                               LV_PART_MAIN | LV_STATE_DEFAULT); // Verde oscuro
+    lv_obj_set_style_text_color(ui_wifiBtnLabel, UI_COLOR_TEXT_ACTIVE,
+                                LV_PART_MAIN | LV_STATE_DEFAULT);
   } else {
     lv_label_set_text(ui_wifiBtnLabel, "WiFi: INACTIVO");
     lv_obj_set_style_bg_color(ui_wifiBtn, lv_color_hex(0xC62828),
                               LV_PART_MAIN | LV_STATE_DEFAULT); // Rojo oscuro
+    lv_obj_set_style_text_color(ui_wifiBtnLabel, UI_COLOR_TEXT_ACTIVE,
+                                LV_PART_MAIN | LV_STATE_DEFAULT);
     
     // Si la última vista fue una gráfica, redirigir a la tercera (Dashboard - index 2)
     if (ui_last_screen_index == 3 || ui_last_screen_index == 4) {
@@ -274,16 +278,16 @@ static void modal_confirm_factory_reset_cb(lv_event_t *e) {
     lv_obj_t * btn_row = lv_obj_get_parent(btn);
     lv_obj_t * card = lv_obj_get_parent(btn_row);
     
-    // Cambiar título a "Restableciendo..."
+    // Cambiar titulo
     lv_obj_t * title_label = lv_obj_get_child(card, 0);
     lv_label_set_text(title_label, "Restableciendo...");
     lv_obj_set_style_text_color(title_label, UI_COLOR_DANGER,
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
     
-    // Cambiar el subtítulo (índice 1) para indicar progreso
+    // Cambiar el subtitulo para indicar progreso
     lv_obj_t * subtitle = lv_obj_get_child(card, 1);
     if (subtitle) {
-      lv_label_set_text(subtitle, "Borrando configuración\ny reiniciando...");
+      lv_label_set_text(subtitle, "Borrando datos\ny reiniciando...");
       lv_obj_set_style_text_color(subtitle, UI_COLOR_TEXT_LABEL,
                                   LV_PART_MAIN | LV_STATE_DEFAULT);
     }
@@ -330,25 +334,24 @@ static void restart_long_press_cb(lv_event_t *e) {
   lv_obj_set_style_pad_all(card, 20, LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_pad_row(card, 12, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-  // --- Título: Icono de advertencia + texto ---
+  // --- Titulo ---
   lv_obj_t *title_label = lv_label_create(card);
-  lv_label_set_text(title_label, LV_SYMBOL_WARNING " RESTABLECER");
+  lv_label_set_text(title_label, "Restablecer dispositivo");
   lv_obj_set_style_text_color(title_label, UI_COLOR_DANGER,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_text_font(title_label, &ui_font_Qualy28,
+  lv_obj_set_style_text_font(title_label, &ui_font_Qualy24,
                              LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_text_align(title_label, LV_TEXT_ALIGN_CENTER,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_width(title_label, lv_pct(100));
 
-  // --- Descripción ---
+  // --- Descripcion ---
   lv_obj_t *desc_label = lv_label_create(card);
   lv_label_set_text(desc_label, 
-    "Se eliminarán todas las\n"
-    "configuraciones, credenciales\n"
-    "WiFi y preferencias.\n\n"
-    "El dispositivo volverá a\n"
-    "su estado de fábrica.");
+    "Se borraran todas las\n"
+    "configuraciones y el\n"
+    "dispositivo volvera a\n"
+    "su estado de fabrica.");
   lv_obj_set_style_text_color(desc_label, UI_COLOR_TEXT_LABEL,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_text_font(desc_label, &ui_font_Qualy14,
@@ -397,7 +400,7 @@ static void restart_long_press_cb(lv_event_t *e) {
   lv_obj_t *btn_reset = lv_btn_create(btn_row);
   lv_obj_set_width(btn_reset, 120);
   lv_obj_set_height(btn_reset, 55);
-  lv_obj_set_style_bg_color(btn_reset, UI_COLOR_DANGER_DARK,
+  lv_obj_set_style_bg_color(btn_reset, lv_color_hex(0x2D0000),
                             LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_radius(btn_reset, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_border_color(btn_reset, UI_COLOR_DANGER,
@@ -408,7 +411,7 @@ static void restart_long_press_cb(lv_event_t *e) {
   lv_obj_set_align(label_reset, LV_ALIGN_CENTER);
   lv_obj_set_style_text_font(label_reset, &ui_font_Qualy12,
                              LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_text_color(label_reset, UI_COLOR_DANGER,
+  lv_obj_set_style_text_color(label_reset, UI_COLOR_DANGER_DARK,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_label_set_text(label_reset, "Restablecer");
   lv_obj_add_event_cb(btn_reset, modal_confirm_factory_reset_cb, LV_EVENT_CLICKED, NULL);
@@ -423,6 +426,10 @@ static void restart_long_press_cb(lv_event_t *e) {
 // Eventos de la pantalla principal
 void ui_event_config(lv_event_t *e) {
   lv_event_code_t event_code = lv_event_get_code(e);
+
+  // Bloquear swipes si hay un modal abierto O el boton de reinicio esta presionado
+  // (evita navegacion accidental durante long-press o con modal visible)
+  if ((modal_overlay || long_press_timer) && event_code == LV_EVENT_GESTURE) return;
 
   // Swipe LEFT: ir a Config Brightness (pág 2)
   if (event_code == LV_EVENT_GESTURE &&
@@ -508,10 +515,14 @@ void ui_config_screen_init(void) {
     lv_label_set_text(ui_wifiBtnLabel, "WiFi: ACTIVO");
     lv_obj_set_style_bg_color(ui_wifiBtn, lv_color_hex(0x2E7D32),
                               LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui_wifiBtnLabel, UI_COLOR_TEXT_ACTIVE,
+                                LV_PART_MAIN | LV_STATE_DEFAULT);
   } else {
     lv_label_set_text(ui_wifiBtnLabel, "WiFi: INACTIVO");
     lv_obj_set_style_bg_color(ui_wifiBtn, lv_color_hex(0xC62828),
                               LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui_wifiBtnLabel, UI_COLOR_TEXT_ACTIVE,
+                                LV_PART_MAIN | LV_STATE_DEFAULT);
   }
   lv_obj_add_event_cb(ui_wifiBtn, wifi_btn_cb, LV_EVENT_CLICKED, NULL);
 

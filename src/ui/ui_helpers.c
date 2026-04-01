@@ -356,6 +356,11 @@ void _ui_screen_change_by_index(uint8_t index) {
   // 5: Modo Diario (si aplica, aunque no tiene swipe down por ahora)
   // Usaremos un switch para despachar a la init correcta
 
+  // Si WiFi está deshabilitado, no permitir ir a pantallas de gráficas
+  if (!is_wifi_enabled && (index == 3 || index == 4)) {
+    index = 2; // Redirigir al Dashboard
+  }
+
   switch (index) {
   case 0:
     _ui_screen_change(&ui_voltaje, UI_ANIM_SWIPE_UP, UI_ANIM_SWIPE_DURATION,

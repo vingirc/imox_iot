@@ -200,6 +200,6 @@
 #define UI_COLOR_BTN_DISABLED lv_color_hex(0x2A2A2A)
 
 /** Tiempo de long-press para factory reset (ms) */
-#define UI_FACTORY_RESET_LONG_PRESS_MS 3000
+#define UI_FACTORY_RESET_LONG_PRESS_MS 2000
 
 #endif /* UI_GLOBALS_H */
