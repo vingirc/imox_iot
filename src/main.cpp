@@ -40,6 +40,7 @@ bool history_data_ready = false;
 lv_coord_t history_max_voltage = 0;
 lv_coord_t history_max_watts = 0;
 int history_count = 0;
+SemaphoreHandle_t history_mutex = NULL; // Protección para datos de historial
 
 esp_mqtt_client_handle_t mqtt_client = NULL;
 bool mqtt_connected = false;
@@ -134,43 +135,56 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
                         Serial.printf("MQTT History: idx_v=%d, idx_p=%d, idx_t=%d, rows=%d\n", idx_v, idx_p, idx_t, dataRows.size());
 
                         // Llenar arrays (asumiendo que vienen en orden cronológico)
-                        int count = dataRows.size();
-                        history_count = count < 31 ? count : 31;
-                        for(int i=0; i < count; i++) {
-                            if (i < 31) {
-                              if(idx_v != -1) history_voltage[i] = (lv_coord_t)dataRows[i][idx_v].as<float>();
-                              if(idx_p != -1) history_watts[i] = (lv_coord_t)dataRows[i][idx_p].as<float>();
-                              if(idx_t != -1) strncpy(history_timestamps[i], dataRows[i][idx_t].as<const char*>(), 23);
-                              if (i < 7) {
-                                Serial.printf("  history[%d]: voltage=%d, watts=%d, time=%s\n", i, history_voltage[i], history_watts[i], history_timestamps[i]);
-                              }
+                        if (history_mutex != NULL && xSemaphoreTake(history_mutex, pdMS_TO_TICKS(200)) == pdTRUE) {
+                            int count = dataRows.size();
+                            history_count = count < 31 ? count : 31;
+                            for(int i=0; i < count; i++) {
+                                if (i < 31) {
+                                  // Verificación de existencia de columnas y validez de datos en la fila
+                                  if(idx_v != -1 && !dataRows[i][idx_v].isNull()) history_voltage[i] = (lv_coord_t)dataRows[i][idx_v].as<float>();
+                                  if(idx_p != -1 && !dataRows[i][idx_p].isNull()) history_watts[i] = (lv_coord_t)dataRows[i][idx_p].as<float>();
+                                  if(idx_t != -1 && !dataRows[i][idx_t].isNull()) {
+                                      const char* t_str = dataRows[i][idx_t].as<const char*>();
+                                      if (t_str) strncpy(history_timestamps[i], t_str, 23);
+                                      else history_timestamps[i][0] = '\0';
+                                  }
+                                  
+                                  if (i < 7) {
+                                    Serial.printf("  history[%d]: voltage=%d, watts=%d, time=%s\n", 
+                                                  i, history_voltage[i], history_watts[i], history_timestamps[i]);
+                                  }
+                                }
+                                if (i < 24) {
+                                  if(idx_p != -1 && !dataRows[i][idx_p].isNull()) history_daily_24h[i] = (lv_coord_t)dataRows[i][idx_p].as<float>();
+                                }
                             }
-                            if (i < 24) {
-                              if(idx_p != -1) history_daily_24h[i] = (lv_coord_t)dataRows[i][idx_p].as<float>();
+                            // Limpiar posiciones no usadas del array
+                            for(int i = history_count; i < 31; i++) {
+                              history_voltage[i] = 0;
+                              history_watts[i] = 0;
+                              history_timestamps[i][0] = '\0';
                             }
+                            // Calcular máximos para auto-rango de las gráficas
+                            history_max_voltage = 0;
+                            history_max_watts = 0;
+                            for(int i=0; i < history_count; i++) {
+                              if(history_voltage[i] > history_max_voltage) history_max_voltage = history_voltage[i];
+                              if(history_watts[i] > history_max_watts) history_max_watts = history_watts[i];
+                            }
+                            // Agregar 20% de margen
+                            if(history_max_voltage > 0) history_max_voltage = history_max_voltage * 12 / 10;
+                            if(history_max_watts > 0) history_max_watts = history_max_watts * 12 / 10;
+                            // Mínimo razonable para evitar rango de 0
+                            if(history_max_voltage < 10) history_max_voltage = 150;
+                            if(history_max_watts < 2) history_max_watts = 20;
+                            
+                            xSemaphoreGive(history_mutex);
+                            history_data_ready = true;
+                            Serial.printf("MQTT History: max_v=%d, max_w=%d\n", history_max_voltage, history_max_watts);
+                            Serial.println("MQTT: Historial procesado correctamente");
+                        } else {
+                            Serial.println("MQTT: Error capturando Mutex para historial");
                         }
-                        history_data_ready = true;
-                        // Limpiar posiciones no usadas del array
-                        for(int i = history_count; i < 31; i++) {
-                          history_voltage[i] = 0;
-                          history_watts[i] = 0;
-                          history_timestamps[i][0] = '\0';
-                        }
-                        // Calcular máximos para auto-rango de las gráficas
-                        history_max_voltage = 0;
-                        history_max_watts = 0;
-                        for(int i=0; i < history_count; i++) {
-                          if(history_voltage[i] > history_max_voltage) history_max_voltage = history_voltage[i];
-                          if(history_watts[i] > history_max_watts) history_max_watts = history_watts[i];
-                        }
-                        // Agregar 20% de margen
-                        if(history_max_voltage > 0) history_max_voltage = history_max_voltage * 12 / 10;
-                        if(history_max_watts > 0) history_max_watts = history_max_watts * 12 / 10;
-                        // Mínimo razonable para evitar rango de 0
-                        if(history_max_voltage < 10) history_max_voltage = 150;
-                        if(history_max_watts < 2) history_max_watts = 20;
-                        Serial.printf("MQTT History: max_v=%d, max_w=%d\n", history_max_voltage, history_max_watts);
-                        Serial.println("MQTT: Historial procesado correctamente");
                     } else if (!doc["error"].isNull()) {
                         Serial.printf("MQTT: Error de servidor: %s\n", doc["error"].as<const char*>());
                     }
@@ -921,6 +935,9 @@ void setup() {
 
   Serial.println("System Ready - UI Running");
 
+  // 9. Inicializar Mutex de Historial
+  history_mutex = xSemaphoreCreateMutex();
+
   // 5. Inicializar BLE Server (Provisioning)
   provQueue = xQueueCreate(1, sizeof(ProvisioningRequest));
   setupBLE();
@@ -1143,54 +1160,58 @@ void updateUI() {
 
   // Actualizar gráficas si hay datos nuevos
   if (history_data_ready) {
-    int pt_count = history_count > 0 ? history_count : 1;
-    if (ui_voltageChart) {
-      lv_chart_set_point_count(ui_voltageChart, pt_count);
-      lv_chart_set_range(ui_voltageChart, LV_CHART_AXIS_PRIMARY_Y, 0, history_max_voltage);
-      lv_chart_refresh(ui_voltageChart);
-    }
-    if (ui_wattsChart) {
-      lv_chart_set_point_count(ui_wattsChart, pt_count);
-      lv_chart_set_range(ui_wattsChart, LV_CHART_AXIS_PRIMARY_Y, 0, history_max_watts);
-      lv_chart_refresh(ui_wattsChart);
-    }
-    
-    // Actualizar etiquetas de valor promedio y restaurar color normal
-    if (history_count > 0) {
-      int sum_v = 0, sum_w = 0;
-      for (int i = 0; i < history_count; i++) {
-        sum_v += history_voltage[i];
-        sum_w += history_watts[i];
+    // Usamos el mutex para garantizar acceso seguro a history_count y arrays
+    if (history_mutex != NULL && xSemaphoreTake(history_mutex, pdMS_TO_TICKS(10)) == pdTRUE) {
+      int local_count = history_count;
+      int pt_count = local_count > 1 ? local_count : 2; // AL MENOS 2 para evitar crash de ticks en LVGL
+      
+      if (ui_voltageChart) {
+        lv_chart_set_point_count(ui_voltageChart, pt_count);
+        lv_chart_set_range(ui_voltageChart, LV_CHART_AXIS_PRIMARY_Y, 0, history_max_voltage);
+        lv_chart_refresh(ui_voltageChart);
       }
-      if (ui_voltageVal) {
-        lv_label_set_text_fmt(ui_voltageVal, "%d", sum_v / history_count);
-        lv_obj_set_style_text_color(ui_voltageVal, UI_COLOR_TEXT_LABEL,
-                                    LV_PART_MAIN | LV_STATE_DEFAULT);
+      if (ui_wattsChart) {
+        lv_chart_set_point_count(ui_wattsChart, pt_count);
+        lv_chart_set_range(ui_wattsChart, LV_CHART_AXIS_PRIMARY_Y, 0, history_max_watts);
+        lv_chart_refresh(ui_wattsChart);
       }
-      if (ui_wattsVal) {
-        lv_label_set_text_fmt(ui_wattsVal, "%d", sum_w / history_count);
-        lv_obj_set_style_text_color(ui_wattsVal, UI_COLOR_TEXT_LABEL,
-                                    LV_PART_MAIN | LV_STATE_DEFAULT);
-      }
-    }
-    
-    // Actualizar paneles de Modo Diario (24h) si el objeto existe
-    if (ui_Modo_Diario_24hrs) {
-      lv_obj_t* panels[] = {ui_valoresPanel4, ui_valoresPanel5, ui_valoresPanel6, ui_valoresPanel7, ui_valoresPanel8, 
-                            ui_valoresPanel10, ui_valoresPanel11, ui_valoresPanel12, ui_valoresPanel13, ui_valoresPanel14};
-      // Nota: ui_Modo_Diario_24hrs.c tiene menos paneles que 24 horas, ajustamos a lo que hay
-      int num_panels = sizeof(panels) / sizeof(panels[0]);
-      for (int i=0; i < num_panels && i < 24; i++) {
-        if (panels[i]) {
-          // Ajustar altura basado en potencia (ej. max 60px)
-          int height = (int)((history_daily_24h[i] * 60) / 25000.0); // Asumiendo 25kW max o algo razonable
-          if (height < 2) height = 2;
-          if (height > 100) height = 100;
-          lv_obj_set_height(panels[i], height);
+      
+      // Actualizar etiquetas de valor promedio
+      if (local_count > 0) {
+        int sum_v = 0, sum_w = 0;
+        for (int i = 0; i < local_count; i++) {
+          sum_v += history_voltage[i];
+          sum_w += history_watts[i];
+        }
+        if (ui_voltageVal) {
+          lv_label_set_text_fmt(ui_voltageVal, "%d", sum_v / local_count);
+          lv_obj_set_style_text_color(ui_voltageVal, UI_COLOR_TEXT_LABEL,
+                                      LV_PART_MAIN | LV_STATE_DEFAULT);
+        }
+        if (ui_wattsVal) {
+          lv_label_set_text_fmt(ui_wattsVal, "%d", sum_w / local_count);
+          lv_obj_set_style_text_color(ui_wattsVal, UI_COLOR_TEXT_LABEL,
+                                      LV_PART_MAIN | LV_STATE_DEFAULT);
         }
       }
+
+      // Actualizar paneles de Modo Diario (24h)
+      if (ui_Modo_Diario_24hrs) {
+        lv_obj_t* panels[] = {ui_valoresPanel4, ui_valoresPanel5, ui_valoresPanel6, ui_valoresPanel7, ui_valoresPanel8, 
+                              ui_valoresPanel10, ui_valoresPanel11, ui_valoresPanel12, ui_valoresPanel13, ui_valoresPanel14};
+        int num_panels = sizeof(panels) / sizeof(panels[0]);
+        for (int i=0; i < num_panels && i < 24; i++) {
+          if (panels[i]) {
+            int height = (int)((history_daily_24h[i] * 60) / 25000.0);
+            if (height < 2) height = 2;
+            if (height > 100) height = 100;
+            lv_obj_set_height(panels[i], height);
+          }
+        }
+      }
+      
+      xSemaphoreGive(history_mutex);
     }
-    
     history_data_ready = false;
   }
 

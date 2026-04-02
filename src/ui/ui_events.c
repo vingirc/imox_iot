@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+#include "freertos/FreeRTOS.h"
+#include "freertos/semphr.h"
 
 void voltageStatsChange(lv_event_t *e) {
   _ui_screen_change(&ui_statsWatts, UI_ANIM_SWIPE_UP, UI_ANIM_SWIPE_DURATION,
@@ -130,6 +132,7 @@ extern lv_coord_t history_voltage[];
 extern lv_coord_t history_watts[];
 extern char history_timestamps[31][24];
 extern int history_count;
+extern SemaphoreHandle_t history_mutex;
 
 // Helper para formatear ISO date a texto legible local (-06:00)
 // "2026-03-30T00:00:00Z" -> "29 Mar, 18:00"
@@ -141,8 +144,8 @@ static void format_timestamp(const char* iso, char* out, size_t out_len) {
 
     struct tm t = {0};
     // Format: 2026-03-21T12:00:00Z
-    if (sscanf(iso, "%d-%d-%dT%d:%d", &t.tm_year, &t.tm_mon, &t.tm_mday, &t.tm_hour, &t.tm_min) < 5) {
-        strlcpy(out, iso, out_len);
+    if (iso == NULL || sscanf(iso, "%d-%d-%dT%d:%d", &t.tm_year, &t.tm_mon, &t.tm_mday, &t.tm_hour, &t.tm_min) < 5) {
+        strlcpy(out, iso ? iso : "", out_len);
         return;
     }
     
@@ -170,7 +173,12 @@ static void format_timestamp(const char* iso, char* out, size_t out_len) {
 
 // Restaura los labels al promedio global y el título al modo actual
 void restore_chart_defaults(lv_obj_t *screen) {
-  if (history_count <= 0) return;
+  if (history_mutex == NULL || xSemaphoreTake(history_mutex, pdMS_TO_TICKS(50)) != pdTRUE) return;
+  
+  if (history_count <= 0) {
+      xSemaphoreGive(history_mutex);
+      return;
+  }
   
   if (screen == ui_voltageStats) {
       if (ui_PotenciaLabel17) lv_label_set_text(ui_PotenciaLabel17, stats_mode_voltage_monthly ? "Consumo mensual" : "Consumo semanal");
@@ -189,6 +197,7 @@ void restore_chart_defaults(lv_obj_t *screen) {
           lv_obj_set_style_text_color(ui_wattsVal, UI_COLOR_TEXT_LABEL, LV_PART_MAIN | LV_STATE_DEFAULT);
       }
   }
+  xSemaphoreGive(history_mutex);
 }
 
 // Callback para cuando se toca el fondo de la pantalla (fuera de la gráfica)
@@ -220,9 +229,12 @@ void ui_chart_draw_event_cb(lv_event_t *e) {
 }
 
 void ui_chart_pressed_event_cb(lv_event_t *e) {
+  if (history_mutex == NULL || xSemaphoreTake(history_mutex, pdMS_TO_TICKS(50)) != pdTRUE) return;
+
   lv_obj_t *chart = lv_event_get_target(e);
   uint32_t id = lv_chart_get_pressed_point(chart);
   if (id == LV_CHART_POINT_NONE) {
+    xSemaphoreGive(history_mutex);
     // Si se toca el fondo de la gráfica (no una barra), restaurar promedios
     restore_chart_defaults(lv_scr_act());
     return;
@@ -252,5 +264,6 @@ void ui_chart_pressed_event_cb(lv_event_t *e) {
       lv_label_set_text(ui_PotenciaLabel16, formatted_time);
     }
   }
+  xSemaphoreGive(history_mutex);
 }
 
