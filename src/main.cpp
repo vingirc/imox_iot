@@ -94,6 +94,7 @@ void reportOTAStatus(const char* status, const char* step, const char* error = n
 void otaTaskCode(void *pvParameters);
 
 // --- Funciones MQTT ---
+void initMQTT();
 static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data) {
     esp_mqtt_event_handle_t event = (esp_mqtt_event_handle_t)event_data;
     switch ((esp_mqtt_event_id_t)event_id) {
@@ -746,8 +747,10 @@ void provisioningTaskCode(void* pvParameters) {
           Serial.println("PROVISIONING: Cliente BLE desconectado limpiamente.");
         }
 
-        Serial.println("PROVISIONING: BLE advertising detenido, MQTT se reconectará");
-        // MQTT se reconectará automáticamente al detectar WiFi activo
+        Serial.println("PROVISIONING: BLE advertising detenido, arrancando MQTT...");
+        
+        // MQTT se saltó en setup() porque el equipo era nuevo, aquí se inicializa
+        initMQTT();
       } else {
         // --- ERROR: Informar y reconectar WiFi anterior ---
         Serial.printf("PROVISIONING: === ERROR - HTTP %d ===\n", httpCode);
@@ -763,6 +766,50 @@ void provisioningTaskCode(void* pvParameters) {
       Serial.println("============================================\n");
     }
   }
+}
+
+// ================================================================
+// INICIALIZACIÓN MQTT
+// ================================================================
+void initMQTT() {
+  if (mqtt_client != NULL) {
+    Serial.println("MQTT: Ya inicializado");
+    return;
+  }
+
+  esp_mqtt_client_config_t mqtt_cfg = {};
+
+#if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
+  // SINTAXIS PARA NÚCLEOS ESP32 NUEVOS (Arduino v3.x / ESP-IDF 5)
+  mqtt_cfg.broker.address.uri = MQTT_WSS_URI;
+  mqtt_cfg.credentials.username = "3";
+  mqtt_cfg.credentials.authentication.password = MQTT_DEVICE_SECRET;
+  mqtt_cfg.credentials.client_id = "IMOX-ESP32-3";
+  mqtt_cfg.broker.verification.certificate = LET_S_ENCRYPT_CA;
+  
+  // Tamaño de buffer
+  mqtt_cfg.task.stack_size = 12288;
+  mqtt_cfg.buffer.size = 4096;
+#else
+  // SINTAXIS PARA NÚCLEOS ESP32 CLÁSICOS (Arduino v2.x / ESP-IDF 4.x)
+  mqtt_cfg.uri = MQTT_WSS_URI;
+  mqtt_cfg.client_id = "IMOX-ESP32-3";
+  mqtt_cfg.username = "3";
+  mqtt_cfg.password = MQTT_DEVICE_SECRET;
+  mqtt_cfg.cert_pem = LET_S_ENCRYPT_CA;
+  
+  // Tamaño de buffer
+  mqtt_cfg.task_stack = 12288;
+  mqtt_cfg.buffer_size = 4096;
+#endif
+
+  // Nota: Se omite intencionalmente skip_cert_common_name_check 
+  // para permitir que la validación SNI de Tailscale funcione.
+
+  mqtt_client = esp_mqtt_client_init(&mqtt_cfg);
+  esp_mqtt_client_register_event(mqtt_client, (esp_mqtt_event_id_t)ESP_EVENT_ANY_ID, mqtt_event_handler, NULL);
+  esp_mqtt_client_start(mqtt_client);
+  Serial.println("MQTT: Cliente Iniciado");
 }
 
 void setup() {
@@ -857,41 +904,9 @@ void setup() {
   
   // 6. Configuración MQTT Nativa (WSS) - Solo si hay credenciales WiFi
   if (active_wifi_ssid.length() > 0) {
-    esp_mqtt_client_config_t mqtt_cfg = {};
-
-#if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
-    // SINTAXIS PARA NÚCLEOS ESP32 NUEVOS (Arduino v3.x / ESP-IDF 5)
-    mqtt_cfg.broker.address.uri = MQTT_WSS_URI; 
-    mqtt_cfg.credentials.username = "3";
-    mqtt_cfg.credentials.authentication.password = MQTT_DEVICE_SECRET;
-    mqtt_cfg.credentials.client_id = "IMOX-ESP32-3";
-    mqtt_cfg.broker.verification.certificate = LET_S_ENCRYPT_CA;
-    
-    // Tamaño de buffer
-    mqtt_cfg.task.stack_size = 12288;
-    mqtt_cfg.buffer.size = 4096;
-#else
-    // SINTAXIS PARA NÚCLEOS ESP32 CLÁSICOS (Arduino v2.x / ESP-IDF 4.x)
-    mqtt_cfg.uri = MQTT_WSS_URI;               
-    mqtt_cfg.client_id = "IMOX-ESP32-3";
-    mqtt_cfg.username = "3";
-    mqtt_cfg.password = MQTT_DEVICE_SECRET;
-    mqtt_cfg.cert_pem = LET_S_ENCRYPT_CA;
-    
-    // Tamaño de buffer
-    mqtt_cfg.task_stack = 12288;
-    mqtt_cfg.buffer_size = 4096;
-#endif
-
-    // Nota: Se omite intencionalmente skip_cert_common_name_check 
-    // para permitir que la validación SNI de Tailscale funcione.
-    
-    mqtt_client = esp_mqtt_client_init(&mqtt_cfg);
-    esp_mqtt_client_register_event(mqtt_client, (esp_mqtt_event_id_t)ESP_EVENT_ANY_ID, mqtt_event_handler, NULL);
-    esp_mqtt_client_start(mqtt_client);
-    Serial.println("MQTT: Cliente Iniciado");
+    initMQTT();
   } else {
-    Serial.println("MQTT: Omitido (sin credenciales WiFi)");
+    Serial.println("MQTT: Omitido en setup (sin credenciales WiFi), se iniciará vía Provisioning");
   }
 
   // 7. Sincronizar estado WiFi del UI con el estado real ANTES de crear pantallas
