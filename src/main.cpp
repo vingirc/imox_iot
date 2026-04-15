@@ -791,13 +791,17 @@ void initMQTT() {
   }
 
   esp_mqtt_client_config_t mqtt_cfg = {};
+  static char mqtt_username[16];
+  static char mqtt_client_id[32];
+  snprintf(mqtt_username, sizeof(mqtt_username), "%d", MQTT_IOT_ID);
+  snprintf(mqtt_client_id, sizeof(mqtt_client_id), "IMOX-ESP32-%d", MQTT_IOT_ID);
 
 #if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
   // SINTAXIS PARA NÚCLEOS ESP32 NUEVOS (Arduino v3.x / ESP-IDF 5)
   mqtt_cfg.broker.address.uri = MQTT_WSS_URI;
-  mqtt_cfg.credentials.username = "3";
+  mqtt_cfg.credentials.username = mqtt_username;
   mqtt_cfg.credentials.authentication.password = MQTT_DEVICE_SECRET;
-  mqtt_cfg.credentials.client_id = "IMOX-ESP32-3";
+  mqtt_cfg.credentials.client_id = mqtt_client_id;
   mqtt_cfg.broker.verification.certificate = LET_S_ENCRYPT_CA;
   
   // Tamaño de buffer
@@ -806,8 +810,8 @@ void initMQTT() {
 #else
   // SINTAXIS PARA NÚCLEOS ESP32 CLÁSICOS (Arduino v2.x / ESP-IDF 4.x)
   mqtt_cfg.uri = MQTT_WSS_URI;
-  mqtt_cfg.client_id = "IMOX-ESP32-3";
-  mqtt_cfg.username = "3";
+  mqtt_cfg.client_id = mqtt_client_id;
+  mqtt_cfg.username = mqtt_username;
   mqtt_cfg.password = MQTT_DEVICE_SECRET;
   mqtt_cfg.cert_pem = LET_S_ENCRYPT_CA;
   
