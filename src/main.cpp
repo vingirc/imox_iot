@@ -235,7 +235,6 @@ void sendTelemetry(float v, float i, float p, float e, float f, float pf) {
   JsonDocument doc;
   
   doc["iot_id"] = MQTT_IOT_ID;
-  doc["user_id"] = MQTT_USER_ID;
 
   // Bloque eléctricas
   JsonObject electricas = doc["electricas"].to<JsonObject>();
