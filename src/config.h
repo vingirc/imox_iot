@@ -55,6 +55,10 @@
 #define MQTT_IOT_ID           104
 #define MQTT_DEVICE_SECRET    "7ca9d8443713c90d82c08e6f0f0023d8b267344672c22b16"
 
+#define _MQTT_STR(x) #x
+#define _MQTT_XSTR(x) _MQTT_STR(x)
+#define MQTT_TOPIC_BASE "imox/devices/" _MQTT_XSTR(MQTT_IOT_ID)
+
 // ISRG Root X1 (Let's Encrypt) - Intacto y verificado
 static const char* LET_S_ENCRYPT_CA = 
 "-----BEGIN CERTIFICATE-----\n"
@@ -90,11 +94,11 @@ static const char* LET_S_ENCRYPT_CA =
 "-----END CERTIFICATE-----\n";
 
 // Tópicos MQTT
-#define MQTT_TOPIC_TELEMETRY    "imox/devices/3/telemetry"
-#define MQTT_TOPIC_HISTORY_REQ  "imox/devices/3/history/request"
-#define MQTT_TOPIC_HISTORY_RES  "imox/devices/3/history/response"
-#define MQTT_TOPIC_OTA_COMMAND  "imox/devices/3/ota/command"
-#define MQTT_TOPIC_OTA_STATUS   "imox/devices/3/ota/status"
+#define MQTT_TOPIC_TELEMETRY    MQTT_TOPIC_BASE "/telemetry"
+#define MQTT_TOPIC_HISTORY_REQ  MQTT_TOPIC_BASE "/history/request"
+#define MQTT_TOPIC_HISTORY_RES  MQTT_TOPIC_BASE "/history/response"
+#define MQTT_TOPIC_OTA_COMMAND  MQTT_TOPIC_BASE "/ota/command"
+#define MQTT_TOPIC_OTA_STATUS   MQTT_TOPIC_BASE "/ota/status"
 
 // Intervalo de envío de telemetría (1.5 segundos)
 #define TELEMETRY_SEND_INTERVAL_MS 1500
