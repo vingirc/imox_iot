@@ -70,12 +70,17 @@ void ui_diagnostic_screen_init(void)
 
     // --- Título de la pantalla ---
     ui_diagTitle = lv_label_create(ui_diagnostic);
-    lv_obj_set_width(ui_diagTitle, LV_SIZE_CONTENT);
+    lv_obj_set_width(ui_diagTitle, lv_pct(100)); // Ancho completo para que actúe como banner
     lv_obj_set_height(ui_diagTitle, LV_SIZE_CONTENT);
-    lv_obj_align(ui_diagTitle, LV_ALIGN_TOP_MID, 0, 15);
+    lv_obj_align(ui_diagTitle, LV_ALIGN_TOP_MID, 0, 0);
     lv_label_set_text(ui_diagTitle, "DIAGNOSTICO");
+    lv_obj_set_style_text_align(ui_diagTitle, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui_diagTitle, UI_COLOR_TEXT_ACTIVE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_diagTitle, UI_FONT_DIAG_SECTION, LV_PART_MAIN | LV_STATE_DEFAULT); 
+    lv_obj_set_style_bg_color(ui_diagTitle, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_diagTitle, UI_OPA_FULL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_diagTitle, 15, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_diagTitle, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
     
     // --- Contenedor Principal con Scroll ---
     ui_contentPanel9 = lv_obj_create(ui_diagnostic);
@@ -330,6 +335,9 @@ void ui_diagnostic_screen_init(void)
     lv_obj_set_style_bg_opa(ui_comp_get_child(ui_navPanel7, UI_COMP_NAVPANEL_CIRCLE6), 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_add_event_cb(ui_diagnostic, ui_event_diagnostic, LV_EVENT_ALL, NULL);
+
+    // Asegurar que el título siempre esté por encima del contenido que se desplaza
+    lv_obj_move_foreground(ui_diagTitle);
 }
 
 void ui_diagnostic_screen_destroy(void)
