@@ -20,12 +20,14 @@ lv_obj_t *ui_navDots_create(lv_obj_t *parent, uint8_t total_dots,
                         LV_FLEX_ALIGN_CENTER);
   lv_obj_clear_flag(panel, LV_OBJ_FLAG_SCROLLABLE);
 
-  // Quitar fondos y bordes del contenedor
-  lv_obj_set_style_bg_opa(panel, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+  // Fondo negro justo al tamaño del contenido con borde redondeado
+  lv_obj_set_style_bg_color(panel, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_bg_opa(panel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_border_width(panel, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_pad_all(panel, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_radius(panel, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_pad_all(panel, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_pad_column(
-      panel, 8, LV_PART_MAIN | LV_STATE_DEFAULT); // Espacio entre dots
+      panel, 4, LV_PART_MAIN | LV_STATE_DEFAULT); // Espacio entre dots
 
   // Crear los círculos
   for (uint8_t i = 0; i < total_dots; i++) {

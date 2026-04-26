@@ -84,7 +84,8 @@ void ui_diagnostic_screen_init(void)
     
     // --- Contenedor Principal con Scroll ---
     ui_contentPanel9 = lv_obj_create(ui_diagnostic);
-    lv_obj_set_height(ui_contentPanel9, lv_pct(70)); 
+    // Altura al 100% para aprovechar todo el espacio disponible en la pantalla
+    lv_obj_set_height(ui_contentPanel9, lv_pct(100)); 
     lv_obj_set_width(ui_contentPanel9, lv_pct(100));
     lv_obj_align(ui_contentPanel9, LV_ALIGN_CENTER, 0, 0); 
     
@@ -107,6 +108,10 @@ void ui_diagnostic_screen_init(void)
     // Quitar fondos y bordes molestos al contenedor
     lv_obj_set_style_bg_opa(ui_contentPanel9, UI_OPA_NONE, LV_PART_MAIN | LV_STATE_DEFAULT); 
     lv_obj_set_style_border_width(ui_contentPanel9, 0, LV_PART_MAIN | LV_STATE_DEFAULT); 
+    
+    // Padding para que los elementos internos no queden ocultos tras el título (arriba) o navdots (abajo) en los extremos
+    lv_obj_set_style_pad_top(ui_contentPanel9, 45, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_contentPanel9, 25, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     // ================= SECCIÓN RED =================
     ui_redPanel = lv_obj_create(ui_contentPanel9);
