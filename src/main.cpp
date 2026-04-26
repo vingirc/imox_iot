@@ -108,7 +108,14 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
             Serial.println("MQTT: Suscrito a historia/response y ota/command");
             break;
         case MQTT_EVENT_DISCONNECTED:
-            Serial.println("MQTT: Desconectado");
+            if (event->error_handle) {
+                Serial.printf("MQTT: Desconectado (error_type=%d, tls_err=%d, sock_errno=%d)\n",
+                              event->error_handle->error_type,
+                              event->error_handle->esp_tls_last_esp_err,
+                              event->error_handle->esp_transport_sock_errno);
+            } else {
+                Serial.println("MQTT: Desconectado");
+            }
             mqtt_connected = false;
             break;
         case MQTT_EVENT_DATA: {
@@ -221,6 +228,12 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
         }
         case MQTT_EVENT_ERROR:
             Serial.println("MQTT: Error detectado");
+            if (event->error_handle) {
+                Serial.printf("MQTT: Error detalle -> type=%d, tls_err=%d, sock_errno=%d\n",
+                              event->error_handle->error_type,
+                              event->error_handle->esp_tls_last_esp_err,
+                              event->error_handle->esp_transport_sock_errno);
+            }
             break;
         default:
             break;
@@ -1285,9 +1298,14 @@ void loop() {
   // --- Gestión de Reconexión WiFi en Segundo Plano ---
   static unsigned long lastWifiCheck = 0;
   if (wifi_enabled_by_user && active_wifi_ssid.length() > 0 && (millis() - lastWifiCheck > 15000)) { // Revisar cada 15 segundos
-    if (WiFi.status() != WL_CONNECTED) {
-      Serial.println("WiFi: Conexión perdida, reintentando WiFi.begin()...");
-      WiFi.begin(active_wifi_ssid.c_str(), active_wifi_pass.c_str());
+    wl_status_t wifiStatus = WiFi.status();
+    if (wifiStatus != WL_CONNECTED) {
+      if (wifiStatus == WL_DISCONNECTED || wifiStatus == WL_CONNECT_FAILED || wifiStatus == WL_NO_SSID_AVAIL) {
+        Serial.printf("WiFi: No conectado (estado=%d), reintentando WiFi.begin()...\n", wifiStatus);
+        WiFi.begin(active_wifi_ssid.c_str(), active_wifi_pass.c_str());
+      } else {
+        Serial.printf("WiFi: No conectado pero no reinicio begin, estado=%d\n", wifiStatus);
+      }
     }
     lastWifiCheck = millis();
   }
