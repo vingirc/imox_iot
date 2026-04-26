@@ -44,6 +44,7 @@ static void create_modal_overlay(void) {
   modal_overlay = lv_obj_create(ui_config);
   lv_obj_set_width(modal_overlay, lv_pct(100));
   lv_obj_set_height(modal_overlay, lv_pct(100));
+  lv_obj_clear_flag(modal_overlay, LV_OBJ_FLAG_SCROLLABLE); // El fondo no debe scrollear
   lv_obj_set_style_bg_color(modal_overlay, UI_COLOR_MODAL_OVERLAY,
                             LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_bg_opa(modal_overlay, 200, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -58,9 +59,10 @@ static lv_obj_t *create_modal_card(const char *title) {
   create_modal_overlay();
 
   lv_obj_t *card = lv_obj_create(modal_overlay);
-  lv_obj_set_width(card, 300);
+  lv_obj_set_width(card, lv_pct(95)); // Modal más amplio
   lv_obj_set_height(card, LV_SIZE_CONTENT);
   lv_obj_set_align(card, LV_ALIGN_CENTER);
+  lv_obj_clear_flag(card, LV_OBJ_FLAG_SCROLLABLE); // Estos modales normales no scrollean
   lv_obj_set_flex_flow(card, LV_FLEX_FLOW_COLUMN);
   lv_obj_set_flex_align(card, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER,
                         LV_FLEX_ALIGN_START);
@@ -76,7 +78,7 @@ static lv_obj_t *create_modal_card(const char *title) {
   lv_label_set_text(title_label, title);
   lv_obj_set_style_text_color(title_label, UI_COLOR_TEXT_INFO,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_text_font(title_label, &ui_font_Qualy24,
+  lv_obj_set_style_text_font(title_label, &ui_font_Qualy28,
                              LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_label_set_long_mode(title_label, LV_LABEL_LONG_WRAP);
   lv_obj_set_style_text_align(title_label, LV_TEXT_ALIGN_CENTER,
@@ -143,22 +145,26 @@ static void wifi_btn_cb(lv_event_t *e) {
 
   // Botón Cancelar
   lv_obj_t *btn_cancel = lv_btn_create(btn_row);
-  lv_obj_set_height(btn_cancel, 65);
+  lv_obj_set_width(btn_cancel, lv_pct(45));
+  lv_obj_set_height(btn_cancel, 80);
   lv_obj_set_style_bg_color(btn_cancel, lv_color_hex(0x666666),
                             LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_t *label_cancel = lv_label_create(btn_cancel);
-  lv_obj_set_style_text_font(label_cancel, &ui_font_Qualy14,
+  lv_obj_center(label_cancel);
+  lv_obj_set_style_text_font(label_cancel, &ui_font_Qualy24,
                              LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_label_set_text(label_cancel, "Cancelar");
   lv_obj_add_event_cb(btn_cancel, close_modal_cb, LV_EVENT_CLICKED, NULL);
 
   // Botón Confirmar
   lv_obj_t *btn_confirm = lv_btn_create(btn_row);
-  lv_obj_set_height(btn_confirm, 65);
+  lv_obj_set_width(btn_confirm, lv_pct(45));
+  lv_obj_set_height(btn_confirm, 80);
   lv_obj_set_style_bg_color(btn_confirm, UI_COLOR_ACCENT,
                             LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_t *label_confirm = lv_label_create(btn_confirm);
-  lv_obj_set_style_text_font(label_confirm, &ui_font_Qualy14,
+  lv_obj_center(label_confirm);
+  lv_obj_set_style_text_font(label_confirm, &ui_font_Qualy24,
                              LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_label_set_text(label_confirm, "Confirmar");
   lv_obj_add_event_cb(btn_confirm, modal_confirm_wifi_cb, LV_EVENT_CLICKED, NULL);
@@ -204,19 +210,23 @@ static void restart_btn_cb(lv_event_t *e) {
 
   // Botón Cancelar
   lv_obj_t *btn_cancel = lv_btn_create(btn_row);
-  lv_obj_set_height(btn_cancel, 65);
+  lv_obj_set_width(btn_cancel, lv_pct(45));
+  lv_obj_set_height(btn_cancel, 80);
   lv_obj_set_style_bg_color(btn_cancel, lv_color_hex(0x666666), LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_t *label_cancel = lv_label_create(btn_cancel);
-  lv_obj_set_style_text_font(label_cancel, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_center(label_cancel);
+  lv_obj_set_style_text_font(label_cancel, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_label_set_text(label_cancel, "Cancelar");
   lv_obj_add_event_cb(btn_cancel, close_modal_cb, LV_EVENT_CLICKED, NULL);
 
   // Botón Confirmar
   lv_obj_t *btn_confirm = lv_btn_create(btn_row);
-  lv_obj_set_height(btn_confirm, 65);
+  lv_obj_set_width(btn_confirm, lv_pct(45));
+  lv_obj_set_height(btn_confirm, 80);
   lv_obj_set_style_bg_color(btn_confirm, UI_COLOR_ACCENT, LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_t *label_confirm = lv_label_create(btn_confirm);
-  lv_obj_set_style_text_font(label_confirm, &ui_font_Qualy14, LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_center(label_confirm);
+  lv_obj_set_style_text_font(label_confirm, &ui_font_Qualy24, LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_label_set_text(label_confirm, "Confirmar");
   lv_obj_add_event_cb(btn_confirm, modal_confirm_restart_cb, LV_EVENT_CLICKED, NULL);
 }
@@ -308,6 +318,7 @@ static void restart_long_press_cb(lv_event_t *e) {
   modal_overlay = lv_obj_create(ui_config);
   lv_obj_set_width(modal_overlay, lv_pct(100));
   lv_obj_set_height(modal_overlay, lv_pct(100));
+  lv_obj_clear_flag(modal_overlay, LV_OBJ_FLAG_SCROLLABLE); // El fondo no debe scrollear
   lv_obj_set_style_bg_color(modal_overlay, UI_COLOR_DANGER_OVERLAY,
                             LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_bg_opa(modal_overlay, 220, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -409,7 +420,7 @@ static void restart_long_press_cb(lv_event_t *e) {
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_t *label_reset = lv_label_create(btn_reset);
   lv_obj_set_align(label_reset, LV_ALIGN_CENTER);
-  lv_obj_set_style_text_font(label_reset, &ui_font_Qualy12,
+  lv_obj_set_style_text_font(label_reset, &ui_font_Qualy14,
                              LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_text_color(label_reset, UI_COLOR_DANGER_DARK,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -477,6 +488,7 @@ void ui_config_screen_init(void) {
   lv_obj_set_width(main_container, lv_pct(80));  // 80% del ancho
   lv_obj_set_height(main_container, lv_pct(70)); // 70% del alto
   lv_obj_set_align(main_container, LV_ALIGN_CENTER);
+  lv_obj_clear_flag(main_container, LV_OBJ_FLAG_SCROLLABLE); // Desactivar scroll
   lv_obj_set_flex_flow(main_container, LV_FLEX_FLOW_COLUMN);
   lv_obj_set_flex_align(main_container, LV_FLEX_ALIGN_SPACE_EVENLY,
                         LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
@@ -488,7 +500,7 @@ void ui_config_screen_init(void) {
   // ---- Gran Botón WiFi ----
   ui_wifiBtn = lv_btn_create(main_container);
   lv_obj_set_width(ui_wifiBtn, lv_pct(100));
-  lv_obj_set_height(ui_wifiBtn, 60); // Botón alto
+  lv_obj_set_height(ui_wifiBtn, 70); // Altura ajustada para no forzar scroll
   lv_obj_set_style_radius(ui_wifiBtn, 15, LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_flex_flow(ui_wifiBtn, LV_FLEX_FLOW_ROW);
   lv_obj_set_flex_align(ui_wifiBtn, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER,
@@ -496,7 +508,7 @@ void ui_config_screen_init(void) {
   lv_obj_set_style_pad_column(ui_wifiBtn, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
 
   ui_wifiBtnLabel = lv_label_create(ui_wifiBtn);
-  lv_obj_set_style_text_font(ui_wifiBtnLabel, &ui_font_Qualy24,
+  lv_obj_set_style_text_font(ui_wifiBtnLabel, &ui_font_Qualy28,
                              LV_PART_MAIN | LV_STATE_DEFAULT);
 
   // Configurar estado del botón WiFi según credenciales y estado
@@ -529,7 +541,7 @@ void ui_config_screen_init(void) {
   // ---- Gran Botón Reiniciar (click corto = reiniciar, long-press = factory reset) ----
   ui_restartBtn = lv_btn_create(main_container);
   lv_obj_set_width(ui_restartBtn, lv_pct(100));
-  lv_obj_set_height(ui_restartBtn, 60);
+  lv_obj_set_height(ui_restartBtn, 70); // Altura ajustada para no forzar scroll
   lv_obj_set_style_bg_color(ui_restartBtn, UI_COLOR_ACCENT,
                             LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_radius(ui_restartBtn, 15, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -540,8 +552,8 @@ void ui_config_screen_init(void) {
                               LV_PART_MAIN | LV_STATE_DEFAULT);
 
   ui_restartBtnLabel = lv_label_create(ui_restartBtn);
-  lv_label_set_text(ui_restartBtnLabel, "Reiniciar Dispositivo");
-  lv_obj_set_style_text_font(ui_restartBtnLabel, &ui_font_Qualy24,
+  lv_label_set_text(ui_restartBtnLabel, "Reiniciar"); // Texto un poco más corto para que quepa bien con letra grande
+  lv_obj_set_style_text_font(ui_restartBtnLabel, &ui_font_Qualy28,
                              LV_PART_MAIN | LV_STATE_DEFAULT);
   
   // Detección de press/release para distinguir click corto vs long-press (3s → factory reset)

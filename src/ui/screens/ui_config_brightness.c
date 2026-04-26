@@ -162,10 +162,10 @@ void ui_config_brightness_screen_init(void) {
   lv_obj_add_event_cb(ui_config_brightness, ui_event_config_brightness,
                       LV_EVENT_ALL, NULL);
 
-  // Botón apagar pantalla (más corto y solo "Apagar")
+  // Botón apagar pantalla (más grande para mejor visibilidad)
   lv_obj_t *ui_turnOffBtn = lv_btn_create(ui_config_brightness);
-  lv_obj_set_width(ui_turnOffBtn, 140);
-  lv_obj_set_height(ui_turnOffBtn, 60);
+  lv_obj_set_width(ui_turnOffBtn, 180);
+  lv_obj_set_height(ui_turnOffBtn, 80);
   lv_obj_set_align(ui_turnOffBtn, LV_ALIGN_TOP_MID);
   lv_obj_set_y(ui_turnOffBtn, 140);
   lv_obj_set_style_bg_color(ui_turnOffBtn, lv_color_hex(0x666666),
@@ -175,7 +175,7 @@ void ui_config_brightness_screen_init(void) {
   lv_obj_t *ui_turnOffLabel = lv_label_create(ui_turnOffBtn);
   lv_label_set_text(ui_turnOffLabel, "Apagar");
   lv_obj_center(ui_turnOffLabel);
-  lv_obj_set_style_text_font(ui_turnOffLabel, &ui_font_Qualy14,
+  lv_obj_set_style_text_font(ui_turnOffLabel, &ui_font_Qualy24,
                              LV_PART_MAIN | LV_STATE_DEFAULT);
 
   lv_obj_add_event_cb(ui_turnOffBtn, turn_off_btn_cb, LV_EVENT_CLICKED, NULL);
