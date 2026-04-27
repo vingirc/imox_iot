@@ -503,7 +503,15 @@ void sensorTaskCode(void *pvParameters) {
         Serial.printf("V: %.2f, I: %.2f, P: %.2f\n", voltage, current, power);
       }
     } else {
-      v_voltage = NAN; // Indicar error para la pantalla de diagnóstico
+      // Retornar métricas en tiempo real a NAN (0 en UI) si se pierde conexión
+      v_voltage = NAN;
+      v_current = NAN;
+      v_power = NAN;
+      v_frequency = NAN;
+      v_pf = NAN;
+      // Nota: v_energy no se reinicia para no perder el acumulado histórico en pantalla, 
+      // pero si deseas que también baje a 0, puedes agregar: v_energy = NAN;
+      
       Serial.println("Error leyendo PZEM (NAN)");
     }
 
