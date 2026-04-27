@@ -30,7 +30,7 @@ lv_obj_t * ui_navPanel_create(lv_obj_t * comp_parent)
     lv_obj_set_width(cui_navPanel, LV_SIZE_CONTENT);
     lv_obj_set_height(cui_navPanel, LV_SIZE_CONTENT);
     lv_obj_set_x(cui_navPanel, 0);
-    lv_obj_set_y(cui_navPanel, 100);
+    lv_obj_set_y(cui_navPanel, 112);
     lv_obj_set_align(cui_navPanel, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(cui_navPanel, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(cui_navPanel, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);

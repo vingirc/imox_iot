@@ -41,10 +41,10 @@
 /*--- Vistas 1 y 2: Voltaje / Corriente (lectura principal) ---*/
 
 /** Parte entera del valor principal (ej. "120") — fuente grande */
-#define UI_FONT_HERO_INTEGER (&ui_font_Qualy150)
+#define UI_FONT_HERO_INTEGER (&ui_font_Qualy200)
 
 /** Parte decimal del valor principal (ej. ".5") y etiqueta de unidad */
-#define UI_FONT_HERO_DECIMAL (&ui_font_Qualy48)
+#define UI_FONT_HERO_DECIMAL (&ui_font_Qualy72)
 
 /** Etiqueta de unidad (ej. "V", "A") — mismo tamaño que decimales */
 #define UI_FONT_UNIT_LABEL (&ui_font_Qualy48)

@@ -1000,8 +1000,11 @@ void updateUI() {
     lv_label_set_text_fmt(ui_frecuencia, "%.1f", display_f);
   }
   if (ui_potencia) {
-    lv_label_set_text_fmt(ui_potencia, "%.1f", display_p);
+    lv_label_set_text_fmt(ui_potencia, "%.1f", display_i);
   }
+
+  // Alarma visual de voltaje
+  ui_check_voltage_warning(display_v);
 
   // ----------------------------------------------------
   // VISTA 6: DIAGNÓSTICO (ui_diagnostic)
