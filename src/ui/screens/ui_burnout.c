@@ -80,17 +80,41 @@ static void burnout_config_update_cb(lv_event_t *e) {
   uint32_t dim = lv_slider_get_value(ui_dimSlider);
   uint32_t off = lv_slider_get_value(ui_offSlider);
 
+  // Snapping a minutos si pasa de 60s
+  if (dim > 60) {
+    dim = (dim / 60) * 60;
+    lv_slider_set_value(ui_dimSlider, dim, LV_ANIM_OFF);
+  }
+  if (off > 60) {
+    off = (off / 60) * 60;
+    lv_slider_set_value(ui_offSlider, off, LV_ANIM_OFF);
+  }
+
+  // 3600s = OFF (0 en hardware significa nunca apagar)
+  uint32_t real_off = (off == 3600) ? 0 : off;
+
   dim_timeout_s = dim;
-  off_timeout_s = off;
+  off_timeout_s = real_off;
 
   char buf[16];
-  snprintf(buf, sizeof(buf), "%us", dim);
+  if (dim < 60) {
+    snprintf(buf, sizeof(buf), "%us", dim);
+  } else {
+    snprintf(buf, sizeof(buf), "%uM", dim / 60);
+  }
   lv_label_set_text(ui_dimTimeLabel, buf);
 
-  snprintf(buf, sizeof(buf), "%us", off);
-  lv_label_set_text(ui_offTimeLabel, buf);
+  if (off == 3600) {
+    lv_label_set_text(ui_offTimeLabel, "OFF");
+  } else if (off < 60) {
+    snprintf(buf, sizeof(buf), "%us", off);
+    lv_label_set_text(ui_offTimeLabel, buf);
+  } else {
+    snprintf(buf, sizeof(buf), "%uM", off / 60);
+    lv_label_set_text(ui_offTimeLabel, buf);
+  }
 
-  hw_burnout_setup(burnout_enabled, dim, off);
+  hw_burnout_setup(burnout_enabled, dim, real_off);
 }
 
 static void burnout_toggle_btn_cb(lv_event_t *e) {
@@ -183,7 +207,7 @@ void ui_burnout_screen_init(void) {
                         LV_FLEX_ALIGN_CENTER);
   lv_obj_set_style_bg_opa(col_dim, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_border_width(col_dim, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_pad_gap(col_dim, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_pad_gap(col_dim, 25, LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_clear_flag(col_dim, LV_OBJ_FLAG_SCROLLABLE);
 
   // Cabecera: Titulo + Valor
@@ -204,14 +228,18 @@ void ui_burnout_screen_init(void) {
 
   ui_dimTimeLabel = lv_label_create(row_header_dim);
   char buf[16];
-  snprintf(buf, sizeof(buf), "%us", dim_timeout_s);
+  if (dim_timeout_s < 60) {
+    snprintf(buf, sizeof(buf), "%us", dim_timeout_s);
+  } else {
+    snprintf(buf, sizeof(buf), "%uM", dim_timeout_s / 60);
+  }
   lv_label_set_text(ui_dimTimeLabel, buf);
-  lv_obj_set_style_text_font(ui_dimTimeLabel, &ui_font_Qualy14,
+  lv_obj_set_style_text_font(ui_dimTimeLabel, &ui_font_Qualy24,
                              LV_PART_MAIN | LV_STATE_DEFAULT);
 
   ui_dimSlider = lv_slider_create(col_dim);
   lv_obj_set_size(ui_dimSlider, lv_pct(85), 20); // Ancho reducido
-  lv_slider_set_range(ui_dimSlider, 10, 300);
+  lv_slider_set_range(ui_dimSlider, 10, 600);
   lv_slider_set_value(ui_dimSlider, dim_timeout_s, LV_ANIM_OFF);
   lv_obj_clear_flag(ui_dimSlider, LV_OBJ_FLAG_GESTURE_BUBBLE);
   lv_obj_set_style_bg_color(ui_dimSlider, UI_COLOR_SLIDER_TRACK,
@@ -237,7 +265,7 @@ void ui_burnout_screen_init(void) {
                         LV_FLEX_ALIGN_CENTER);
   lv_obj_set_style_bg_opa(col_off, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_border_width(col_off, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_pad_gap(col_off, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_pad_gap(col_off, 25, LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_clear_flag(col_off, LV_OBJ_FLAG_SCROLLABLE);
 
   // Cabecera: Titulo + Valor
@@ -257,15 +285,22 @@ void ui_burnout_screen_init(void) {
                              LV_PART_MAIN | LV_STATE_DEFAULT);
 
   ui_offTimeLabel = lv_label_create(row_header_off);
-  snprintf(buf, sizeof(buf), "%us", off_timeout_s);
-  lv_label_set_text(ui_offTimeLabel, buf);
-  lv_obj_set_style_text_font(ui_offTimeLabel, &ui_font_Qualy14,
+  if (off_timeout_s == 0 || off_timeout_s == 3600) {
+    lv_label_set_text(ui_offTimeLabel, "OFF");
+  } else if (off_timeout_s < 60) {
+    snprintf(buf, sizeof(buf), "%us", off_timeout_s);
+    lv_label_set_text(ui_offTimeLabel, buf);
+  } else {
+    snprintf(buf, sizeof(buf), "%uM", off_timeout_s / 60);
+    lv_label_set_text(ui_offTimeLabel, buf);
+  }
+  lv_obj_set_style_text_font(ui_offTimeLabel, &ui_font_Qualy24,
                              LV_PART_MAIN | LV_STATE_DEFAULT);
 
   ui_offSlider = lv_slider_create(col_off);
   lv_obj_set_size(ui_offSlider, lv_pct(85), 20);
-  lv_slider_set_range(ui_offSlider, 30, 600);
-  lv_slider_set_value(ui_offSlider, off_timeout_s, LV_ANIM_OFF);
+  lv_slider_set_range(ui_offSlider, 30, 3600);
+  lv_slider_set_value(ui_offSlider, (off_timeout_s == 0) ? 3600 : off_timeout_s, LV_ANIM_OFF);
   lv_obj_clear_flag(ui_offSlider, LV_OBJ_FLAG_GESTURE_BUBBLE);
   lv_obj_set_style_bg_color(ui_offSlider, UI_COLOR_SLIDER_TRACK,
                             LV_PART_MAIN | LV_STATE_DEFAULT);

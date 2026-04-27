@@ -1293,11 +1293,11 @@ void loop() {
   if (burnout_enabled && !is_screen_off) {
     unsigned long inactive_time = (millis() - last_activity_ms) / 1000;
     
-    if (inactive_time >= off_timeout_s) {
+    if (off_timeout_s > 0 && inactive_time >= off_timeout_s) {
       onTurnOffScreen(); // Llama a la lógica de UI y hardware (apaga)
       is_screen_off = true;
     } 
-    else if (inactive_time >= dim_timeout_s && !is_dimmed) {
+    else if (dim_timeout_s > 0 && inactive_time >= dim_timeout_s && !is_dimmed) {
       is_dimmed = true;
       hw_set_brightness(20); // Atenuación extrema (20/255)
       Serial.println("Burnout: Pantalla atenuada por inactividad");
