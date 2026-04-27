@@ -63,7 +63,10 @@ static void voltage_label_anim_cb(void * var, int32_t v) {
 void ui_check_voltage_warning(float voltage) {
     if(!ui_voltageLabel) return;
     
-    if(voltage > 128.0f || voltage < 110.0f) {
+    // Solo activar si hay un voltaje válido (mayor a 0) pero fuera de rango
+    bool is_alarm = (voltage > 128.0f || voltage < 110.0f) && (voltage > 0.0f);
+    
+    if(is_alarm) {
         if(!voltage_anim_running) {
             lv_anim_init(&voltage_anim);
             lv_anim_set_var(&voltage_anim, ui_voltageLabel);
