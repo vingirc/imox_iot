@@ -1235,15 +1235,11 @@ void updateUI() {
     lv_label_set_text_fmt(ui_pactivaVal, "%.1f", display_p);
   }
   if (ui_preactivaVal) {
-    // Cálculo aproximado de Reactiva: Q = sqrt(S^2 - P^2)
-    // S = V * I
-    float apparent = display_v * display_i;
-    float reactive = 0.0;
-    if (apparent > display_p) {
-      reactive = sqrt((apparent * apparent) - (display_p * display_p));
-    }
-    lv_label_set_text_fmt(ui_preactivaVal, "%.1f", reactive);
+    lv_label_set_text_fmt(ui_preactivaVal, "%.0f", display_v);
   }
+
+  // Alarma visual de corriente
+  ui_check_current_warning(display_i);
 
   // ----------------------------------------------------
   // VISTA 3: DASHBOARD (ui_dashboard)

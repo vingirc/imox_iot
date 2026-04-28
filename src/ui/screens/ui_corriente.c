@@ -5,6 +5,7 @@
 
 #include "../ui.h"
 #include "../ui_swipe_hint.h"
+#include "../../config.h"
 
 lv_obj_t *ui_corriente = NULL;
 lv_obj_t *ui_contentPanel2 = NULL;
@@ -46,6 +47,43 @@ void ui_event_corriente(lv_event_t *e) {
 }
 
 // build funtions
+
+static lv_anim_t current_anim;
+static bool current_anim_running = false;
+
+static void current_label_anim_cb(void * var, int32_t v) {
+    if(v < 50) {
+        lv_obj_set_style_text_color((lv_obj_t*)var, lv_color_hex(0xFF0000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    } else {
+        lv_obj_set_style_text_color((lv_obj_t*)var, UI_COLOR_TEXT_LABEL, LV_PART_MAIN | LV_STATE_DEFAULT);
+    }
+}
+
+void ui_check_current_warning(float current) {
+    if(!ui_voltageLabel1) return;
+    
+    // Solo activar si hay una corriente válida (mayor a 0) pero fuera de rango
+    bool is_alarm = (current > get_current_limit()) && (current > 0.0f);
+    
+    if(is_alarm) {
+        if(!current_anim_running) {
+            lv_anim_init(&current_anim);
+            lv_anim_set_var(&current_anim, ui_voltageLabel1);
+            lv_anim_set_exec_cb(&current_anim, current_label_anim_cb);
+            lv_anim_set_values(&current_anim, 0, 100);
+            lv_anim_set_time(&current_anim, 1000); // 1 segundo total
+            lv_anim_set_repeat_count(&current_anim, LV_ANIM_REPEAT_INFINITE);
+            lv_anim_start(&current_anim);
+            current_anim_running = true;
+        }
+    } else {
+        if(current_anim_running) {
+            lv_anim_del(ui_voltageLabel1, current_label_anim_cb);
+            lv_obj_set_style_text_color(ui_voltageLabel1, UI_COLOR_TEXT_LABEL, LV_PART_MAIN | LV_STATE_DEFAULT);
+            current_anim_running = false;
+        }
+    }
+}
 
 void ui_corriente_screen_init(void) {
   ui_corriente = lv_obj_create(NULL);
@@ -247,7 +285,7 @@ void ui_corriente_screen_init(void) {
   lv_obj_set_x(ui_frecuenciaLabel3, 162);
   lv_obj_set_y(ui_frecuenciaLabel3, 40);
   lv_obj_set_align(ui_frecuenciaLabel3, LV_ALIGN_CENTER);
-  lv_label_set_text(ui_frecuenciaLabel3, "VAR");
+  lv_label_set_text(ui_frecuenciaLabel3, "V");
   lv_obj_set_style_text_color(ui_frecuenciaLabel3, UI_COLOR_TEXT_INFO,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_text_opa(ui_frecuenciaLabel3, 255,

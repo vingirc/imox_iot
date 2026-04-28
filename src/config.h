@@ -11,11 +11,30 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#include <string.h>
+
 // ============================================================================
 // INFORMACIÓN DEL DISPOSITIVO
 // ============================================================================
 #define FIRMWARE_VERSION "1.0.0"
 #define DEVICE_MODEL "IMOX-B1"
+
+// Límite de amperaje por modelo
+#define CURRENT_LIMIT_IMOX_B1 6.0f
+#define CURRENT_LIMIT_IMOX_B2 10.0f
+#define CURRENT_LIMIT_IMOX_C3 15.0f
+#define CURRENT_LIMIT_IMOX_C2 15.0f
+#define CURRENT_LIMIT_IMOX_BR 15.0f
+
+// Helper para obtener el límite en tiempo de ejecución
+inline float get_current_limit() {
+    if (strcmp(DEVICE_MODEL, "IMOX-B1") == 0) return CURRENT_LIMIT_IMOX_B1;
+    if (strcmp(DEVICE_MODEL, "IMOX-B2") == 0) return CURRENT_LIMIT_IMOX_B2;
+    if (strcmp(DEVICE_MODEL, "IMOX-C3") == 0) return CURRENT_LIMIT_IMOX_C3;
+    if (strcmp(DEVICE_MODEL, "IMOX-C2") == 0) return CURRENT_LIMIT_IMOX_C2;
+    if (strcmp(DEVICE_MODEL, "IMOX-BR") == 0) return CURRENT_LIMIT_IMOX_BR;
+    return 15.0f; // Default fallback
+}
 #define MANUFACTURER "Yex Acoustics"
 
 // ============================================================================

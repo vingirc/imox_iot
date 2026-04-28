@@ -77,6 +77,7 @@ extern bool is_wifi_enabled;
 void ui_init(void);
 void ui_destroy(void);
 void ui_check_voltage_warning(float voltage);
+void ui_check_current_warning(float current);
 
 #ifdef __cplusplus
 } /*extern "C"*/
