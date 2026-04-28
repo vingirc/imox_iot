@@ -1431,7 +1431,7 @@ void loop() {
     } 
     else if (dim_timeout_s > 0 && inactive_time >= dim_timeout_s && !is_dimmed) {
       is_dimmed = true;
-      hw_set_brightness(20); // Atenuación extrema (20/255)
+      hw_set_brightness(DIM_BRIGHTNESS); // Atenuación basada en la configuración
       Serial.println("Burnout: Pantalla atenuada por inactividad");
     }
   }
@@ -1494,6 +1494,10 @@ void hw_reset_activity(void) {
 }
 
 void hw_set_brightness(uint8_t val) {
+  if (val < MIN_BRIGHTNESS) {
+    val = MIN_BRIGHTNESS;
+  }
+  
   if (!is_dimmed && !is_screen_off) {
       user_brightness = val; // Guardar el brillo deseado por el usuario
       Preferences prefs;
@@ -1508,6 +1512,7 @@ void hw_set_brightness(uint8_t val) {
 void hw_restore_brightness(void) {
   is_dimmed = false;
   is_screen_off = false;
+  amoled.disp_wakeup(); // Despertar el hardware de la pantalla si estaba dormido
   hw_set_brightness(user_brightness);
   Serial.printf("Brillo RESTAURADO a: %d\n", user_brightness);
 }
@@ -1583,8 +1588,8 @@ void hw_factory_reset(void) {
 }
 
 void hw_turn_off_screen(void) {
-  amoled.setBrightness(0);
-  Serial.println("Pantalla apagada (Brillo 0)");
+  amoled.disp_sleep(); // Apaga completamente el panel OLED
+  Serial.println("Pantalla apagada (disp_sleep)");
 }
 
 void hw_request_history(const char* startDate, const char* endDate) {

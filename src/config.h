@@ -14,6 +14,12 @@
 #include <string.h>
 
 // ============================================================================
+// CONFIGURACIONES DE PANTALLA
+// ============================================================================
+#define MIN_BRIGHTNESS 50 // Brillo mínimo permitido para evitar el "tinte rojo"
+#define DIM_BRIGHTNESS 50 // Brillo usado durante la atenuación de inactividad
+
+// ============================================================================
 // INFORMACIÓN DEL DISPOSITIVO
 // ============================================================================
 #define FIRMWARE_VERSION "1.0.0"
