@@ -43,22 +43,65 @@ void ui_event_stats_load(lv_event_t *e) {
   if (target == ui_voltageStats) {
     if (ui_voltageVal) lv_label_set_text(ui_voltageVal, "...");
     is_monthly = stats_mode_voltage_monthly;
-    if (ui_PotenciaLabel17) lv_label_set_text(ui_PotenciaLabel17, is_monthly ? "Consumo mensual" : "Consumo semanal");
-    if (ui_voltageChart) lv_chart_set_point_count(ui_voltageChart, is_monthly ? 30 : 7);
+    if (ui_PotenciaLabel17) lv_label_set_text(ui_PotenciaLabel17, is_monthly ? "Registro mensual volts" : "Registro semanal volts");
+    if (ui_voltageChart) lv_chart_set_point_count(ui_voltageChart, is_monthly ? 31 : 7);
   } 
   else if (target == ui_statsWatts) {
     if (ui_wattsVal) lv_label_set_text(ui_wattsVal, "...");
     is_monthly = stats_mode_watts_monthly;
-    if (ui_PotenciaLabel16) lv_label_set_text(ui_PotenciaLabel16, is_monthly ? "Consumo mensual" : "Consumo semanal");
-    if (ui_wattsChart) lv_chart_set_point_count(ui_wattsChart, is_monthly ? 30 : 7);
+    if (ui_PotenciaLabel16) lv_label_set_text(ui_PotenciaLabel16, is_monthly ? "Registro mensual amps" : "Registro semanal amps");
+    if (ui_wattsChart) lv_chart_set_point_count(ui_wattsChart, is_monthly ? 31 : 7);
   }
 
-  // Pedir rango según el modo actual
-  if (is_monthly) {
-    hw_request_history("2026-01-01T00:00:00.000Z", "2026-12-31T23:59:59.000Z");
-  } else {
-    hw_request_history("2026-03-23T00:00:00.000Z", "2026-12-31T23:59:59.000Z");
+  // Calcular rango de fechas dinámicamente
+  time_t now = time(NULL);
+  struct tm *local = localtime(&now);
+  
+  char start_buf[32], end_buf[32];
+  
+  if (local == NULL || local->tm_year < (2025 - 1900)) {
+    // NTP no ha sincronizado aún, usar fallback amplio
+    if (is_monthly) {
+      hw_request_history("2026-04-01T06:00:00.000Z", "2026-05-01T05:59:59.000Z");
+    } else {
+      hw_request_history("2026-04-21T06:00:00.000Z", "2026-04-28T05:59:59.000Z");
+    }
+    return;
   }
+
+  if (is_monthly) {
+    // Mensual: del día 1 al último día del mes actual (en UTC, +6h offset)
+    snprintf(start_buf, sizeof(start_buf), "%04d-%02d-01T06:00:00.000Z",
+             local->tm_year + 1900, local->tm_mon + 1);
+    // Primer día del mes siguiente
+    int next_mon = local->tm_mon + 2; // tm_mon es 0-based, +1 para humano, +1 para siguiente
+    int next_year = local->tm_year + 1900;
+    if (next_mon > 12) { next_mon = 1; next_year++; }
+    snprintf(end_buf, sizeof(end_buf), "%04d-%02d-01T05:59:59.000Z",
+             next_year, next_mon);
+  } else {
+    // Semanal: calcular el lunes de esta semana
+    int wday = local->tm_wday; // 0=Domingo, 1=Lunes...
+    int days_since_monday = (wday == 0) ? 6 : (wday - 1);
+    
+    struct tm monday = *local;
+    monday.tm_mday -= days_since_monday;
+    monday.tm_hour = 0; monday.tm_min = 0; monday.tm_sec = 0;
+    mktime(&monday); // Normaliza (puede cambiar el mes si retrocedemos)
+    
+    // Lunes 00:00 local = Lunes 06:00 UTC
+    snprintf(start_buf, sizeof(start_buf), "%04d-%02d-%02dT06:00:00.000Z",
+             monday.tm_year + 1900, monday.tm_mon + 1, monday.tm_mday);
+    
+    // Domingo siguiente = Monday + 7 días
+    struct tm sunday = monday;
+    sunday.tm_mday += 7;
+    mktime(&sunday);
+    snprintf(end_buf, sizeof(end_buf), "%04d-%02d-%02dT05:59:59.000Z",
+             sunday.tm_year + 1900, sunday.tm_mon + 1, sunday.tm_mday);
+  }
+
+  hw_request_history(start_buf, end_buf);
 }
 
 void onBrightnessChange(int32_t value) {
@@ -108,12 +151,14 @@ void ui_event_stats_toggle(lv_obj_t *label, lv_obj_t *chart) {
   if (!label)
     return;
   const char *current_text = lv_label_get_text(label);
-  bool turning_monthly = (strcmp(current_text, "Consumo semanal") == 0);
+  bool turning_monthly = (strstr(current_text, "semanal") != NULL);
   
   if (turning_monthly) {
-    lv_label_set_text(label, "Consumo mensual");
+    if (chart == ui_voltageChart) lv_label_set_text(label, "Registro mensual volts");
+    else lv_label_set_text(label, "Registro mensual amps");
   } else {
-    lv_label_set_text(label, "Consumo semanal");
+    if (chart == ui_voltageChart) lv_label_set_text(label, "Registro semanal volts");
+    else lv_label_set_text(label, "Registro semanal amps");
   }
 
   // Guardar flag independiente
@@ -181,7 +226,7 @@ void restore_chart_defaults(lv_obj_t *screen) {
   }
   
   if (screen == ui_voltageStats) {
-      if (ui_PotenciaLabel17) lv_label_set_text(ui_PotenciaLabel17, stats_mode_voltage_monthly ? "Consumo mensual" : "Consumo semanal");
+      if (ui_PotenciaLabel17) lv_label_set_text(ui_PotenciaLabel17, stats_mode_voltage_monthly ? "Registro mensual volts" : "Registro semanal volts");
       int sum = 0;
       for (int i=0; i<history_count; i++) sum += history_voltage[i];
       if (ui_voltageVal) {
@@ -189,11 +234,11 @@ void restore_chart_defaults(lv_obj_t *screen) {
           lv_obj_set_style_text_color(ui_voltageVal, UI_COLOR_TEXT_LABEL, LV_PART_MAIN | LV_STATE_DEFAULT);
       }
   } else if (screen == ui_statsWatts) {
-      if (ui_PotenciaLabel16) lv_label_set_text(ui_PotenciaLabel16, stats_mode_watts_monthly ? "Consumo mensual" : "Consumo semanal");
+      if (ui_PotenciaLabel16) lv_label_set_text(ui_PotenciaLabel16, stats_mode_watts_monthly ? "Registro mensual amps" : "Registro semanal amps");
       int sum = 0;
       for (int i=0; i<history_count; i++) sum += history_watts[i];
       if (ui_wattsVal) {
-          lv_label_set_text_fmt(ui_wattsVal, "%d", sum / history_count);
+          lv_label_set_text_fmt(ui_wattsVal, "%.2f", (float)sum / history_count / 100.0f);
           lv_obj_set_style_text_color(ui_wattsVal, UI_COLOR_TEXT_LABEL, LV_PART_MAIN | LV_STATE_DEFAULT);
       }
   }
@@ -207,10 +252,45 @@ void ui_screen_clicked_cb(lv_event_t *e) {
 
 void ui_chart_draw_event_cb(lv_event_t *e) {
   lv_obj_draw_part_dsc_t *dsc = lv_event_get_draw_part_dsc(e);
+  lv_obj_t *chart = lv_event_get_target(e);
+
+  // Intercepción del eje Y para Amperios (dividimos entre 100)
+  if (dsc->part == LV_PART_TICKS && dsc->id == LV_CHART_AXIS_PRIMARY_Y && chart == ui_wattsChart) {
+    snprintf(dsc->text, dsc->text_length, "%.2f", (float)dsc->value / 100.0f);
+    return;
+  }
+
+  // Intercepción del eje X (Días)
+  if (dsc->part == LV_PART_TICKS && dsc->id == LV_CHART_AXIS_PRIMARY_X) {
+    bool is_monthly = (chart == ui_voltageChart) ? stats_mode_voltage_monthly : stats_mode_watts_monthly;
+    if (is_monthly) {
+      // Mes: leer el día real del timestamp de esa barra
+      int idx = dsc->value;
+      if (idx >= 0 && idx < 31 && history_timestamps[idx][0] != '\0') {
+        int y, m, d;
+        if (sscanf(history_timestamps[idx], "%d-%d-%dT", &y, &m, &d) == 3) {
+          snprintf(dsc->text, dsc->text_length, "%d", d);
+        } else {
+          // Fallback: no mostrar nada si el formato falla
+          snprintf(dsc->text, dsc->text_length, " ");
+        }
+      } else {
+        // Posición sin datos: no mostrar etiqueta
+        snprintf(dsc->text, dsc->text_length, " ");
+      }
+    } else {
+      // Semana: imprimir L, M, M, J, V, S, D
+      const char* days[] = {"L", "M", "M", "J", "V", "S", "D"};
+      if (dsc->value < 7) {
+        snprintf(dsc->text, dsc->text_length, "%s", days[dsc->value]);
+      }
+    }
+    return;
+  }
+
   if (dsc->part != LV_PART_ITEMS) return;
   if (!dsc->rect_dsc) return;
 
-  lv_obj_t *chart = lv_event_get_target(e);
   uint32_t idx = dsc->id;
 
   bool is_danger = false;
@@ -235,8 +315,28 @@ void ui_chart_pressed_event_cb(lv_event_t *e) {
   uint32_t id = lv_chart_get_pressed_point(chart);
   if (id == LV_CHART_POINT_NONE) {
     xSemaphoreGive(history_mutex);
-    // Si se toca el fondo de la gráfica (no una barra), restaurar promedios
     restore_chart_defaults(lv_scr_act());
+    return;
+  }
+
+  // Comprobar si la barra tiene datos
+  bool has_data = false;
+  if (chart == ui_voltageChart && id < 31) {
+    has_data = (history_voltage[id] > 0);
+  } else if (chart == ui_wattsChart && id < 31) {
+    has_data = (history_watts[id] > 0);
+  }
+
+  if (!has_data) {
+    // Barra vacía: mostrar "Sin datos"
+    if (chart == ui_voltageChart) {
+      if (ui_voltageVal) lv_label_set_text(ui_voltageVal, "0");
+      if (ui_PotenciaLabel17) lv_label_set_text(ui_PotenciaLabel17, "Sin datos");
+    } else if (chart == ui_wattsChart) {
+      if (ui_wattsVal) lv_label_set_text(ui_wattsVal, "0.00");
+      if (ui_PotenciaLabel16) lv_label_set_text(ui_PotenciaLabel16, "Sin datos");
+    }
+    xSemaphoreGive(history_mutex);
     return;
   }
 
@@ -246,7 +346,6 @@ void ui_chart_pressed_event_cb(lv_event_t *e) {
   if (chart == ui_voltageChart && id < 31) {
     if (ui_voltageVal) {
       lv_label_set_text_fmt(ui_voltageVal, "%d", (int)history_voltage[id]);
-      // Color de acento para indicar valor seleccionado
       lv_obj_set_style_text_color(ui_voltageVal, UI_COLOR_ACCENT,
                                   LV_PART_MAIN | LV_STATE_DEFAULT);
     }
@@ -255,8 +354,7 @@ void ui_chart_pressed_event_cb(lv_event_t *e) {
     }
   } else if (chart == ui_wattsChart && id < 31) {
     if (ui_wattsVal) {
-      lv_label_set_text_fmt(ui_wattsVal, "%d", (int)history_watts[id]);
-      // Color de acento para indicar valor seleccionado
+      lv_label_set_text_fmt(ui_wattsVal, "%.2f", (float)history_watts[id] / 100.0f);
       lv_obj_set_style_text_color(ui_wattsVal, UI_COLOR_ACCENT,
                                   LV_PART_MAIN | LV_STATE_DEFAULT);
     }

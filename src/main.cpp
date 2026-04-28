@@ -37,6 +37,7 @@ lv_coord_t history_watts[31] = {0};
 char history_timestamps[31][24] = {0};
 lv_coord_t history_daily_24h[24] = {0};
 bool history_data_ready = false;
+bool last_history_request_is_monthly = false;
 lv_coord_t history_max_voltage = 0;
 lv_coord_t history_max_watts = 0;
 int history_count = 0;
@@ -131,46 +132,124 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
                         JsonArray columns = doc["columns"];
                         
                         // Encontrar índices de columnas (aceptar ambas convenciones de nombres)
-                        int idx_v = -1, idx_p = -1, idx_t = -1;
+                        int idx_v = -1, idx_a = -1, idx_t = -1;
                         for(int i=0; i<columns.size(); i++) {
                             const char* col = columns[i].as<const char*>();
                             Serial.printf("  columna[%d] = '%s'\n", i, col);
                             if(strcmp(col, "voltaje") == 0 || strcmp(col, "voltaje_v") == 0) idx_v = i;
-                            if(strcmp(col, "potencia") == 0 || strcmp(col, "potencia_w") == 0) idx_p = i;
+                            if(strcmp(col, "corriente") == 0 || strcmp(col, "corriente_a") == 0) idx_a = i;
                             if(strcmp(col, "timestamp") == 0) idx_t = i;
                         }
-                        Serial.printf("MQTT History: idx_v=%d, idx_p=%d, idx_t=%d, rows=%d\n", idx_v, idx_p, idx_t, dataRows.size());
+                        Serial.printf("MQTT History: idx_v=%d, idx_a=%d, idx_t=%d, rows=%d\n", idx_v, idx_a, idx_t, dataRows.size());
 
-                        // Llenar arrays (asumiendo que vienen en orden cronológico)
+                        // Llenar arrays dinámicamente con Pin to Day
                         if (history_mutex != NULL && xSemaphoreTake(history_mutex, pdMS_TO_TICKS(200)) == pdTRUE) {
-                            int count = dataRows.size();
-                            history_count = count < 31 ? count : 31;
-                            for(int i=0; i < count; i++) {
-                                if (i < 31) {
-                                  // Verificación de existencia de columnas y validez de datos en la fila
-                                  if(idx_v != -1 && !dataRows[i][idx_v].isNull()) history_voltage[i] = (lv_coord_t)dataRows[i][idx_v].as<float>();
-                                  if(idx_p != -1 && !dataRows[i][idx_p].isNull()) history_watts[i] = (lv_coord_t)dataRows[i][idx_p].as<float>();
-                                  if(idx_t != -1 && !dataRows[i][idx_t].isNull()) {
-                                      const char* t_str = dataRows[i][idx_t].as<const char*>();
-                                      if (t_str) strncpy(history_timestamps[i], t_str, 23);
-                                      else history_timestamps[i][0] = '\0';
-                                  }
-                                  
-                                  if (i < 7) {
-                                    Serial.printf("  history[%d]: voltage=%d, watts=%d, time=%s\n", 
-                                                  i, history_voltage[i], history_watts[i], history_timestamps[i]);
-                                  }
-                                }
-                                if (i < 24) {
-                                  if(idx_p != -1 && !dataRows[i][idx_p].isNull()) history_daily_24h[i] = (lv_coord_t)dataRows[i][idx_p].as<float>();
-                                }
-                            }
-                            // Limpiar posiciones no usadas del array
-                            for(int i = history_count; i < 31; i++) {
+                            // Limpiar arrays
+                            for(int i = 0; i < 31; i++) {
                               history_voltage[i] = 0;
                               history_watts[i] = 0;
                               history_timestamps[i][0] = '\0';
                             }
+                            
+                            int count = dataRows.size();
+                            
+                            if (last_history_request_is_monthly) {
+                                // MENSUAL: convertir UTC→local, deduplicar por día local
+                                int out_idx = 0;
+                                int last_local_day = -1;
+                                for(int i=0; i < count && out_idx < 31; i++) {
+                                    const char* t_str = NULL;
+                                    if(idx_t != -1 && !dataRows[i][idx_t].isNull()) {
+                                        t_str = dataRows[i][idx_t].as<const char*>();
+                                    }
+                                    
+                                    // Calcular día local (UTC - 6h)
+                                    int local_day = 0;
+                                    if (t_str) {
+                                        struct tm utc_tm = {0};
+                                        int y, mo, d, h = 0;
+                                        if (sscanf(t_str, "%d-%d-%dT%d", &y, &mo, &d, &h) >= 3) {
+                                            utc_tm.tm_year = y - 1900;
+                                            utc_tm.tm_mon = mo - 1;
+                                            utc_tm.tm_mday = d;
+                                            utc_tm.tm_hour = h - 6; // UTC → local CST
+                                            mktime(&utc_tm); // Normaliza (ajusta día si hora < 0)
+                                            local_day = utc_tm.tm_mday;
+                                        }
+                                    }
+                                    
+                                    if (local_day == last_local_day && out_idx > 0) {
+                                        // Mismo día local: sobrescribir la última entrada (mantener la más reciente)
+                                        int pos = out_idx - 1;
+                                        if(idx_v != -1 && !dataRows[i][idx_v].isNull()) history_voltage[pos] = (lv_coord_t)dataRows[i][idx_v].as<float>();
+                                        if(idx_a != -1 && !dataRows[i][idx_a].isNull()) history_watts[pos] = (lv_coord_t)(dataRows[i][idx_a].as<float>() * 100.0f);
+                                    } else {
+                                        // Día nuevo: agregar entrada
+                                        if(idx_v != -1 && !dataRows[i][idx_v].isNull()) history_voltage[out_idx] = (lv_coord_t)dataRows[i][idx_v].as<float>();
+                                        if(idx_a != -1 && !dataRows[i][idx_a].isNull()) history_watts[out_idx] = (lv_coord_t)(dataRows[i][idx_a].as<float>() * 100.0f);
+                                        // Guardar timestamp con día local correcto para etiqueta X
+                                        if (t_str) {
+                                            char adjusted[24];
+                                            // utc_tm ya fue normalizado por mktime con el día local correcto
+                                            struct tm utc_tm2 = {0};
+                                            int y2, mo2, d2, h2 = 0;
+                                            if (sscanf(t_str, "%d-%d-%dT%d", &y2, &mo2, &d2, &h2) >= 3) {
+                                                utc_tm2.tm_year = y2 - 1900;
+                                                utc_tm2.tm_mon = mo2 - 1;
+                                                utc_tm2.tm_mday = d2;
+                                                utc_tm2.tm_hour = h2 - 6;
+                                                mktime(&utc_tm2);
+                                                snprintf(adjusted, sizeof(adjusted), "%04d-%02d-%02dT00:00:00Z",
+                                                         utc_tm2.tm_year + 1900, utc_tm2.tm_mon + 1, utc_tm2.tm_mday);
+                                            } else {
+                                                strncpy(adjusted, t_str, 23);
+                                            }
+                                            strncpy(history_timestamps[out_idx], adjusted, 23);
+                                        }
+                                        last_local_day = local_day;
+                                        out_idx++;
+                                    }
+                                    
+                                    if (i < 24 && idx_a != -1 && !dataRows[i][idx_a].isNull()) {
+                                      history_daily_24h[i] = (lv_coord_t)(dataRows[i][idx_a].as<float>() * 100.0f);
+                                    }
+                                }
+                                history_count = out_idx;
+                            } else {
+                                // SEMANAL: Pin-to-Day (Lunes=0, Domingo=6), siempre 7 posiciones
+                                history_count = 7;
+                                for(int i=0; i < count; i++) {
+                                    const char* t_str = nullptr;
+                                    if(idx_t != -1 && !dataRows[i][idx_t].isNull()) {
+                                        t_str = dataRows[i][idx_t].as<const char*>();
+                                    }
+                                    if(!t_str) continue;
+
+                                    int target_idx = i; // fallback
+                                    struct tm t = {0};
+                                    int year, month, day, hour = 0;
+                                    if (sscanf(t_str, "%d-%d-%dT%d", &year, &month, &day, &hour) >= 3) {
+                                        t.tm_year = year - 1900;
+                                        t.tm_mon = month - 1;
+                                        t.tm_mday = day;
+                                        t.tm_hour = hour - 6; // UTC → local CST
+                                        mktime(&t); // Normaliza (ajusta día si hora < 0)
+                                        // Lunes = 0, Domingo = 6
+                                        int wday = t.tm_wday;
+                                        target_idx = (wday == 0) ? 6 : (wday - 1);
+                                    }
+                                    
+                                    if (target_idx >= 0 && target_idx < 7) {
+                                        if(idx_v != -1 && !dataRows[i][idx_v].isNull()) history_voltage[target_idx] = (lv_coord_t)dataRows[i][idx_v].as<float>();
+                                        if(idx_a != -1 && !dataRows[i][idx_a].isNull()) history_watts[target_idx] = (lv_coord_t)(dataRows[i][idx_a].as<float>() * 100.0f);
+                                        strncpy(history_timestamps[target_idx], t_str, 23);
+                                    }
+                                    if (i < 24 && idx_a != -1 && !dataRows[i][idx_a].isNull()) {
+                                      history_daily_24h[i] = (lv_coord_t)(dataRows[i][idx_a].as<float>() * 100.0f);
+                                    }
+                                }
+                            }
+                            
                             // Calcular máximos para auto-rango de las gráficas
                             history_max_voltage = 0;
                             history_max_watts = 0;
@@ -935,6 +1014,10 @@ void setup() {
         Serial.println(" ¡Conectado!");
         Serial.print("IP: ");
         Serial.println(WiFi.localIP());
+        
+        // Sincronizar reloj vía NTP (UTC-6 = CST México Central)
+        configTime(-6 * 3600, 0, "pool.ntp.org", "time.nist.gov");
+        Serial.println("NTP: Sincronizando reloj...");
     } else {
         Serial.println(" Timeout (conectando en segundo plano)");
     }
@@ -1008,7 +1091,7 @@ void updateUI() {
     lv_label_set_text_fmt(ui_frecuencia, "%.1f", display_f);
   }
   if (ui_potencia) {
-    lv_label_set_text_fmt(ui_potencia, "%.1f", display_i);
+    lv_label_set_text_fmt(ui_potencia, "%.2f", display_i);
   }
 
   // Alarma visual de voltaje
@@ -1190,33 +1273,58 @@ void updateUI() {
     // Usamos el mutex para garantizar acceso seguro a history_count y arrays
     if (history_mutex != NULL && xSemaphoreTake(history_mutex, pdMS_TO_TICKS(10)) == pdTRUE) {
       int local_count = history_count;
-      int pt_count = local_count > 1 ? local_count : 2; // AL MENOS 2 para evitar crash de ticks en LVGL
+      int pt_count;
+      if (last_history_request_is_monthly) {
+        // Mensual: LVGL crashea (IntegerDivideByZero) si pt_count < 2 en gráficas de barras.
+        // Aseguramos que sea mínimo 2, aunque solo haya 1 dato real.
+        pt_count = local_count > 1 ? local_count : 2;
+      } else {
+        // Semanal: siempre 7 barras fijas (L-D)
+        pt_count = 7;
+      }
       
       if (ui_voltageChart) {
         lv_chart_set_point_count(ui_voltageChart, pt_count);
         lv_chart_set_range(ui_voltageChart, LV_CHART_AXIS_PRIMARY_Y, 0, history_max_voltage);
+        // Actualizar ticks del eje X según modo
+        if (last_history_request_is_monthly) {
+          int major = pt_count < 8 ? pt_count : 5; // máx 5 marcas para no amontonar
+          if (major < 2) major = 2; // LVGL falla si major ticks < 2
+          lv_chart_set_axis_tick(ui_voltageChart, LV_CHART_AXIS_PRIMARY_X, 10, 5, major, 1, true, 50);
+        } else {
+          lv_chart_set_axis_tick(ui_voltageChart, LV_CHART_AXIS_PRIMARY_X, 10, 5, 7, 1, true, 50);
+        }
         lv_chart_refresh(ui_voltageChart);
       }
       if (ui_wattsChart) {
         lv_chart_set_point_count(ui_wattsChart, pt_count);
         lv_chart_set_range(ui_wattsChart, LV_CHART_AXIS_PRIMARY_Y, 0, history_max_watts);
+        // Actualizar ticks del eje X según modo
+        if (last_history_request_is_monthly) {
+          int major = pt_count < 8 ? pt_count : 5;
+          if (major < 2) major = 2; // LVGL falla si major ticks < 2
+          lv_chart_set_axis_tick(ui_wattsChart, LV_CHART_AXIS_PRIMARY_X, 10, 5, major, 1, true, 50);
+        } else {
+          lv_chart_set_axis_tick(ui_wattsChart, LV_CHART_AXIS_PRIMARY_X, 10, 5, 7, 1, true, 50);
+        }
         lv_chart_refresh(ui_wattsChart);
       }
       
       // Actualizar etiquetas de valor promedio
       if (local_count > 0) {
         int sum_v = 0, sum_w = 0;
-        for (int i = 0; i < local_count; i++) {
-          sum_v += history_voltage[i];
-          sum_w += history_watts[i];
+        int nonzero_v = 0, nonzero_w = 0;
+        for (int i = 0; i < (last_history_request_is_monthly ? local_count : 7); i++) {
+          if (history_voltage[i] > 0) { sum_v += history_voltage[i]; nonzero_v++; }
+          if (history_watts[i] > 0) { sum_w += history_watts[i]; nonzero_w++; }
         }
-        if (ui_voltageVal) {
-          lv_label_set_text_fmt(ui_voltageVal, "%d", sum_v / local_count);
+        if (ui_voltageVal && nonzero_v > 0) {
+          lv_label_set_text_fmt(ui_voltageVal, "%d", sum_v / nonzero_v);
           lv_obj_set_style_text_color(ui_voltageVal, UI_COLOR_TEXT_LABEL,
                                       LV_PART_MAIN | LV_STATE_DEFAULT);
         }
-        if (ui_wattsVal) {
-          lv_label_set_text_fmt(ui_wattsVal, "%d", sum_w / local_count);
+        if (ui_wattsVal && nonzero_w > 0) {
+          lv_label_set_text_fmt(ui_wattsVal, "%.2f", (float)sum_w / nonzero_w / 100.0f);
           lv_obj_set_style_text_color(ui_wattsVal, UI_COLOR_TEXT_LABEL,
                                       LV_PART_MAIN | LV_STATE_DEFAULT);
         }
@@ -1469,6 +1577,18 @@ void hw_request_history(const char* startDate, const char* endDate) {
   serializeJson(doc, buffer);
   
   Serial.printf("MQTT: Pidiendo historial: %s\n", buffer);
+
+  // Determinar si es petición mensual basándose en el rango
+  // Si el rango es mayor a 8 días, es mensual
+  struct tm tm_start = {0}, tm_end = {0};
+  if (sscanf(startDate, "%d-%d-%dT", &tm_start.tm_year, &tm_start.tm_mon, &tm_start.tm_mday) == 3 &&
+      sscanf(endDate, "%d-%d-%dT", &tm_end.tm_year, &tm_end.tm_mon, &tm_end.tm_mday) == 3) {
+    tm_start.tm_year -= 1900; tm_start.tm_mon -= 1;
+    tm_end.tm_year -= 1900; tm_end.tm_mon -= 1;
+    double diff_days = difftime(mktime(&tm_end), mktime(&tm_start)) / 86400.0;
+    last_history_request_is_monthly = (diff_days > 8);
+  }
+
   esp_mqtt_client_publish(mqtt_client, MQTT_TOPIC_HISTORY_REQ, buffer, 0, 1, 0);
 }
 

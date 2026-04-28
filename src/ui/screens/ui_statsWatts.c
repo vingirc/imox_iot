@@ -127,7 +127,7 @@ void ui_statsWatts_screen_init(void) {
   lv_obj_set_flex_flow(ui_PotenciaLabel16, LV_FLEX_FLOW_COLUMN);
   lv_obj_set_flex_align(ui_PotenciaLabel16, LV_FLEX_ALIGN_START,
                         LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
-  lv_label_set_text(ui_PotenciaLabel16, "Consumo semanal");
+  lv_label_set_text(ui_PotenciaLabel16, "Registro semanal amps");
   lv_obj_set_style_text_color(ui_PotenciaLabel16, UI_COLOR_TEXT_LABEL,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_text_opa(ui_PotenciaLabel16, 255,
@@ -182,7 +182,7 @@ void ui_statsWatts_screen_init(void) {
   lv_obj_set_flex_flow(ui_PotenciaLabel21, LV_FLEX_FLOW_COLUMN);
   lv_obj_set_flex_align(ui_PotenciaLabel21, LV_FLEX_ALIGN_START,
                         LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
-  lv_label_set_text(ui_PotenciaLabel21, "W");
+  lv_label_set_text(ui_PotenciaLabel21, "A");
   lv_obj_set_style_text_color(ui_PotenciaLabel21, UI_COLOR_TEXT_LABEL,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_text_opa(ui_PotenciaLabel21, 255,
@@ -197,7 +197,7 @@ void ui_statsWatts_screen_init(void) {
   lv_obj_add_flag(ui_wattsChart, LV_OBJ_FLAG_FLEX_IN_NEW_TRACK); /// Flags
   lv_chart_set_type(ui_wattsChart, LV_CHART_TYPE_BAR);
   lv_chart_set_point_count(ui_wattsChart, 7);
-  lv_chart_set_axis_tick(ui_wattsChart, LV_CHART_AXIS_PRIMARY_X, 10, 5, 5, 2,
+  lv_chart_set_axis_tick(ui_wattsChart, LV_CHART_AXIS_PRIMARY_X, 10, 5, 7, 1,
                          true, 50);
   lv_chart_set_axis_tick(ui_wattsChart, LV_CHART_AXIS_PRIMARY_Y, 10, 5, 5, 2,
                          true, 50);
@@ -232,7 +232,12 @@ void ui_statsWatts_screen_init(void) {
   lv_obj_add_event_cb(ui_wattsChart, ui_chart_draw_event_cb, LV_EVENT_DRAW_PART_BEGIN, NULL);
   lv_obj_add_event_cb(ui_wattsChart, ui_chart_pressed_event_cb, LV_EVENT_VALUE_CHANGED, NULL);
 
+  // Click en cualquier parte de la pantalla restaura los defaults
   lv_obj_add_event_cb(ui_statsWatts, ui_screen_clicked_cb, LV_EVENT_CLICKED, NULL);
+  lv_obj_add_event_cb(ui_contentPanel1, ui_screen_clicked_cb, LV_EVENT_CLICKED, NULL);
+  lv_obj_add_event_cb(ui_contentPanel4, ui_screen_clicked_cb, LV_EVENT_CLICKED, NULL);
+  lv_obj_add_event_cb(ui_PotenciaLabel16, ui_screen_clicked_cb, LV_EVENT_CLICKED, NULL);
+  lv_obj_add_event_cb(ui_wattsVal, ui_screen_clicked_cb, LV_EVENT_CLICKED, NULL);
   lv_obj_add_event_cb(ui_statsWatts, ui_event_statsWatts, LV_EVENT_ALL, NULL);
   lv_obj_add_event_cb(ui_statsWatts, ui_event_stats_load, LV_EVENT_SCREEN_LOADED, NULL);
 

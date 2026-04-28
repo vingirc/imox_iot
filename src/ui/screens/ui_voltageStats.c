@@ -128,7 +128,7 @@ void ui_voltageStats_screen_init(void) {
   lv_obj_set_flex_flow(ui_PotenciaLabel17, LV_FLEX_FLOW_COLUMN);
   lv_obj_set_flex_align(ui_PotenciaLabel17, LV_FLEX_ALIGN_START,
                         LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
-  lv_label_set_text(ui_PotenciaLabel17, "Consumo semanal");
+  lv_label_set_text(ui_PotenciaLabel17, "Registro semanal volts");
   lv_obj_set_style_text_color(ui_PotenciaLabel17, UI_COLOR_TEXT_LABEL,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_text_opa(ui_PotenciaLabel17, 255,
@@ -199,7 +199,7 @@ void ui_voltageStats_screen_init(void) {
   lv_obj_add_flag(ui_voltageChart, LV_OBJ_FLAG_FLEX_IN_NEW_TRACK); /// Flags
   lv_chart_set_type(ui_voltageChart, LV_CHART_TYPE_BAR);
   lv_chart_set_point_count(ui_voltageChart, 7);
-  lv_chart_set_axis_tick(ui_voltageChart, LV_CHART_AXIS_PRIMARY_X, 10, 5, 5, 2,
+  lv_chart_set_axis_tick(ui_voltageChart, LV_CHART_AXIS_PRIMARY_X, 10, 5, 7, 1,
                          true, 50);
   lv_chart_set_axis_tick(ui_voltageChart, LV_CHART_AXIS_PRIMARY_Y, 10, 5, 5, 2,
                          true, 50);
@@ -235,7 +235,12 @@ void ui_voltageStats_screen_init(void) {
   lv_obj_add_event_cb(ui_voltageChart, ui_chart_draw_event_cb, LV_EVENT_DRAW_PART_BEGIN, NULL);
   lv_obj_add_event_cb(ui_voltageChart, ui_chart_pressed_event_cb, LV_EVENT_VALUE_CHANGED, NULL);
 
+  // Click en cualquier parte de la pantalla restaura los defaults
   lv_obj_add_event_cb(ui_voltageStats, ui_screen_clicked_cb, LV_EVENT_CLICKED, NULL);
+  lv_obj_add_event_cb(ui_contentPanel6, ui_screen_clicked_cb, LV_EVENT_CLICKED, NULL);
+  lv_obj_add_event_cb(ui_contentPanel7, ui_screen_clicked_cb, LV_EVENT_CLICKED, NULL);
+  lv_obj_add_event_cb(ui_PotenciaLabel17, ui_screen_clicked_cb, LV_EVENT_CLICKED, NULL);
+  lv_obj_add_event_cb(ui_voltageVal, ui_screen_clicked_cb, LV_EVENT_CLICKED, NULL);
   lv_obj_add_event_cb(ui_voltageStats, ui_event_voltageStats, LV_EVENT_ALL,
                       NULL);
   lv_obj_add_event_cb(ui_voltageStats, ui_event_stats_load, LV_EVENT_SCREEN_LOADED, NULL);
