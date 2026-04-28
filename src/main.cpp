@@ -1045,7 +1045,13 @@ void setup() {
   // 9. Inicializar Mutex de Historial
   history_mutex = xSemaphoreCreateMutex();
 
-  // 5. Inicializar BLE Server (Provisioning)
+  // 10. Configurar botón circular táctil (Home Button)
+  amoled.setHomeButtonCallback([](void *user_data) {
+    extern bool flag_home_button_pressed;
+    flag_home_button_pressed = true;
+  }, NULL);
+
+  // 11. Inicializar BLE Server (Provisioning)
   provQueue = xQueueCreate(1, sizeof(ProvisioningRequest));
   setupBLE();
 
@@ -1372,11 +1378,33 @@ void updateUI() {
   }
 }
 
+bool flag_home_button_pressed = false;
+
 extern "C" void hw_set_brightness(uint8_t val);
 extern "C" void hw_restore_brightness(void);
 extern void onTurnOffScreen(void);
 
 void loop() {
+  // --- Home Button (Círculo amarillo) ---
+  if (flag_home_button_pressed) {
+    flag_home_button_pressed = false;
+    Serial.println("Botón circular presionado!");
+    
+    // Actividad detectada (evitar apagado o despertar si estaba apagado)
+    last_activity_ms = millis();
+    if (is_screen_off) {
+      is_screen_off = false;
+    }
+    if (is_dimmed) {
+      hw_restore_brightness();
+    }
+    
+    // Cambiar a la pantalla de voltaje si no estamos ya allí
+    if (lv_scr_act() != ui_voltaje) {
+      _ui_screen_change(&ui_voltaje, UI_ANIM_FADE, 300, 0, &ui_voltaje_screen_init);
+    }
+  }
+
   // --- Detección de Actividad (User Interaction) ---
   lv_indev_t *indev = lv_indev_get_next(NULL); // Obtener el primer dispositivo de entrada
   if (indev != NULL) {
