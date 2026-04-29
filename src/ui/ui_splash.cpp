@@ -99,11 +99,17 @@ void ui_splash_run(void) {
     lv_disp_load_scr(splash_scr);
     lv_task_handler(); // Forzar renderizado
 
-    // --- PASO 3: Animación de logo (igual que el proyecto antiguo) ---
-    delay(500);
-    splash_fade_in_logo(120);  // Fade-in lento (~1.4s)
-    delay(UI_SPLASH_TIME_LOGO_MS); // Logo visible
-    splash_fade_out(120);      // Fade-out
+    // --- PASO 3: Logo visible con brillo fijo (sin animación de fade) ---
+    // NOTA: Animación de fade comentada a petición del cliente (efecto "logo doble").
+    //       Se conserva el código para uso futuro.
+    // delay(500);
+    // splash_fade_in_logo(120);  // Fade-in lento (~1.4s)
+    // delay(UI_SPLASH_TIME_LOGO_MS); // Logo visible
+    // splash_fade_out(120);      // Fade-out
+    amoled.setBrightness(SPLASH_BRIGHTNESS);
+    delay(UI_SPLASH_TIME_LOGO_MS);
+    amoled.setBrightness(0);
+    delay(50);
 
     // --- PASO 4: Pantalla de modelo "IMOX-XX" ---
     // Limpiar pantalla para texto del modelo
@@ -123,9 +129,14 @@ void ui_splash_run(void) {
     lv_task_handler(); // Forzar renderizado
 
     // Fade-in del modelo
-    splash_fade_in(120);
-    delay(UI_SPLASH_TIME_MODEL_MS); // Modelo visible
-    splash_fade_out(120);     // Fade-out
+    // NOTA: Animación de fade comentada para consistencia con paso 3.
+    // splash_fade_in(120);
+    // delay(UI_SPLASH_TIME_MODEL_MS); // Modelo visible
+    // splash_fade_out(120);     // Fade-out
+    amoled.setBrightness(SPLASH_BRIGHTNESS);
+    delay(UI_SPLASH_TIME_MODEL_MS);
+    amoled.setBrightness(0);
+    delay(50);
 
     // --- PASO 5: Limpieza ---
     // CRÍTICO: No podemos borrar la pantalla activa (splash_scr) porque LVGL hará crash.

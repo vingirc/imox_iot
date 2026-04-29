@@ -137,6 +137,7 @@ static const char* LET_S_ENCRYPT_CA =
 #define UI_SPLASH_BG_WHITE  true
 #define UI_SPLASH_TIME_LOGO_MS 2000
 #define UI_SPLASH_TIME_MODEL_MS 2000
+#define SPLASH_BRIGHTNESS 128   // Brillo del splash screen (50% de 255)
 
 // ============================================================================
 // CONFIGURACIÓN DE DEBUGGING
