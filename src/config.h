@@ -23,7 +23,7 @@
 // INFORMACIÓN DEL DISPOSITIVO
 // ============================================================================
 #define FIRMWARE_VERSION "1.0.0"
-#define DEVICE_MODEL "IMOX-B1"
+#define DEVICE_MODEL "IMOX-CV"
 
 // Límite de amperaje por modelo
 #define CURRENT_LIMIT_IMOX_B1 6.0f
