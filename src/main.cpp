@@ -95,6 +95,18 @@ bool ota_in_progress = false;
 void reportOTAStatus(const char* status, const char* step, const char* error = nullptr);
 void otaTaskCode(void *pvParameters);
 
+// --- UI Overlay Flags (Thread-safe: escritos desde Core 0, leídos desde Core 1/loop) ---
+volatile bool flag_show_linking = false;
+volatile bool flag_hide_linking = false;
+volatile bool flag_update_linking = false;
+char linking_msg_buf[128] = {0};
+
+volatile bool flag_show_ota = false;
+volatile bool flag_hide_ota = false;
+volatile bool flag_update_ota = false;
+char ota_version_buf[32] = {0};
+char ota_step_buf[128] = {0};
+
 // --- Funciones MQTT ---
 void initMQTT();
 static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data) {
@@ -294,6 +306,8 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
                         strlcpy(currentOtaJob.version, ver, sizeof(currentOtaJob.version));
                         
                         ota_in_progress = true;
+                        strlcpy(ota_version_buf, ver, sizeof(ota_version_buf));
+                        flag_show_ota = true;
                         xTaskCreatePinnedToCore(otaTaskCode, "OtaTask", 10240, NULL, 5, &OtaTask, 0);
                         Serial.printf("MQTT: Comando OTA recibido (version: %s), iniciando tarea...\n", ver);
                     } else {
@@ -380,6 +394,12 @@ void reportOTAStatus(const char* status, const char* step, const char* error) {
   
   esp_mqtt_client_publish(mqtt_client, MQTT_TOPIC_OTA_STATUS, buffer, 0, 1, 0); // retain = 0
   Serial.printf("OTA Status: %s - %s\n", status, step ? step : "");
+
+  // Actualizar overlay OTA con el paso actual
+  if (step) {
+    strlcpy(ota_step_buf, step, sizeof(ota_step_buf));
+    flag_update_ota = true;
+  }
 }
 
 void otaTaskCode(void *pvParameters) {
@@ -402,6 +422,7 @@ void otaTaskCode(void *pvParameters) {
   if (!http.begin(*client, currentOtaJob.url)) {
       reportOTAStatus("FAILED", "Error HTTP begin", "URL invalida o error de conexion");
       ota_in_progress = false;
+      flag_hide_ota = true;
       vTaskDelete(NULL);
       return;
   }
@@ -415,6 +436,7 @@ void otaTaskCode(void *pvParameters) {
       reportOTAStatus("FAILED", "Error de conexión HTTP", emsg);
       http.end();
       ota_in_progress = false;
+      flag_hide_ota = true;
       vTaskDelete(NULL);
       return;
   }
@@ -424,6 +446,7 @@ void otaTaskCode(void *pvParameters) {
       reportOTAStatus("FAILED", "Error de archivo", "Content-Length invalido o 0");
       http.end();
       ota_in_progress = false;
+      flag_hide_ota = true;
       vTaskDelete(NULL);
       return;
   }
@@ -433,6 +456,7 @@ void otaTaskCode(void *pvParameters) {
       reportOTAStatus("FAILED", "Error de Update", "No hay espacio OTA suficiente");
       http.end();
       ota_in_progress = false;
+      flag_hide_ota = true;
       vTaskDelete(NULL);
       return;
   }
@@ -502,6 +526,7 @@ void otaTaskCode(void *pvParameters) {
   }
   
   ota_in_progress = false;
+  flag_hide_ota = true;
   vTaskDelete(NULL);
 }
 
@@ -623,16 +648,22 @@ void sendBLENotification(const char* status, const char* message) {
   pNotifyChar->setValue((uint8_t*)buf, strlen(buf));
   pNotifyChar->notify();
   Serial.printf("BLE: Notificación -> %s\n", buf);
+
+  // Actualizar el overlay de vinculación con el mensaje de progreso
+  strlcpy(linking_msg_buf, message, sizeof(linking_msg_buf));
+  flag_update_linking = true;
 }
 
 // Callbacks del servidor BLE
 class BLEServerCB : public NimBLEServerCallbacks {
   void onConnect(NimBLEServer* server) override {
     ble_client_connected = true;
+    flag_show_linking = true;
     Serial.println("BLE: Cliente conectado");
   }
   void onDisconnect(NimBLEServer* server) override {
     ble_client_connected = false;
+    flag_hide_linking = true;
     Serial.println("BLE: Cliente desconectado");
     NimBLEDevice::startAdvertising(); // Re-habilitar advertising
   }
@@ -1451,6 +1482,33 @@ void loop() {
       }
     }
     lastWifiCheck = millis();
+  }
+
+  // --- UI Overlays Triggers (BLE & OTA) ---
+  if (flag_show_linking) {
+    flag_show_linking = false;
+    ui_overlay_show_linking();
+  }
+  if (flag_update_linking) {
+    flag_update_linking = false;
+    ui_overlay_update_linking(linking_msg_buf);
+  }
+  if (flag_hide_linking) {
+    flag_hide_linking = false;
+    ui_overlay_hide_linking();
+  }
+
+  if (flag_show_ota) {
+    flag_show_ota = false;
+    ui_overlay_show_ota(ota_version_buf);
+  }
+  if (flag_update_ota) {
+    flag_update_ota = false;
+    ui_overlay_update_ota(ota_step_buf);
+  }
+  if (flag_hide_ota) {
+    flag_hide_ota = false;
+    ui_overlay_hide_ota();
   }
 
   // 5. Manejador LVGL (Corre en el Núcleo 1, el default de loop())

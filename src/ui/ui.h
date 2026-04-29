@@ -26,6 +26,7 @@ extern "C" {
 #include "components/ui_comp_hook.h"
 #include "ui_events.h"
 #include "ui_helpers.h"
+#include "ui_overlay.h"
 #include "ui_theme_manager.h"
 #include "ui_themes.h"
 
