@@ -30,6 +30,8 @@ extern void hw_set_brightness(uint8_t val);
 extern void hw_wifi_toggle(bool enable);
 extern void hw_restart(void);
 extern void hw_request_history(const char* start, const char* end);
+extern bool last_history_request_is_monthly;
+extern int weekly_monday_yyyymmdd;
 
 // false = semanal (últimos ~7 días), true = mensual (últimos ~30 días)
 static bool stats_mode_voltage_monthly = false;
@@ -53,6 +55,9 @@ void ui_event_stats_load(lv_event_t *e) {
     if (ui_wattsChart) lv_chart_set_point_count(ui_wattsChart, is_monthly ? 31 : 7);
   }
 
+  // Establecer el modo explícitamente (ya no se auto-detecta por rango)
+  last_history_request_is_monthly = is_monthly;
+
   // Calcular rango de fechas dinámicamente
   time_t now = time(NULL);
   struct tm *local = localtime(&now);
@@ -64,21 +69,22 @@ void ui_event_stats_load(lv_event_t *e) {
     if (is_monthly) {
       hw_request_history("2026-04-01T06:00:00.000Z", "2026-05-01T05:59:59.000Z");
     } else {
-      hw_request_history("2026-04-21T06:00:00.000Z", "2026-04-28T05:59:59.000Z");
+      weekly_monday_yyyymmdd = 20260421;
+      hw_request_history("2026-04-14T06:00:00.000Z", "2026-04-28T05:59:59.000Z");
     }
     return;
   }
 
+  // endDate siempre es "ahora" en UTC para que el backend no tenga que manejar fechas futuras
+  struct tm *utc_now = gmtime(&now);
+  snprintf(end_buf, sizeof(end_buf), "%04d-%02d-%02dT%02d:%02d:%02d.000Z",
+           utc_now->tm_year + 1900, utc_now->tm_mon + 1, utc_now->tm_mday,
+           utc_now->tm_hour, utc_now->tm_min, utc_now->tm_sec);
+
   if (is_monthly) {
-    // Mensual: del día 1 al último día del mes actual (en UTC, +6h offset)
+    // Mensual: desde el día 1 del mes actual a medianoche local (06:00 UTC)
     snprintf(start_buf, sizeof(start_buf), "%04d-%02d-01T06:00:00.000Z",
              local->tm_year + 1900, local->tm_mon + 1);
-    // Primer día del mes siguiente
-    int next_mon = local->tm_mon + 2; // tm_mon es 0-based, +1 para humano, +1 para siguiente
-    int next_year = local->tm_year + 1900;
-    if (next_mon > 12) { next_mon = 1; next_year++; }
-    snprintf(end_buf, sizeof(end_buf), "%04d-%02d-01T05:59:59.000Z",
-             next_year, next_mon);
   } else {
     // Semanal: calcular el lunes de esta semana
     int wday = local->tm_wday; // 0=Domingo, 1=Lunes...
@@ -89,16 +95,17 @@ void ui_event_stats_load(lv_event_t *e) {
     monday.tm_hour = 0; monday.tm_min = 0; monday.tm_sec = 0;
     mktime(&monday); // Normaliza (puede cambiar el mes si retrocedemos)
     
-    // Lunes 00:00 local = Lunes 06:00 UTC
-    snprintf(start_buf, sizeof(start_buf), "%04d-%02d-%02dT06:00:00.000Z",
-             monday.tm_year + 1900, monday.tm_mon + 1, monday.tm_mday);
+    // Guardar fecha del lunes para filtrar en el procesador MQTT
+    weekly_monday_yyyymmdd = (monday.tm_year + 1900) * 10000 + (monday.tm_mon + 1) * 100 + monday.tm_mday;
     
-    // Domingo siguiente = Monday + 7 días
-    struct tm sunday = monday;
-    sunday.tm_mday += 7;
-    mktime(&sunday);
-    snprintf(end_buf, sizeof(end_buf), "%04d-%02d-%02dT05:59:59.000Z",
-             sunday.tm_year + 1900, sunday.tm_mon + 1, sunday.tm_mday);
+    // Pedir desde 7 días antes del lunes para que el rango sea >8 días
+    // y el backend devuelva agregados diarios en vez de datos cada 15 min
+    struct tm wide_start = monday;
+    wide_start.tm_mday -= 7;
+    mktime(&wide_start); // Normaliza
+    
+    snprintf(start_buf, sizeof(start_buf), "%04d-%02d-%02dT06:00:00.000Z",
+             wide_start.tm_year + 1900, wide_start.tm_mon + 1, wide_start.tm_mday);
   }
 
   hw_request_history(start_buf, end_buf);
@@ -211,9 +218,8 @@ static void format_timestamp(const char* iso, char* out, size_t out_len) {
     }
 
     const char* months[] = {"Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"};
-    snprintf(out, out_len, "%02d %s, %02d:%02d", 
-             local->tm_mday, months[local->tm_mon], 
-             local->tm_hour, local->tm_min);
+    snprintf(out, out_len, "%02d %s", 
+             local->tm_mday, months[local->tm_mon]);
 }
 
 // Restaura los labels al promedio global y el título al modo actual

@@ -41,6 +41,7 @@ bool last_history_request_is_monthly = false;
 lv_coord_t history_max_voltage = 0;
 lv_coord_t history_max_watts = 0;
 int history_count = 0;
+int weekly_monday_yyyymmdd = 0; // Fecha del lunes de la semana actual (YYYYMMDD) para filtrar datos
 SemaphoreHandle_t history_mutex = NULL; // Protección para datos de historial
 
 esp_mqtt_client_handle_t mqtt_client = NULL;
@@ -165,6 +166,8 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
                             
                             int count = dataRows.size();
                             
+                            int history_counts[31] = {0};
+
                             if (last_history_request_is_monthly) {
                                 // MENSUAL: convertir UTC→local, deduplicar por día local
                                 int out_idx = 0;
@@ -191,14 +194,16 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
                                     }
                                     
                                     if (local_day == last_local_day && out_idx > 0) {
-                                        // Mismo día local: sobrescribir la última entrada (mantener la más reciente)
+                                        // Mismo día local: sumar para promediar después
                                         int pos = out_idx - 1;
-                                        if(idx_v != -1 && !dataRows[i][idx_v].isNull()) history_voltage[pos] = (lv_coord_t)dataRows[i][idx_v].as<float>();
-                                        if(idx_a != -1 && !dataRows[i][idx_a].isNull()) history_watts[pos] = (lv_coord_t)(dataRows[i][idx_a].as<float>() * 100.0f);
+                                        if(idx_v != -1 && !dataRows[i][idx_v].isNull()) history_voltage[pos] += (lv_coord_t)dataRows[i][idx_v].as<float>();
+                                        if(idx_a != -1 && !dataRows[i][idx_a].isNull()) history_watts[pos] += (lv_coord_t)(dataRows[i][idx_a].as<float>() * 100.0f);
+                                        history_counts[pos]++;
                                     } else {
                                         // Día nuevo: agregar entrada
                                         if(idx_v != -1 && !dataRows[i][idx_v].isNull()) history_voltage[out_idx] = (lv_coord_t)dataRows[i][idx_v].as<float>();
                                         if(idx_a != -1 && !dataRows[i][idx_a].isNull()) history_watts[out_idx] = (lv_coord_t)(dataRows[i][idx_a].as<float>() * 100.0f);
+                                        history_counts[out_idx] = 1;
                                         // Guardar timestamp con día local correcto para etiqueta X
                                         if (t_str) {
                                             char adjusted[24];
@@ -227,9 +232,18 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
                                     }
                                 }
                                 history_count = out_idx;
+                                
+                                // Aplicar promedios
+                                for (int i = 0; i < history_count; i++) {
+                                    if (history_counts[i] > 1) {
+                                        history_voltage[i] /= history_counts[i];
+                                        history_watts[i] /= history_counts[i];
+                                    }
+                                }
                             } else {
                                 // SEMANAL: Pin-to-Day (Lunes=0, Domingo=6), siempre 7 posiciones
                                 history_count = 7;
+                                int history_counts_weekly[7] = {0};
                                 for(int i=0; i < count; i++) {
                                     const char* t_str = nullptr;
                                     if(idx_t != -1 && !dataRows[i][idx_t].isNull()) {
@@ -246,18 +260,35 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
                                         t.tm_mday = day;
                                         t.tm_hour = hour - 6; // UTC → local CST
                                         mktime(&t); // Normaliza (ajusta día si hora < 0)
+                                        
+                                        // Filtrar: descartar datos de semanas anteriores
+                                        int point_date = (t.tm_year + 1900) * 10000 + (t.tm_mon + 1) * 100 + t.tm_mday;
+                                        if (weekly_monday_yyyymmdd > 0 && point_date < weekly_monday_yyyymmdd) continue;
+                                        
                                         // Lunes = 0, Domingo = 6
                                         int wday = t.tm_wday;
                                         target_idx = (wday == 0) ? 6 : (wday - 1);
                                     }
                                     
                                     if (target_idx >= 0 && target_idx < 7) {
-                                        if(idx_v != -1 && !dataRows[i][idx_v].isNull()) history_voltage[target_idx] = (lv_coord_t)dataRows[i][idx_v].as<float>();
-                                        if(idx_a != -1 && !dataRows[i][idx_a].isNull()) history_watts[target_idx] = (lv_coord_t)(dataRows[i][idx_a].as<float>() * 100.0f);
-                                        strncpy(history_timestamps[target_idx], t_str, 23);
+                                        if(idx_v != -1 && !dataRows[i][idx_v].isNull()) history_voltage[target_idx] += (lv_coord_t)dataRows[i][idx_v].as<float>();
+                                        if(idx_a != -1 && !dataRows[i][idx_a].isNull()) history_watts[target_idx] += (lv_coord_t)(dataRows[i][idx_a].as<float>() * 100.0f);
+                                        history_counts_weekly[target_idx]++;
+                                        
+                                        // Guardar el día para la etiqueta
+                                        char adjusted[24];
+                                        snprintf(adjusted, sizeof(adjusted), "%04d-%02d-%02dT00:00:00Z", t.tm_year + 1900, t.tm_mon + 1, t.tm_mday);
+                                        strncpy(history_timestamps[target_idx], adjusted, 23);
                                     }
                                     if (i < 24 && idx_a != -1 && !dataRows[i][idx_a].isNull()) {
                                       history_daily_24h[i] = (lv_coord_t)(dataRows[i][idx_a].as<float>() * 100.0f);
+                                    }
+                                }
+                                // Aplicar promedios
+                                for (int i = 0; i < 7; i++) {
+                                    if (history_counts_weekly[i] > 1) {
+                                        history_voltage[i] /= history_counts_weekly[i];
+                                        history_watts[i] /= history_counts_weekly[i];
                                     }
                                 }
                             }
@@ -1665,16 +1696,7 @@ void hw_request_history(const char* startDate, const char* endDate) {
   
   Serial.printf("MQTT: Pidiendo historial: %s\n", buffer);
 
-  // Determinar si es petición mensual basándose en el rango
-  // Si el rango es mayor a 8 días, es mensual
-  struct tm tm_start = {0}, tm_end = {0};
-  if (sscanf(startDate, "%d-%d-%dT", &tm_start.tm_year, &tm_start.tm_mon, &tm_start.tm_mday) == 3 &&
-      sscanf(endDate, "%d-%d-%dT", &tm_end.tm_year, &tm_end.tm_mon, &tm_end.tm_mday) == 3) {
-    tm_start.tm_year -= 1900; tm_start.tm_mon -= 1;
-    tm_end.tm_year -= 1900; tm_end.tm_mon -= 1;
-    double diff_days = difftime(mktime(&tm_end), mktime(&tm_start)) / 86400.0;
-    last_history_request_is_monthly = (diff_days > 8);
-  }
+  // last_history_request_is_monthly se establece desde la UI antes de llamar aquí
 
   esp_mqtt_client_publish(mqtt_client, MQTT_TOPIC_HISTORY_REQ, buffer, 0, 1, 0);
 }
