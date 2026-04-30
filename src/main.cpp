@@ -44,6 +44,14 @@ int history_count = 0;
 int weekly_monday_yyyymmdd = 0; // Fecha del lunes de la semana actual (YYYYMMDD) para filtrar datos
 SemaphoreHandle_t history_mutex = NULL; // Protección para datos de historial
 
+// --- Credenciales MQTT Dinámicas ---
+int active_mqtt_id = 0;
+String active_mqtt_secret = "";
+String topic_telemetry;
+String topic_history_res;
+String topic_ota_command;
+String topic_ota_status;
+
 esp_mqtt_client_handle_t mqtt_client = NULL;
 bool mqtt_connected = false;
 bool wifi_enabled_by_user = true; // Rastrea si el WiFi debería estar activo
@@ -117,8 +125,8 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
             Serial.printf("MQTT: Conectado al Broker (WSS) en %s\n", MQTT_WSS_URI);
             mqtt_connected = true;
             // Suscribirse a tópicos de respuesta
-            esp_mqtt_client_subscribe(mqtt_client, MQTT_TOPIC_HISTORY_RES, 1);
-            esp_mqtt_client_subscribe(mqtt_client, MQTT_TOPIC_OTA_COMMAND, 1);
+            esp_mqtt_client_subscribe(mqtt_client, topic_history_res.c_str(), 1);
+            esp_mqtt_client_subscribe(mqtt_client, topic_ota_command.c_str(), 1);
             Serial.println("MQTT: Suscrito a historia/response y ota/command");
             break;
         case MQTT_EVENT_DISCONNECTED:
@@ -134,7 +142,7 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
             break;
         case MQTT_EVENT_DATA: {
             Serial.printf("MQTT: Datos recibidos en tópico: %.*s\n", event->topic_len, event->topic);
-            if (strncmp(event->topic, MQTT_TOPIC_HISTORY_RES, event->topic_len) == 0) {
+            if (strncmp(event->topic, topic_history_res.c_str(), event->topic_len) == 0) {
                 // DEBUG: Imprimir datos crudos recibidos
                 Serial.printf("MQTT History RAW (%d bytes): %.*s\n", event->data_len, event->data_len > 500 ? 500 : event->data_len, event->data);
                 JsonDocument doc;
@@ -320,7 +328,7 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
                 } else {
                     Serial.println("MQTT: Error al parsear JSON de historial");
                 }
-            } else if (strncmp(event->topic, MQTT_TOPIC_OTA_COMMAND, event->topic_len) == 0) {
+            } else if (strncmp(event->topic, topic_ota_command.c_str(), event->topic_len) == 0) {
                 if (ota_in_progress) {
                     Serial.println("MQTT: Comando OTA ignorado por actualizacion en progreso.");
                     // Return early so we don't start it again
@@ -371,7 +379,7 @@ void sendTelemetry(float v, float i, float p, float e, float f, float pf) {
 
   JsonDocument doc;
   
-  doc["iot_id"] = MQTT_IOT_ID;
+  doc["iot_id"] = active_mqtt_id;
 
   // Bloque eléctricas
   JsonObject electricas = doc["electricas"].to<JsonObject>();
@@ -396,7 +404,7 @@ void sendTelemetry(float v, float i, float p, float e, float f, float pf) {
   Serial.print("MQTT: Enviando Payload: ");
   Serial.println(buffer);
   
-  int msg_id = esp_mqtt_client_publish(mqtt_client, MQTT_TOPIC_TELEMETRY, buffer, 0, 1, 0);
+  int msg_id = esp_mqtt_client_publish(mqtt_client, topic_telemetry.c_str(), buffer, 0, 1, 0);
   if (msg_id != -1) {
     Serial.printf("MQTT: Telemetría enviada (ID: %d)\n", msg_id);
     last_mqtt_sync_ms = millis(); // Actualizar tiempo de última sincronización
@@ -423,7 +431,7 @@ void reportOTAStatus(const char* status, const char* step, const char* error) {
   char buffer[512];
   serializeJson(doc, buffer);
   
-  esp_mqtt_client_publish(mqtt_client, MQTT_TOPIC_OTA_STATUS, buffer, 0, 1, 0); // retain = 0
+  esp_mqtt_client_publish(mqtt_client, topic_ota_status.c_str(), buffer, 0, 1, 0); // retain = 0
   Serial.printf("OTA Status: %s - %s\n", status, step ? step : "");
 
   // Actualizar overlay OTA con el paso actual
@@ -740,9 +748,9 @@ class BLEWriteCB : public NimBLECharacteristicCallbacks {
 
 // Inicialización del servidor BLE (sin iniciar advertising)
 void setupBLE() {
-  // Nombre único: IMOX-0003 (basado en el MQTT_IOT_ID)
+  // Nombre único: IMOX-0003 (basado en el active_mqtt_id)
   char bleName[16];
-  snprintf(bleName, sizeof(bleName), "%s-%04d", BLE_DEVICE_PREFIX, MQTT_IOT_ID);
+  snprintf(bleName, sizeof(bleName), "%s-%04d", BLE_DEVICE_PREFIX, active_mqtt_id);
 
   NimBLEDevice::init(bleName);
   NimBLEDevice::setPower(ESP_PWR_LVL_P9); // Potencia máxima BLE
@@ -873,7 +881,7 @@ void provisioningTaskCode(void* pvParameters) {
       // Construir payload: {macAddress, deviceSecret, userId}
       JsonDocument linkDoc;
       linkDoc["macAddress"] = WiFi.macAddress();
-      linkDoc["deviceSecret"] = MQTT_DEVICE_SECRET;
+      linkDoc["deviceSecret"] = active_mqtt_secret;
       linkDoc["userId"] = req.userId;
 
       char payload[256];
@@ -955,14 +963,14 @@ void initMQTT() {
   esp_mqtt_client_config_t mqtt_cfg = {};
   static char mqtt_username[16];
   static char mqtt_client_id[32];
-  snprintf(mqtt_username, sizeof(mqtt_username), "%d", MQTT_IOT_ID);
-  snprintf(mqtt_client_id, sizeof(mqtt_client_id), "IMOX-ESP32-%d", MQTT_IOT_ID);
+  snprintf(mqtt_username, sizeof(mqtt_username), "%d", active_mqtt_id);
+  snprintf(mqtt_client_id, sizeof(mqtt_client_id), "IMOX-ESP32-%d", active_mqtt_id);
 
 #if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
   // SINTAXIS PARA NÚCLEOS ESP32 NUEVOS (Arduino v3.x / ESP-IDF 5)
   mqtt_cfg.broker.address.uri = MQTT_WSS_URI;
   mqtt_cfg.credentials.username = mqtt_username;
-  mqtt_cfg.credentials.authentication.password = MQTT_DEVICE_SECRET;
+  mqtt_cfg.credentials.authentication.password = active_mqtt_secret.c_str();
   mqtt_cfg.credentials.client_id = mqtt_client_id;
   mqtt_cfg.broker.verification.certificate = LET_S_ENCRYPT_CA;
   
@@ -974,7 +982,7 @@ void initMQTT() {
   mqtt_cfg.uri = MQTT_WSS_URI;
   mqtt_cfg.client_id = mqtt_client_id;
   mqtt_cfg.username = mqtt_username;
-  mqtt_cfg.password = MQTT_DEVICE_SECRET;
+  mqtt_cfg.password = active_mqtt_secret.c_str();
   mqtt_cfg.cert_pem = LET_S_ENCRYPT_CA;
   
   // Tamaño de buffer
@@ -1007,6 +1015,33 @@ void setup() {
                           PZEM_TASK_PRIORITY,   /* Prioridad */
                           &SensorTask,          /* Handle de la tarea */
                           PZEM_TASK_CORE);      /* Núcleo pinned (0) */
+
+  // -1. Cargar credenciales MQTT desde NVS (Para sobrevivir a OTA)
+  {
+    Preferences prefs;
+    prefs.begin("iot_cfg", false); // Modo lectura/escritura
+    if (!prefs.isKey("mqtt_id")) {
+      // Primera vez: Guardamos los valores que vienen compilados desde config.h
+      active_mqtt_id = MQTT_IOT_ID;
+      active_mqtt_secret = MQTT_DEVICE_SECRET;
+      prefs.putInt("mqtt_id", active_mqtt_id);
+      prefs.putString("mqtt_secret", active_mqtt_secret);
+      Serial.println("NVS: Credenciales MQTT hardcodeadas guardadas por primera vez.");
+    } else {
+      // Arranques posteriores (incluyendo post-OTA): Leer desde NVS
+      active_mqtt_id = prefs.getInt("mqtt_id", MQTT_IOT_ID);
+      active_mqtt_secret = prefs.getString("mqtt_secret", MQTT_DEVICE_SECRET);
+      Serial.printf("NVS: Credenciales MQTT cargadas (ID: %d)\n", active_mqtt_id);
+    }
+    prefs.end();
+
+    // Generar tópicos MQTT dinámicos
+    String base_topic = "imox/devices/" + String(active_mqtt_id);
+    topic_telemetry = base_topic + "/telemetry";
+    topic_history_res = base_topic + "/history/response";
+    topic_ota_command = base_topic + "/ota/command";
+    topic_ota_status = base_topic + "/ota/status";
+  }
 
   // 0. Cargar credenciales WiFi desde NVS (si fueron provisionadas previamente)
   {
