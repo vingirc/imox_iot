@@ -200,7 +200,7 @@ void ui_statsWatts_screen_init(void) {
   lv_chart_set_axis_tick(ui_wattsChart, LV_CHART_AXIS_PRIMARY_X, 10, 5, 7, 1,
                          true, 50);
   lv_chart_set_axis_tick(ui_wattsChart, LV_CHART_AXIS_PRIMARY_Y, 10, 5, 5, 2,
-                         true, 50);
+                         true, 110);
   lv_chart_set_axis_tick(ui_wattsChart, LV_CHART_AXIS_SECONDARY_Y, 0, 0, 0, 0,
                          false, 0);
   lv_chart_series_t *ui_wattsChart_series_1 = lv_chart_add_series(
