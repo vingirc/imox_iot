@@ -176,6 +176,8 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
                             int count = dataRows.size();
                             
                             int history_counts[31] = {0};
+                            float sum_voltage[31] = {0};
+                            float sum_watts[31] = {0};
 
                             if (last_history_request_is_monthly) {
                                 // MENSUAL: convertir UTC→local, deduplicar por día local
@@ -205,13 +207,13 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
                                     if (local_day == last_local_day && out_idx > 0) {
                                         // Mismo día local: sumar para promediar después
                                         int pos = out_idx - 1;
-                                        if(idx_v != -1 && !dataRows[i][idx_v].isNull()) history_voltage[pos] += (lv_coord_t)dataRows[i][idx_v].as<float>();
-                                        if(idx_a != -1 && !dataRows[i][idx_a].isNull()) history_watts[pos] += (lv_coord_t)(dataRows[i][idx_a].as<float>() * 100.0f);
+                                        if(idx_v != -1 && !dataRows[i][idx_v].isNull()) sum_voltage[pos] += dataRows[i][idx_v].as<float>();
+                                        if(idx_a != -1 && !dataRows[i][idx_a].isNull()) sum_watts[pos] += (dataRows[i][idx_a].as<float>() * 100.0f);
                                         history_counts[pos]++;
                                     } else {
                                         // Día nuevo: agregar entrada
-                                        if(idx_v != -1 && !dataRows[i][idx_v].isNull()) history_voltage[out_idx] = (lv_coord_t)dataRows[i][idx_v].as<float>();
-                                        if(idx_a != -1 && !dataRows[i][idx_a].isNull()) history_watts[out_idx] = (lv_coord_t)(dataRows[i][idx_a].as<float>() * 100.0f);
+                                        if(idx_v != -1 && !dataRows[i][idx_v].isNull()) sum_voltage[out_idx] = dataRows[i][idx_v].as<float>();
+                                        if(idx_a != -1 && !dataRows[i][idx_a].isNull()) sum_watts[out_idx] = (dataRows[i][idx_a].as<float>() * 100.0f);
                                         history_counts[out_idx] = 1;
                                         // Guardar timestamp con día local correcto para etiqueta X
                                         if (t_str) {
@@ -242,17 +244,23 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
                                 }
                                 history_count = out_idx;
                                 
-                                // Aplicar promedios
+                                // Aplicar promedios y volcar a array final
+                                Serial.printf("MQTT History MENSUAL: count=%d\n", history_count);
                                 for (int i = 0; i < history_count; i++) {
-                                    if (history_counts[i] > 1) {
-                                        history_voltage[i] /= history_counts[i];
-                                        history_watts[i] /= history_counts[i];
+                                    if (history_counts[i] > 0) {
+                                        history_voltage[i] = (lv_coord_t)(sum_voltage[i] / history_counts[i]);
+                                        history_watts[i] = (lv_coord_t)(sum_watts[i] / history_counts[i]);
+                                        Serial.printf("  Day %d: V=%d, W=%d (counts=%d)\n", i, (int)history_voltage[i], (int)history_watts[i], history_counts[i]);
+                                    } else {
+                                        Serial.printf("  Day %d: Sin datos\n", i);
                                     }
                                 }
                             } else {
                                 // SEMANAL: Pin-to-Day (Lunes=0, Domingo=6), siempre 7 posiciones
                                 history_count = 7;
                                 int history_counts_weekly[7] = {0};
+                                float sum_voltage_weekly[7] = {0};
+                                float sum_watts_weekly[7] = {0};
                                 for(int i=0; i < count; i++) {
                                     const char* t_str = nullptr;
                                     if(idx_t != -1 && !dataRows[i][idx_t].isNull()) {
@@ -280,8 +288,8 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
                                     }
                                     
                                     if (target_idx >= 0 && target_idx < 7) {
-                                        if(idx_v != -1 && !dataRows[i][idx_v].isNull()) history_voltage[target_idx] += (lv_coord_t)dataRows[i][idx_v].as<float>();
-                                        if(idx_a != -1 && !dataRows[i][idx_a].isNull()) history_watts[target_idx] += (lv_coord_t)(dataRows[i][idx_a].as<float>() * 100.0f);
+                                        if(idx_v != -1 && !dataRows[i][idx_v].isNull()) sum_voltage_weekly[target_idx] += dataRows[i][idx_v].as<float>();
+                                        if(idx_a != -1 && !dataRows[i][idx_a].isNull()) sum_watts_weekly[target_idx] += (dataRows[i][idx_a].as<float>() * 100.0f);
                                         history_counts_weekly[target_idx]++;
                                         
                                         // Guardar el día para la etiqueta
@@ -293,11 +301,15 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
                                       history_daily_24h[i] = (lv_coord_t)(dataRows[i][idx_a].as<float>() * 100.0f);
                                     }
                                 }
-                                // Aplicar promedios
+                                // Aplicar promedios y volcar a array final
+                                Serial.printf("MQTT History SEMANAL: \n");
                                 for (int i = 0; i < 7; i++) {
-                                    if (history_counts_weekly[i] > 1) {
-                                        history_voltage[i] /= history_counts_weekly[i];
-                                        history_watts[i] /= history_counts_weekly[i];
+                                    if (history_counts_weekly[i] > 0) {
+                                        history_voltage[i] = (lv_coord_t)(sum_voltage_weekly[i] / history_counts_weekly[i]);
+                                        history_watts[i] = (lv_coord_t)(sum_watts_weekly[i] / history_counts_weekly[i]);
+                                        Serial.printf("  WDay %d: V=%d, W=%d (counts=%d)\n", i, (int)history_voltage[i], (int)history_watts[i], history_counts_weekly[i]);
+                                    } else {
+                                        Serial.printf("  WDay %d: Sin datos\n", i);
                                     }
                                 }
                             }
