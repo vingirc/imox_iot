@@ -977,7 +977,7 @@ void initMQTT() {
   
   // Tamaño de buffer
   mqtt_cfg.task.stack_size = 12288;
-  mqtt_cfg.buffer.size = 4096;
+  mqtt_cfg.buffer.size = 20480;
 #else
   // SINTAXIS PARA NÚCLEOS ESP32 CLÁSICOS (Arduino v2.x / ESP-IDF 4.x)
   mqtt_cfg.uri = MQTT_WSS_URI;
@@ -988,7 +988,7 @@ void initMQTT() {
   
   // Tamaño de buffer
   mqtt_cfg.task_stack = 12288;
-  mqtt_cfg.buffer_size = 4096;
+  mqtt_cfg.buffer_size = 20480;
 #endif
 
   // Nota: Se omite intencionalmente skip_cert_common_name_check 
