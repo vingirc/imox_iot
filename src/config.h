@@ -77,8 +77,8 @@ inline float get_current_limit() {
 // New devices start with no credentials → BLE provisioning mode.
 
 #define MQTT_WSS_URI          "wss://dietpi.tail02564c.ts.net:443/mqtt"
-#define MQTT_IOT_ID           3
-#define MQTT_DEVICE_SECRET    "b67a81fa475cacdc6a036c2e1395e8399b893764883a8c1b"
+#define MQTT_IOT_ID           104
+#define MQTT_DEVICE_SECRET    "7ca9d8443713c90d82c08e6f0f0023d8b267344672c22b16"
 
 #define _MQTT_STR(x) #x
 #define _MQTT_XSTR(x) _MQTT_STR(x)

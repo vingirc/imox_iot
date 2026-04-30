@@ -48,6 +48,7 @@ SemaphoreHandle_t history_mutex = NULL; // Protección para datos de historial
 int active_mqtt_id = 0;
 String active_mqtt_secret = "";
 String topic_telemetry;
+String topic_history_req;
 String topic_history_res;
 String topic_ota_command;
 String topic_ota_status;
@@ -1020,6 +1021,7 @@ void setup() {
   {
     Preferences prefs;
     prefs.begin("iot_cfg", false); // Modo lectura/escritura
+    // prefs.clear();
     if (!prefs.isKey("mqtt_id")) {
       // Primera vez: Guardamos los valores que vienen compilados desde config.h
       active_mqtt_id = MQTT_IOT_ID;
@@ -1038,6 +1040,7 @@ void setup() {
     // Generar tópicos MQTT dinámicos
     String base_topic = "imox/devices/" + String(active_mqtt_id);
     topic_telemetry = base_topic + "/telemetry";
+    topic_history_req = base_topic + "/history/request";
     topic_history_res = base_topic + "/history/response";
     topic_ota_command = base_topic + "/ota/command";
     topic_ota_status = base_topic + "/ota/status";
@@ -1699,10 +1702,18 @@ void hw_factory_reset(void) {
   prefs.clear();
   prefs.end();
   Serial.println("Factory Reset: Namespace 'burnout' borrado");
+
+  // Borrar namespace de MQTT (Identity)
+  prefs.begin("iot_cfg", false);
+  prefs.clear();
+  prefs.end();
+  Serial.println("Factory Reset: Namespace 'iot_cfg' borrado");
   
   // Limpiar variables en RAM
   active_wifi_ssid = "";
   active_wifi_pass = "";
+  active_mqtt_id = 0;
+  active_mqtt_secret = "";
   mqtt_sync_ever_happened = false;
   last_mqtt_sync_ms = 0;
   
@@ -1733,7 +1744,7 @@ void hw_request_history(const char* startDate, const char* endDate) {
 
   // last_history_request_is_monthly se establece desde la UI antes de llamar aquí
 
-  esp_mqtt_client_publish(mqtt_client, MQTT_TOPIC_HISTORY_REQ, buffer, 0, 1, 0);
+  esp_mqtt_client_publish(mqtt_client, topic_history_req.c_str(), buffer, 0, 1, 0);
 }
 
 } // extern "C"
